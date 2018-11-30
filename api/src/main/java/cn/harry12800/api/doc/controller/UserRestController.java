@@ -1,4 +1,4 @@
-package cn.harry12800.api.controller.rest;
+package cn.harry12800.api.doc.controller;
 
 import java.io.File;
 import java.io.FileInputStream;

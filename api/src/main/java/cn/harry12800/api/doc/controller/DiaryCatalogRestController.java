@@ -1,4 +1,4 @@
-package cn.harry12800.api.controller.rest;
+package cn.harry12800.api.doc.controller;
 
 import java.util.Date;
 import java.util.List;
