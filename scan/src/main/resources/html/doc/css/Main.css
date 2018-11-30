@@ -1,0 +1,251 @@
+
+a{
+    outline: none;
+}
+a:active{
+    star:expression(this.onfocus=this.blur())
+}
+.layui-layout-admin .layui-logo{
+    text-align: left;
+}
+.layui-logo span.cupLogo{
+    display: inline-block;
+    width:200px;
+    height:80px;
+    background: url("../images/total.png") no-repeat;
+    background-position: 0 0;
+}
+
+
+.cupPaddingNone{
+    padding:0;
+    top:150px;
+}
+.cupBorder li{
+    border:1px solid transparent;
+}
+.layui-tab{
+    margin: 0 !important;
+}
+
+.cupNavTitle{
+    margin-bottom:10px;
+    background-color: #FFB710;
+    padding-left:30px;
+    border: none;
+}
+.cupSideTop .layui-tab-title li a{
+    display: inline-block;
+}
+.layui-tab-title li:first-child .layui-tab-close {
+    display: none;
+}
+.layui-header.cupTopColor{
+    background-color: #ffffff;
+    height:80px;
+    box-shadow:0 3px 30px  #D4D4D4;
+}
+.cupTopColor ul li{
+    float: left;
+}
+.layui-layout-admin .layui-header .layui-nav.cupBorder {
+    background: url("../images/total.png") no-repeat;
+    height:80px;
+    padding-right: 94px;
+    background-position: 317px -120px;
+}
+
+.cupTopColor ul li a{
+    display: inline-block;
+    margin:15px 15px 0 0;
+    font-size: 40px;
+    text-align: center;
+    color:#FFB710;
+}
+.cupTopColor ul li a:hover{
+    color:#b9840b
+}
+
+.cupNavTitle .layui-nav{
+    background-color: #FFB710;
+}
+.cupNavTitle.layui-tab-title li{
+    margin-top: 7px;
+    line-height: 33px;
+}
+.cupNavTitle .layui-nav-item.layui-this{
+    background-color: #ffffff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-top: 7px;
+
+}
+.cupNavTitle .layui-this:after{
+    border-color:transparent;
+}
+.cupNavTitle .layui-nav-item.layui-this a{
+    color: #ffffff;
+}
+.cupNavTitle .layui-nav-item a{
+    color: #ffffff;
+}
+ .cupLogoName{
+    width:200px;
+    height:150px;
+    position: absolute;
+     z-index: 1000;
+    top:0px;
+    background:url("../images/cupLogoName.png") no-repeat;
+     background-size: 100% 100%;
+}
+.cupLogoName p{
+    text-align: center;
+    width:100%;
+    color:#ffffff;
+    font-size: 16px;
+}
+
+.cupLogoName .cupImg{
+    height:110px;
+    text-align: center;
+}
+.cupLogoName .cupImg img{
+    display: inline-block;
+    width:70px;
+    height:70px;
+    margin-top:20px;
+    background-size: 100% 100%;
+    border-radius: 999px;
+}
+.cupExit{
+    width:200px;
+    height:50px;
+    line-height:55px;
+    position: absolute;
+    z-index: 1000;
+    bottom:0;
+    background-color: #111315;
+    text-align: center;
+}
+.cupExit span{
+    display: inline-block;
+    width:16px;
+    height:16px;
+    background: url("../images/exit.png");
+    cursor: pointer;
+}
+
+.cupSecondNav  .layui-nav .layui-nav-more{
+    border-style:solid dashed dashed;
+    border-color: #ffffff  transparent transparent;
+}
+.cupSecondNav .layui-nav-itemed .layui-nav-more{
+    border-style:dashed dashed solid;
+    border-color:transparent transparent #ffffff
+}
+
+
+.cupSecondNav .layui-nav{
+    color: #ffffff;
+    background-color: #2A2F33;
+
+}
+
+.cupSecondNav .layui-nav-bar{
+    background-color: #FFB710;
+}
+.cupSecondNav  .layui-side{
+    top:80px;
+    background-color: #2A2F33;
+}
+.cupSecondNav.styleTwo  .layui-side{
+    top:150px;
+    bottom:50px;
+}
+.cupSideTop{
+    overflow-x:auto;
+}
+.cupSideTop .layui-tab{
+/*     min-width: 1210px; */
+}
+@media screen and (max-width: 1400px){
+    .cupSideTop .layui-tab{
+  /*       min-width: 1166px; */
+    }
+}
+.cupSideTop .layui-tab-title{
+    box-sizing: border-box;
+    position: absolute;
+    top:0;
+    left:0;
+    padding-right:35px;
+  /*   min-width: 1210px; */
+    width: auto;
+    background-color: #ffffff
+}
+@media screen and (max-width: 1400px){
+    .cupSideTop .layui-tab-title{
+        min-width: 166px;
+    }
+}
+.cupSideTop .layui-tab-title li.layui-this{
+    background-color: #ffffff
+}
+.cupSideTop .layui-tab-content{
+    padding-top:40px;
+}
+ .layui-layout-admin .layui-body.cupSideTop.styleTwo{
+     top:80px;
+     bottom:0px
+ }
+.layui-layout-admin .layui-body.cupSideTop{
+    top: 80px ;
+}
+.cupSecondNav .layui-nav-tree .layui-nav-child a{
+    padding-left:55px;
+    height:45px;
+    line-height:45px;
+}
+.cupSideTop .layui-tab-title li .layui-tab-close:hover{
+    background-color: #FFB710;
+}
+.addContents{
+    background-color: rgba(0,0,0,.4);
+    color:#ffffff;
+    width:150px;
+    height:180px;
+    position: absolute;
+    z-index:1000;
+    box-shadow: 1px 2px 10px #2A2F33;
+    padding:10px 0;
+    box-sizing: border-box;
+    display: none;
+}
+.addContents li{
+    height:40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+.addContents li:hover{
+  background-color: rgba(0,0,0,.6);
+}
+.changeName{
+    display: none;
+    padding:36px 15px 0 15px;
+}
+.changeName input{
+    margin-bottom:20px
+}
+/*文件上传*/
+.cupUp{
+    opacity: 0;
+}
+.layui-layer-page .cupUp{
+    opacity: 1;
+}
+.deleteContent{
+    padding: 20px 20px;
+    text-align: center;
+}
+

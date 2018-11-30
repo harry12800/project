@@ -2,91 +2,65 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.db.mapper.UserMapper">
+<mapper namespace="cn.harry12800.scan.mapper.UserMapper">
 	<sql id="Base_Column_List">
-		 id, 
-			user_id,passward,userName,exp,level 
+		id,user_id,userName,passward,exp,level
 	</sql>
 	<select id='findById' resultMap='User'  parameterType='java.lang.String'>
-		select 
-			<include refid="Base_Column_List" />
-			 from scan.user 
-			 where id = #{value}
+		select  <include refid="Base_Column_List" />
+ from scan.User  where id = #{id}
 	</select>
-	
-	<select id='findByParam' resultMap='User' >
-		select 
-			<include refid="Base_Column_List" />
-			 from scan.user 
-			 where ${propName} = #{value}
+	<select id='findBySql' parameterType='java.lang.String'  resultMap='User' >
+		 ${value}
 	</select>
-	
 	<select id='findAll' resultMap='User' >
-		select
-			<include refid="Base_Column_List" />
-			 from scan.user
+		select id,parent_id,title,content,create_time,update_time from scan.User
 	</select>
-	<select id='findByIds' parameterType='java.util.Set'>
-		select
-			<include refid="Base_Column_List" />
-			 from scan.user where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
-	</select>
-	<insert id='save' parameterType='cn.harry12800.db.entity.User'>
+	<insert id='save' parameterType='cn.harry12800.scan.entity.User'>
 		insert into scan.user(
-		 user_id,  passward,  userName,  exp,   level)
-		values(#{userId},
-		#{passward},
-		#{username},
-		#{exp},
-		#{level}
+		 id,  parent_id,  title,  content,  create_time,  update_time,   is_folder)
+		values(#{id},
+		#{parentId},
+		#{title},
+		#{content},
+		#{createTime},
+		#{updateTime},
+		#{isFolder}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.db.entity.User'>
-		update scan.user set
-		 user_id=#{userId},
-		 		 passward=#{passward},
-		 		 userName=#{username},
-		 		 exp=#{exp},
+	<update id='update' parameterType='cn.harry12800.scan.entity.User'>
+		update scan.User set
+		 id=#{id},
+		 		 parent_id=#{parentId},
+		 		 title=#{title},
+		 		 content=#{content},
+		 		 create_time=#{createTime},
+		 		 update_time=#{updateTime},
 		 		 
-		 level=#{level}
+		 is_folder=#{isFolder}
 		 where id=#{id}
 	</update>
+	<delete id='deleteByIds' parameterType='java.lang.String'>
+		delete from scan.user where  ${value}
+	</delete>
 	<delete id='deleteById' parameterType='java.lang.String'>
-		delete from scan.user where  id = #{value}
+		delete from scan.user where  id = #{id}
 	</delete>
-	<!-- #{value} -->
-	<delete id='deleteByIds' parameterType='java.util.Set'>
-		delete from scan.user where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
-	</delete>
-	
-	
-	<resultMap type='cn.harry12800.db.entity.User' id='User'>
+	<select id='findUserByDiaryId' resultMap='User' parameterType='java.lang.String'>
+		select 
+		<include refid="Base_Column_List" />
+		from scan.user where id = (select user_id from scan.user_diary where diary_id =#{id})
+	</select>
+	<select id='getUserById' resultMap='User' >
+	select 
+	<include refid="Base_Column_List" />
+	from user where id=#{userId}
+	</select>
+	<resultMap type='cn.harry12800.scan.entity.User' id='User'>
 			<result property='id' column='id'/>
 			<result property='userId' column='user_id'/>
+			<result property='userName' column='userName'/>
 			<result property='passward' column='passward'/>
-			<result property='username' column='userName'/>
 			<result property='exp' column='exp'/>
 			<result property='level' column='level'/>
 	</resultMap>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8" />
+    <title>编辑</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.min.css" />
+    <link rel="stylesheet" href="css/editormd.css" />
+    <link rel="stylesheet" href="css/markdownEdit.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+<body>
+<div id="layout">
+    <header class="editSave">
+        <h1>《<input type="text" class="showTitle" placeholder="此处点击输入文档标题">》</h1>
+        <span class="save save-js">保存</span>
+    </header>
+    <div id="test-editormd">
+        <textarea style="display:none;"></textarea>
+    </div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/editormd.js"></script>
+<script src="layui/layui.js"></script>
+<script src="js/hostUrl.js"></script>
+<script type="text/javascript">
+    var testEditor;
+    $(function() {
+        testEditor = editormd("test-editormd", {
+            width   : "90%",
+            height  : 640,
+            syncScrolling : "single",
+            path    : "lib/"
+        });
+
+    });
+
+    layui.use(['jquery','layer'],function () {
+        var layer = layui.layer;
+        var $=layui.jquery;
+
+        $(".showTitle").focus(function () {
+            $(this).css('border-color',"#cccccc")
+        }).blur(function(){
+            $(this).css('border-color',"transparent")
+        });
+
+
+        $(".save-js").click(function () {
+            var postData={};
+            var url=location.hash.replace("#","").split(",");
+            postData.name=$(".showTitle").val().replace(/\s+/g, "");
+            postData.appId=Number(url[0].split("=")[1]);
+
+            postData.directoryId=Number(url[1].split("=")[1]);
+            postData.readable=0;
+
+            postData.content=$("#test-editormd textarea").val();
+                if(postData.name==''){
+                    layer.msg('请输入文档名称');
+                }else{
+                    $.ajax({
+                        type:'post',
+                        headers:{'Content-Type':'application/json;charset=UTF-8'},
+                        url:hostUrl+'/v1/doc/markdown/add',
+                        data:JSON.stringify(postData),
+                        success:function (data) {
+                            if(data.message=='Ok'){
+                                layer.msg('添加成功！', {
+                                    time: 2000,
+                                    end:function(){
+                                        window.close()
+                                    }
+                                })
+                            }else{
+                                layer.msg('添加失败！');
+                            }
+
+                        },
+                        error:function (data) {
+
+                        }
+
+                    })
+                }
+
+
+        })
+
+
+
+    })
+</script>
+
+</body>
+</html>

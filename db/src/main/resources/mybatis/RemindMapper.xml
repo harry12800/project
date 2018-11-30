@@ -2,35 +2,17 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.db.mapper.RemindMapper">
-	<sql id="Base_Column_List">
-		 
-			id,title,detail,type,create_time,update_time,lunar,time 
-	</sql>
-	
-	
+<mapper namespace="cn.harry12800.scan.mapper.RemindMapper">
+	<select id='findById' resultMap='Remind'  parameterType='java.lang.String'>
+		select  id,title,detail,type,create_time,update_time,lunar,time from scan.remind  where id = #{id}
+	</select>
+	<select id='findBySql' parameterType='java.lang.String'  resultMap='Remind' >
+		 ${value}
+	</select>
 	<select id='findAll' resultMap='Remind' >
-		select
-			<include refid="Base_Column_List" />
-			 from scan.remind
+		select id,  title，detail,type,create_time,update_time, lunar, time from scan.remind
 	</select>
-	<select id='findByIds' parameterType='java.util.Set'>
-		select
-			<include refid="Base_Column_List" />
-			 from scan.remind where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
-	</select>
-	<insert id='save' parameterType='cn.harry12800.db.entity.Remind'>
+	<insert id='save' parameterType='cn.harry12800.scan.entity.Remind'>
 		insert into scan.remind(
 		 id,  title,  detail,  type,  create_time,  update_time,  lunar,   time)
 		values(#{id},
@@ -43,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{time}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.db.entity.Remind'>
+	<update id='update' parameterType='cn.harry12800.scan.entity.Remind'>
 		update scan.remind set
 		 id=#{id},
 		 		 title=#{title},
@@ -56,24 +38,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 time=#{time}
 		 where id=#{id}
 	</update>
-	<!-- #{value} -->
-	<delete id='deleteByIds' parameterType='java.util.Set'>
-		delete from scan.remind where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+	<delete id='deleteByIds' parameterType='java.lang.String'>
+		delete from scan.remind where  #{value}
 	</delete>
-	
-	
-	<resultMap type='cn.harry12800.db.entity.Remind' id='Remind'>
+	<resultMap type='cn.harry12800.scan.entity.Remind' id='Remind'>
 			<result property='id' column='id'/>
 			<result property='title' column='title'/>
 			<result property='detail' column='detail'/>

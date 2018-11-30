@@ -1,0 +1,555 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>harry12800文档</title>
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="layui/css/layui.css">
+<link rel="stylesheet" href="css/Main.css?version=20180807" />
+<link rel="stylesheet" href="css/transfer.css">
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin layui-tab">
+
+		<div id='left-side'
+			style='position: absolute; top: 0; left: 0; bottom: 0; width: 200px; z-index: 1000; background-color: #2A2F33;'>
+			<div class="cupLogoName">
+				<p class="cupImg-js cupImg">
+					<img src="">
+				</p>
+				<p class="cupUser-js cupUser">
+					<span></span>
+				</p>
+				<div class='nav-fold'
+					style='position: absolute; right: -25px; top: -25px; background-color: #666; height: 50px; width: 50px; border-radius: 25px;'>
+				</div>
+			</div>
+			<div style='position: absolute; top: 150px; left: 0; bottom: 50px; width: 200px;'class=" cupSecondNav  cupSecondNav-js styleTwo">
+				 
+					<div class="layui-side-scroll   ">
+						<ul class="layui-nav layui-nav-tree " lay-filter="dataNav"
+							id="cupCreatNav">
+
+						</ul>
+					</div>
+				 
+			</div>
+			<div class="cupExit cupExit-js">
+				<span></span>
+			</div>
+		</div>
+		
+		<div id="right-side"
+			style='position: absolute; top: 0; left: 200px; bottom: 0; right: 0;'>
+			
+			<div class="layui-header cupTopColor"
+				style='float: left; width: 100%'>
+				<div style='float: left;z-index:1002 '>
+					<a style='width:80px;height:80px;z-index:10002;line-height: 80px;text-align: center;display:inline-block;' href='/' onClick='javascript:;'>主页</a>
+				</div>
+				<ul class="layui-nav  cupBorder "
+					style='float: left;-webkit-transform: rotate(0deg);'>
+					<li style='float: left; -webkit-transform: rotate(0deg);'
+						class="edit edit-js" title="编辑"><a href="javascript:;"
+						class="layui-icon layui-icon-edit"></a></li>
+					<li style='float: left; -webkit-transform: rotate(0deg);'
+						class="edit editHalf-js" title="半自动编辑"><a href="javascript:;"
+						class="layui-icon layui-icon-survey"></a></li>
+					<li style='float: left; -webkit-transform: rotate(0deg);'
+						class="up up-js" title="上传" id="upload"><a
+						href="javascript:;" class="layui-icon layui-icon-upload"></a></li>
+				</ul>
+			</div>
+			<div class="layui-body cupSideTop  cupRightSideNav-js">
+				<div class="layui-tab" lay-filter="cupRightSideNav"
+					lay-allowclose="true">
+					<ul class="layui-tab-title">
+						<li class="layui-this" lay-id="helloword"><a
+							href="javascript:;">首页</a></li>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show">
+							<iframe src="page/HomePage.html" frameborder="0" width="100%"
+								height="400px"></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="layui-footer"></div> -->
+		<ul id="addContents" class="addContents">
+			<li class="appAdd-js">添加項目</li>
+			<li class="appDelete-js">删除項目</li>
+			<li class="direcAdd-js">添加目录</li>
+			<li class="direcDelete-js">删除目录</li>
+		</ul>
+
+		<!--新增目录弹框-->
+		<div class="transfer direcAddContent-js direcAddContent">
+			<div class="topTitle cupClearFix">
+				<div class="layui-form  cupSearch">
+					<input type="text" name="dirname" placeholder="请输入目录名"
+						class="layui-input"> <input type="text" name="title"
+						placeholder="可输入ID/模块名" class="layui-input"> <span
+						class="layui-icon layui-icon-search"></span>
+				</div>
+			</div>
+			<div class="topContnet">
+				<div class="transferScroll transferScroll-js"></div>
+			</div>
+			<div class="topBottom">
+				<span
+					class="layui-btn layui-btn-radius layui-btn-warm topBottomTra-js">新增</span>
+				<span
+					class="layui-btn layui-btn-radius layui-btn-primary topBottomCan-js">取消</span>
+			</div>
+
+		</div>
+		<!--項目彈框中的下拉框-->
+		<div class="layui-form changeName changeName-js">
+			<input type="text" name="title" required placeholder="请输入项目名"
+				class="layui-input"> <select name="types"
+				class="layui-select" lay-filter="changeSelect">
+				<option value="">请选择类型</option>
+				<option value="0">普通项目</option>
+				<option value="1">swiger项目</option>
+			</select> <input type="text" name="hostUrl" required placeholder="请输入项目url"
+				class="layui-input"> <input type="text" name="docUrl"
+				required placeholder="请输入swigerUrl" class="layui-input" disabled>
+		</div>
+
+		<!--文件上传-->
+		<div class="layui-upload-drag cupUp-js cupUp">
+			<i class="layui-icon"></i>
+			<p id="cupUp">点击上传，或将文件拖拽到此处</p>
+		</div>
+	</div>
+	<script src="layui/layui.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jsrender.min.js"></script>
+	<script src="js/hostUrl.js"></script>
+	<script>
+    layui.config({
+        base: "js/"
+    }).use(['jquery', 'element','cupNav','layer','form','upload'], function () {
+        var element = layui.element,
+            $ = layui.jquery,
+            layer=layui.layer,
+            cupNav=layui.cupNav,
+            form = layui.form,
+            upload = layui.upload;
+
+        /*右键事件*/
+        var deleteTarget;
+        document.oncontextmenu = function(){return false};
+        document.body.onmouseup = function(e){
+            var res = document.getElementById('addContents');
+            if(e.button===2){
+                res.style.left = e.clientX+'px';
+                res.style.top = e.clientY+'px';
+                res.style.display = 'block';
+                deleteTarget=e.target
+
+            }else{
+                res.style.display = 'none';
+            }
+
+        };
+        $(".nav-fold").click(function(){
+        	if($('#left-side').attr("state")!=1)
+        	{
+        		$('#left-side').animate({left:'-200px'},500,function(){});
+	        	$('#right-side').animate({left:'0px'},500,function(){
+	        		document.getElementById("left-side").style.zIndex=1003;
+	        		$('#left-side').attr('state',1);
+	        		});
+        	}else{
+        		document.getElementById("left-side").style.zIndex=1000;
+        		$('#left-side').animate({left:'0px'},500,function(){});
+	        	$('#right-side').animate({left:'200px'},500,function(){
+	        		$('#left-side').attr('state',0);
+	        		});
+        	}
+        });
+        /*删除目录和项目*/
+        $("#addContents li").click(function(){
+            if($(this).hasClass('appDelete-js')){
+                /*删除项目 appDelete-js*/
+                var chooseStr=$(deleteTarget).text();
+                var chooseEle=$(deleteTarget).parent().data("cupappid");
+                if(chooseEle){
+                    layer.open({
+                        type:1 ,
+                        content:"<div class='deleteContent'>确认删除项目 ' "+chooseStr+" ' 吗？</div>" ,
+                        title:"项目删除",
+                        btn:["狠心删除","果断放弃"],
+                        yes:function (index) {
+                            $.ajax({
+                                type:'post',
+                                headers:{'Content-Type':'application/json;charset=UTF-8'} ,
+                                url:hostUrl+'/v1/doc/application/delete?id='+chooseEle ,
+                                success:function (data) {
+                                    if(data.code==10){
+                                        $("#cupCreatNav li[data-cupappid='"+chooseEle+"']").remove();
+                                        layer.msg("删除当前项目成功")
+                                    }else{
+                                        layer.msg(data.message)
+                                    }
+
+                                }
+                            });
+                            layer.close(index)
+                        }
+                    })
+                }else{
+                    layer.msg("请将鼠标移入对应项目的标题上...")
+                }
+
+
+            }
+            else if($(this).hasClass('direcDelete-js')){
+                /*删除目录direcDelete-js*/
+                var chooseStr=$(deleteTarget).text();
+                var chooseEle=$(deleteTarget).parent().data("cupid");
+                if(chooseEle){
+                    layer.open({
+                        type:1,
+                        content:"<div class='deleteContent'>确认删除目录 ' "+chooseStr+" ' 吗？</div>",
+                        title:"目录删除",
+                        btn:["狠心删除","果断放弃"],
+                        yes:function (index) {
+                            $.ajax({
+                                type:'post',
+                                headers:{'Content-Type':'application/json;charset=UTF-8'},
+                                url:hostUrl+'/v1/doc/directory/delete?id='+chooseEle,
+                                success:function (data) {
+                                    if(data.code==10){
+                                        $("#cupCreatNav dd[data-cupid='"+chooseEle+"']").remove();
+                                        element.tabDelete("cupRightSideNav", chooseEle);
+                                        layer.msg("删除当前目录成功")
+                                    }else{
+                                        layer.msg(data.message)
+                                    }
+
+                                }
+                            });
+                            layer.close(index)
+                        }
+
+                    })
+                }else{
+                    layer.msg("请将鼠标移入对应目录的标题上...")
+                }
+
+
+            }
+        });
+        /*登出*/
+        $(".cupExit-js span").click(function () {
+            $.ajax({
+                type: 'post',
+                url: hostUrl+'/v1/doc/user/logout',
+                success: function (data) {
+                    if(data.code==10){
+                      location.reload()
+                    }else{
+
+                    }
+
+                }
+            })
+        });
+        /*新增目录*/
+        $(".direcAdd-js").click(function () {
+            $(".direcAddContent-js input[name='dirname']" ).val('');
+            layer.open({
+                type: 1,
+                title: false,
+                content: $('.direcAddContent-js') ,
+                area: ['400px', '500px'],
+                shade: 0,
+                success: function (data) {
+                    $.ajax({
+                        type:'post',
+                        headers:{'Content-Type':'application/json;charset=UTF-8'},
+                        url:hostUrl+'/v1/doc/directory/findCompleteDirectory',
+                        success:function (data) {
+                            $( ".transferScroll-js" ).html(
+                                $( "#direcAdd" ).render( data )
+                            );
+
+
+                        }
+
+                    });
+
+                }
+            });
+        });
+        /*目录确认*/
+        $(".topBottomTra-js").click(function () {
+            var direcAdd={};
+            direcAdd.appId=  $(".direcAddContent-js li.active").data('userid');
+            direcAdd.name=$(".direcAddContent-js input[name='dirname']" ).val();
+
+            if(direcAdd.name && direcAdd.appId){
+                $.ajax({
+                    type: 'post',
+                    contentType: "application/json;charset=UTF-8",
+                    url: hostUrl+'/v1/doc/directory/add',
+                    data:JSON.stringify(direcAdd),
+                    success: function (data) {
+                        var htmls=`
+                            <dl class="layui-nav-child ">
+                            <dd data-cupId="${data.content.directory.id}" data-cupUrl="page/page.html"><a href="javascript:;">${data.content.directory.name}</a></dd></dl>
+                        `;
+                        $(".cupSecondNav-js li[data-cupappid='"+direcAdd.appId+"']").append(htmls).removeClass('layui-this');
+
+                        element.init();
+                        layer.closeAll();
+
+                    },
+                    error: function (data) {
+
+                    }
+                });
+
+            }else{
+
+                if(!direcAdd.name){
+                    layer.msg('文件名不能为空');
+                }else{
+                    layer.msg('请选择对应模块');
+                }
+            }
+
+        });
+        /*新增项目和确认*/
+        $(".appAdd-js").click(function () {
+            $(".changeName input").val('');
+            $(".changeName select[name='types']").val('');
+            layer.open({
+                type: 1,
+                title:'新增项目',
+                content:$('.changeName-js'),
+                btn:['保存','取消'],
+                area:['350px', '400px'],
+                success:function () {
+                    form.on('select(changeSelect)',function (data) {
+                        if(data.value==0){
+                            $(".changeName input[name='docUrl']").val('').attr("disabled",true);
+
+                        }else{
+                            $(".changeName input[name='docUrl']").attr("disabled",false)
+                        }
+                    })
+                },
+                btn1: function (index,layero) {
+                    var msgs={};
+                    var str=$(".changeName input[name='title']").val().replace(/\s+/g, "");
+                    msgs.appName=str;
+                    msgs.port=0;
+                    msgs.docUrl=$(".changeName input[name='docUrl']").val();
+                    msgs.appType=$(".changeName select[name='types']").val();
+                    msgs.homeUrl=$(".changeName input[name='hostUrl']").val();
+                    if(msgs.appName){
+                        $.ajax({
+                            type: 'post',
+                            contentType: "application/json;charset=UTF-8",
+                            url: hostUrl+'/v1/doc/application/add',
+                            data:JSON.stringify(msgs),
+                            success: function (data) {
+                                var htmls=`
+                                 <li class="layui-nav-item "   data-cupappId="${data.content.app.id}"> <a  href="javascript:;">${data.content.app.appName}</a></li>
+                                `;
+                                $(".cupSecondNav-js ul").append(htmls);
+                                element.init();
+                               layer.close(index);
+                            }
+                        });
+                    }else{
+                        layer.msg('模块名不能为空');
+                    }
+                },
+                btn2:function (index,layero) {
+                    layer.close(index);
+                }
+
+            });
+        });
+
+        //拖拽上传
+        var json = {};
+        $(".up-js").click(function () {
+            var ele=$("#cupCreatNav li.layui-nav-itemed dl dd.layui-this");
+            json.appId=ele.parent().parent().data('cupappid');
+            json.directoryId=ele.data('cupid');
+            if(json.appId && json.directoryId){
+                layer.open({
+                    type: 1,
+                    title: false,
+                    content: $('.cupUp-js') ,
+                    area: ['258px', '135px'],
+                    shade: 0,
+                    success: function (data) {
+
+                    }
+                });
+
+            }else{
+                layer.msg("请选择或新建目录")
+            }
+
+        });
+
+        upload.render({
+            elem:'.cupUp-js'
+            ,url: hostUrl+'/v1/doc/upload/upload'
+            ,accept: 'file'
+            ,before:function () {
+                this.data=json
+            }
+            ,done: function(res){
+                layer.closeAll();
+                layer.msg("上传成功",function(){
+                        $("iframe#"+json.directoryId)[0].contentWindow.location.reload(true);
+                    }
+                );
+            }
+        });
+
+        /*编辑*/
+        $(".edit-js").click(function () {
+            var indexData={};
+            var ele=$("#cupCreatNav li.layui-nav-itemed dl dd.layui-this");
+            indexData.appId=ele.parent().parent().data('cupappid');
+            indexData.directoryId=ele.data('cupid');
+            if(indexData.appId && indexData.directoryId){
+                window.open('markdownNew.html#appId='+indexData.appId+',directoryId='+indexData.directoryId);
+            }else{
+                layer.msg("请选择或新建目录")
+            }
+        });
+        /*半自动编辑*/
+        $(".editHalf-js").click(function () {
+            var indexData={};
+            var ele=$("#cupCreatNav li.layui-nav-itemed dl dd.layui-this");
+            indexData.appId=ele.parent().parent().data('cupappid');
+            indexData.directoryId=ele.data('cupid');
+            if(indexData.appId && indexData.directoryId){
+                window.open('markdownHalfNew.html#directoryId='+indexData.directoryId);
+            }else{
+                layer.msg("请选择或新建目录")
+            }
+
+        });
+        $.ajax({
+            type:'post',
+            headers:{'Content-Type':'application/json;charset=UTF-8'},
+            url:hostUrl+'/v1/doc/directory/findCompleteDirectory',
+            success:function (data) {
+                if(data.content.length==0){
+                    element.on('nav(dataNav)', function (data) {
+                        cupNav.navToRightSideNav(data);
+                    });
+                }else{
+                    $.each(data.content,function () {
+                        element.on('nav(dataNav)', function (data) {
+                            cupNav.navToRightSideNav(data);
+                        });
+                    });
+                }
+
+                $( "#cupCreatNav" ).html(
+                    $( "#MainNav" ).render( data )
+                );
+                $( ".transferScroll-js" ).html(
+                    $( "#direcAdd" ).render( data )
+                );
+                if($(".cupSecondNav").hasClass("styleTwo")){
+                    $(".layui-body.cupSideTop").addClass("styleTwo")
+                }
+                element.init();
+            }
+        });
+
+        $.ajax({
+            type:'post',
+            headers:{'Content-Type':'application/json;charset=UTF-8'},
+            url:hostUrl+'/v1/doc/user/getCurrentUser',
+            success:function (data) {
+                $(".cupUser-js span").text(data.content.realName);
+                if(data.content.avatarUrl!=''){
+                    $(".cupImg-js img").attr("src",data.content.avatarUrl);
+                }else{
+                    $(".cupImg-js img").attr("src",'images/admin.png');
+                }
+
+                element.init();
+            }
+
+        });
+
+
+        cupNav.changeNav();
+        /*监控右边导航tab*/
+        element.on('tab(cupRightSideNav)', function () {
+            var data = $(this).attr('lay-id');
+            var pid;
+            if ($(this).attr('lay-id')) {
+                pid = $(".cupSecondNav-js [data-cupId=" + data+"]").parent().attr('data-cupid');
+                element.tabChange('nav', pid);
+                $(".cupSecondNav-js *").removeClass("layui-this");
+                $(".cupSecondNav-js [data-cupId=" + data+"]").addClass("layui-this").parent().parent().addClass("layui-nav-itemed");
+            }
+        });
+        /*谁可查看关闭按钮*/
+        $(".direcAddContent-js").on("click","li",function () {
+            $(".direcAddContent-js li").removeClass("active");
+            $(this).addClass("active");
+        });
+        /*弹框取消按钮*/
+        $(".topBottomCan-js").click(function () {
+            layer.closeAll()
+        })
+    });
+</script>
+
+	<script type="text/x-jsrender" id="MainNav">
+
+                {{for content}}
+                        {{if #index == 0}}
+                               <li class="layui-nav-item layui-nav-itemed"   data-cupPId="{{:pid}}" data-cupappId="{{:id}}">
+                        {{else}}
+                                   <li class="layui-nav-item "    data-cupPId="{{:pid}}" data-cupappId="{{:id}}">
+                        {{/if}}
+                        {{if isEnd==true}}
+                                    <a  href="javascript:;">{{:name}}</a>
+                                  {{for menu}}
+                                        <dl class="layui-nav-child "><dd data-cupId="{{:id}}" data-cupUrl="{{:url}}"><a href="javascript:;">{{:name}}</a></dd></dl>
+                                  {{/for}}
+                        {{else }}
+                                   <a  href="javascript:;">{{:name}}</a>
+                                  {{for menu}}
+                                        <dl class="layui-nav-child "><dd data-cupId="{{:id}}" data-cupUrl="{{:url}}"><a href="javascript:;">{{:name}}</a></dd></dl>
+                                  {{/for}}
+                        {{/if}}
+                               </li>
+                 {{/for}}
+
+</script>
+	<script type="text/x-jsrender" id="direcAdd">
+ <ul>
+    {{for content}}
+            <li data-userid="{{:id}}">{{:name}}</li>
+     {{/for}}
+   </ul>
+</script>
+
+</body>
+</html>

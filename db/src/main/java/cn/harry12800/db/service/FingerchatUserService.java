@@ -9,9 +9,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 //import org.springframework.transaction.annotation.Transactional;
- 
-import cn.harry12800.db.entity.FingerchatUser;
-import cn.harry12800.db.mapper.FingerchatUserMapper;
+
+import cn.harry12800.db.entity.FingerChatUser;
+import cn.harry12800.db.mapper.FingerChatUserMapper;
+
 
 /**
  * 用户表Service
@@ -23,20 +24,20 @@ import cn.harry12800.db.mapper.FingerchatUserMapper;
 public class FingerchatUserService {// extends CrudService<FingerchatUserMapper, FingerchatUser> {
 
 	@Autowired
-	FingerchatUserMapper mapper;
+	FingerChatUserMapper mapper;
 	
 	 
-	public List<FingerchatUser> findAll() {
+	public List<FingerChatUser> findAll() {
 		return mapper.findAll();
 	}
-	public List<FingerchatUser> findByIds(Set<?> set){
+	public List<FingerChatUser> findByIds(Set<?> set){
 		return mapper.findByIds(set);
 	}
 	
-	public int save(FingerchatUser t){
+	public int save(FingerChatUser t){
 		return mapper.save(t);
 	}
-	public int update(FingerchatUser t){
+	public int update(FingerChatUser t){
 		return mapper.update(t);
 	}
 	 

@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>harry12800个人博客</title>
+<meta name="keywords" content="harry12800 java 网络" />
+<meta name="description" content="harry12800 java 网络" />
+<link href="css/styles.css" rel="stylesheet">
+<link href="css/animation.css" rel="stylesheet">
+<!-- 返回顶部调用 begin -->
+<link href="css/lrtk.css" rel="stylesheet" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/js.js"></script>
+<!-- 返回顶部调用 end-->
+<!--[if lt IE 9]>
+<script src="js/modernizr.js"></script>
+<![endif]-->
+</head>
+<body>
+<header>
+  <nav id="nav">
+    <ul>
+      <li><a href="/" >网站首页</a></li>
+      <li><a href="/book/" target="_blank" title="图书推荐">图书推荐</a></li>
+      <li><a href="/jstt/" target="_blank" title="技术探讨">技术探讨</a></li>
+      <li><a href="/news/s/" target="_blank" title="慢生活">慢生活</a></li>
+      <li><a href="/newstalk/" target="_blank" title="碎言碎语">碎言碎语</a></li>
+    </ul>
+    <script src="js/silder.js"></script><!--获取当前页导航 高亮显示标题--> 
+  </nav>
+</header>
+<!--header end-->
+<div id="mainbody">
+</div>
+<!--mainbody end-->
+<footer>
+  <div class="footer-mid">
+    <div class="links">
+      <h2>友情链接</h2>
+      <ul>
+        <li><a href="/">杨青个人博客</a></li>
+        <li><a href="http://www.3dst.com">3DST技术服务中心</a></li>
+      </ul>
+    </div>
+    <div class="visitors">
+      <h2>最新评论</h2>
+      <dl>
+        <dt><img src="images/s8.jpg">
+        <dt>
+        <dd>DanceSmile
+          <time>49分钟前</time>
+        </dd>
+        <dd>在 <a href="http://www.yangqq.com/jstt/bj/2013-07-28/530.html" class="title">如果要学习web前端开发，需要学习什么？ </a>中评论：</dd>
+        <dd>文章非常详细，我很喜欢.前端的工程师很少，我记得几年前yahoo花高薪招聘前端也招不到</dd>
+      </dl>
+      <dl>
+        <dt><img src="images/s7.jpg">
+        <dt>
+        <dd>yisa
+          <time>2小时前</time>
+        </dd>
+        <dd>在 <a href="http://www.yangqq.com/news/s/2013-07-31/533.html" class="title">芭蕾女孩的心事儿</a>中评论：</dd>
+        <dd>我手机里面也有这样一个号码存在</dd>
+      </dl>
+      <dl>
+        <dt><img src="images/s6.jpg">
+        <dt>
+        <dd>小林博客
+          <time>8月7日</time>
+        </dd>
+        <dd>在 <a href="http://www.yangqq.com/jstt/bj/2013-06-18/285.html" class="title">如果个人博客网站再没有价值，你还会坚持吗？ </a>中评论：</dd>
+        <dd>博客色彩丰富，很是好看</dd>
+      </dl>
+    </div>
+    <section class="flickr">
+      <h2>摄影作品</h2>
+      <ul>
+        <li><a href="/"><img src="images/01.jpg"></a></li>
+        <li><a href="/"><img src="images/02.jpg"></a></li>
+        <li><a href="/"><img src="images/03.jpg"></a></li>
+        <li><a href="/"><img src="images/04.jpg"></a></li>
+        <li><a href="/"><img src="images/05.jpg"></a></li>
+        <li><a href="/"><img src="images/06.jpg"></a></li>
+        <li><a href="/"><img src="images/07.jpg"></a></li>
+        <li><a href="/"><img src="images/08.jpg"></a></li>
+        <li><a href="/"><img src="images/09.jpg"></a></li>
+      </ul>
+    </section>
+  </div>
+  <div class="footer-bottom">
+    <p>Copyright 2013 Design by <a href="http://www.yangqq.com">DanceSmile</a></p>
+  </div>
+</footer>
+<!-- jQuery仿腾讯回顶部和建议 代码开始 -->
+<div id="tbox"> <a id="togbook" href="/e/tool/gbook/?bid=1"></a> <a id="gotop" href="javascript:void(0)"></a> </div>
+<!-- 代码结束 -->
+<script type="text/javascript">
+ function modifyDiary(obj) {
+	 if($(obj).attr("cipher")==1){
+		 alert("密文不可见");
+	 }
+	 else {
+		 $.ajax({
+				url : '/v1/diary/incHint?id=' + $(obj).attr("did"),
+				type : 'get',
+				dataType : 'json',
+				contentType : 'application/json',
+				success : function(data) {
+					console.log(data);
+					if (data.code == 10) {
+						 window.location.href = "diary/modify?id="+$(obj).attr("did");
+					} else {
+						alert(data.msg);
+					}
+				}
+			});
+		
+	 }
+ }
+		$(document).ready(function() {
+			$('#searchInput').keypress(function(event){
+		         if(event.keyCode==13) {
+		        	 var url =  "?key="+$('#searchInput').val();
+		        	 window.location.href = url;
+		         }
+	        });
+		});
+	</script>
+</body>
+</html>

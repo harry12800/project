@@ -1,0 +1,293 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>harry12800</title>
+<meta name="keywords" content="harry12800 java 网络" />
+<meta name="description" content="harry12800 java 网络" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<!-- 返回顶部调用 begin -->
+<link href="css/lrtk.css" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/editormd.preview.css" />
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+<script src="js/jquery.min.js"></script>
+<script src="js/js.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/marked.min.js"></script>
+<script src="js/prettify.min.js"></script>
+<script src="js/raphael.min.js"></script>
+<script src="js/underscore.min.js"></script>
+<script src="js/sequence-diagram.min.js"></script>
+<script src="js/flowchart.min.js"></script>
+<script src="js/jquery.flowchart.min.js"></script>
+<script src="js/editormd.min.js"></script>
+<script src="js/chat.js"></script>
+<link
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.bootcss.com/bootstrap3-dialog/1.35.4/css/bootstrap-dialog.min.css"
+	rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<link href="css/animation.css" rel="stylesheet">
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script> -->
+<script
+	src="https://cdn.bootcss.com/bootstrap3-dialog/1.35.4/js/bootstrap-dialog.min.js"></script>
+<!-- 返回顶部调用 end-->
+<!--[if lt IE 9]>
+<script src="js/modernizr.js"></script>
+<![endif]-->
+</head>
+<body>
+	<header>
+		<nav id="nav">
+			<ul>
+				<li><a href="/book/" target="_blank" title="图书推荐">图书推荐</a></li>
+				<li><a href="/photo/" target="_blank" title="同步相册">同步生活</a></li>
+				<li><a href="/doc/index.html" target="_blank" title="文档系统">文档系统</a></li>
+				<li><a href="vchat.html" target="_blank" title="软件发布">软件发布</a></li>
+				<li><a href="/download-vchat" target="_blank" title="客户端下载">客户端下载</a></li>
+				<li><a href="/newstalk/" target="_blank" title="直播间">直播间</a></li>
+			</ul>
+			<script src="js/silder.js"></script>
+			<!--获取当前页导航 高亮显示标题-->
+			<a href='/doc/login.html'>登录</a>
+			<a href='/doc/reg.html'>注册</a>
+		</nav>
+	</header>
+	<!--header end-->
+	<div id="mainbody">
+		<div class="info">
+			<figure>
+				<img src="images/art.jpg" alt="Panama Hat">
+				<figcaption>
+					<strong>亦或</strong>
+					有些事情还没讲完那就算了吧。每个人都是一个国王，在自己的世界里纵横跋扈，你不要听我的，但你也不要让我听你的。
+				</figcaption>
+			</figure>
+			<div class="card">
+				<h1>我的名片</h1>
+				<p>网名：harry12800 | 别怕@我 | java后端设计师</p>
+				<p>电话：13126452456</p>
+				<p>Email：804151219@qq.com</p>
+				<p th:text="|版本号：${version}|">职业</p>
+				<ul class="linkmore">
+					<li><a href="/" class="talk" title="给我留言"></a></li>
+					<li><a href="/" class="address" title="联系地址"></a></li>
+					<li><a href="/" class="email" title="给我写信"></a></li>
+					<li><a href="/" class="photos" title="生活照片"></a></li>
+					<li><a href="/" class="heart" title="关注我"></a></li>
+				</ul>
+			</div>
+		</div>
+		<!--info end-->
+		<div class="blogs">
+			<ul class="bloglist">
+				<li th:each="diary,diaryStat : ${diarys}">
+					<div class="arrow_box">
+						<div class="ti"></div>
+						<!--三角形-->
+						<div class="ci"></div>
+						<!--圆形-->
+						<h2 class="title">
+							<a onclick="modifyDiary(this)" th:did="${diary.id}"
+								th:url="${diary.html}" th:cipher="${diary.cipher}" th:text="${diary.title}">我</a>
+						</h2>
+						<a th:if="${diary.cipher eq 1}" href="javascript:void(0)"
+							onClick="modifyDiary(this)" th:did="${diary.id}"
+							th:cipher="${diary.cipher}"><img class='cipherimg'
+							src="images/lock.png"></a>
+						<ul th:if="${diary.cipher ne 1}" class="textinfo">
+							<a href="/"><img src="images/s1.jpg"></a>
+							<div
+								style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; white-space: normal;"
+								th:text="${diary.content}">我希望 。</div>
+						</ul>
+						<ul class="details">
+							<li class="likes"><a href="#">10</a></li>
+							<li class="comments"><a href="#">34</a></li>
+							<li class="icon-time"><a href="#"
+								th:text="${#dates.format(diary.updateTime, 'yyyy-MM-dd  HH:mm')}">2013-8-7</a></li>
+						</ul>
+					</div> <!--arrow_box end-->
+				</li>
+
+
+			</ul>
+			<!--bloglist end-->
+			<aside>
+				<div class="search">
+					<form class="searchform" method="get">
+						<input id="searchInput" type="text" name="key" th:value="${key}"
+							onfocus="this.value=''" onblur="this.value='Search'">
+					</form>
+				</div>
+				<div class="tuijian">
+					<p style='line-height: 1.5; margin-bottom: 10px;'>
+						<span
+							style='font-size: 15px; margin-bottom: 10px; text-shadow: 1px 1px 1px #000; color: #ccc;'>文章目录</span><span
+							style='float: right; line-height: 1.5;'></span>
+					</p>
+					<ol>
+						<li th:each="diaryCatalog,diaryCatalogStat : ${diaryCatalogs}"><span><strong
+								th:text="${diaryCatalogStat.index}">1</strong></span><a
+							th:href="|?key=&diaryCatalogId=${diaryCatalog.id}|"
+							th:text="${diaryCatalog.name}">有一种思念，是淡淡的幸福,一个心情一行文字</a></li>
+					</ol>
+				</div>
+				<div class="tuijian">
+					<h2>推荐文章</h2>
+					<ol>
+						<li><span><strong>1</strong></span><a href="/">有一种思念，是淡淡的幸福,一个心情一行文字</a></li>
+						<li><span><strong>2</strong></span><a href="/">励志人生-要做一个潇洒的女人</a></li>
+						<li><span><strong>3</strong></span><a href="/">女孩都有浪漫的小情怀――浪漫的求婚词</a></li>
+						<li><span><strong>4</strong></span><a href="/">Green绿色小清新的夏天-个人博客模板</a></li>
+						<li><span><strong>5</strong></span><a href="/">女生清新个人博客网站模板</a></li>
+						<li><span><strong>6</strong></span><a href="/">Wedding-婚礼主题、情人节网站模板</a></li>
+						<li><span><strong>7</strong></span><a href="/">Column
+								三栏布局 个人网站模板</a></li>
+						<li><span><strong>8</strong></span><a href="/">时间煮雨-个人网站模板</a></li>
+						<li><span><strong>9</strong></span><a href="/">花气袭人是酒香―个人网站模板</a></li>
+					</ol>
+				</div>
+
+				<div class="toppic">
+					<h2>图文并茂</h2>
+					<ul>
+						<li><a href="/"><img src="images/k01.jpg">腐女不可怕，就怕腐女会画画！
+								<p>伤不起</p> </a></li>
+						<li><a href="/"><img src="images/k02.jpg">问前任，你还爱我吗？无限戳中泪点~
+								<p>感兴趣</p> </a></li>
+						<li><a href="/"><img src="images/k03.jpg">世上所谓幸福，就是一个笨蛋遇到一个傻瓜。
+								<p>喜欢</p> </a></li>
+					</ul>
+				</div>
+				<div class="clicks">
+					<h2>热门点击</h2>
+					<ol>
+						<li th:each="top10,top10Stat : ${top10s}"><span><a
+								href="/" th:text="${top10.title}">慢生活</a></span><a href="/">有一种思念，是淡淡的幸福,一个心情一行文字</a></li>
+					</ol>
+				</div>
+
+				<div class="viny">
+					<dl>
+						<dt class="art">
+							<img src="images/artwork.png" alt="专辑">
+						</dt>
+						<dd class="icon-song">
+							<span></span>南方姑娘
+						</dd>
+						<dd class="icon-artist">
+							<span></span>歌手：赵雷
+						</dd>
+						<dd class="icon-album">
+							<span></span>所属专辑：《赵小雷》
+						</dd>
+						<dd class="icon-like">
+							<span></span><a href="/">喜欢</a>
+						</dd>
+						<dd class="music">
+							<audio src="images/nf.mp3" controls></audio>
+						</dd>
+						<!--也可以添加loop属性 音频加载到末尾时，会重新播放-->
+					</dl>
+				</div>
+			</aside>
+		</div>
+		<!--blogs end-->
+	</div>
+	<!--mainbody end-->
+	<footer>
+		<div class="footer-mid">
+			<div class="links">
+				<h2>友情链接</h2>
+				<ul>
+					<li><a href="/">周国柱个人博客</a></li>
+					<li><a href="http://www.harry12800.xyz">harry12800技术服务中心</a></li>
+				</ul>
+			</div>
+			<div class="visitors">
+				<h2>最新评论</h2>
+				<dl>
+					<dt>
+						<img src="images/s8.jpg">
+					<dt>
+					<dd>
+						DanceSmile
+						<time>49分钟前</time>
+					</dd>
+					<dd>
+						在 <a href=""
+							class="title">如果要学习web前端开发，需要学习什么？ </a>中评论：
+					</dd>
+					<dd>文章非常详细，我很喜欢.前端的工程师很少，我记得几年前yahoo花高薪招聘前端也招不到</dd>
+				</dl>
+				<dl>
+					<dt>
+						<img src="images/s7.jpg">
+					<dt>
+					<dd>
+						yisa
+						<time>2小时前</time>
+					</dd>
+					<dd>
+						在 <a href=""
+							class="title">芭蕾女孩的心事儿</a>中评论：
+					</dd>
+					<dd>我手机里面也有这样一个号码存在</dd>
+				</dl>
+				<dl>
+					<dt>
+						<img src="images/s6.jpg">
+					<dt>
+					<dd>
+						小林博客
+						<time>8月7日</time>
+					</dd>
+					<dd>
+						在 <a href=""
+							class="title">如果个人博客网站再没有价值，你还会坚持吗？ </a>中评论：
+					</dd>
+					<dd>博客色彩丰富，很是好看</dd>
+				</dl>
+			</div>
+			<section class="flickr">
+				<h2>摄影作品</h2>
+				<ul>
+					<li><a href="/"><img src="images/01.jpg"></a></li>
+					<li><a href="/"><img src="images/02.jpg"></a></li>
+					<li><a href="/"><img src="images/03.jpg"></a></li>
+					<li><a href="/"><img src="images/04.jpg"></a></li>
+					<li><a href="/"><img src="images/05.jpg"></a></li>
+					<li><a href="/"><img src="images/06.jpg"></a></li>
+					<li><a href="/"><img src="images/07.jpg"></a></li>
+					<li><a href="/"><img src="images/08.jpg"></a></li>
+					<li><a href="/"><img src="images/09.jpg"></a></li>
+				</ul>
+			</section>
+		</div>
+		<div class="footer-bottom">
+			<p>
+				Copyright 2018 Design by <a href="http://www.harry12800.xyz">harry12800 湘ICP备 18010664号</a>
+			</p>
+		</div>
+	</footer>
+	<!-- jQuery仿腾讯回顶部和建议 代码开始 -->
+	<div id="tbox">
+		<a id="togbook" href="javascript:void(0)"></a>
+		<a id="gotop"
+			href="javascript:void(0)"></a>
+	</div>
+	 
+	</div>
+	<!-- 代码结束 -->
+	<script type="text/javascript" src='js/index.js'>
+		
+	</script>
+</body>
+</html>

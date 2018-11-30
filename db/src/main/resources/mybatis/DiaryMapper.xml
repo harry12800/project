@@ -2,95 +2,91 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.db.mapper.DiaryMapper">
-	<sql id="Base_Column_List">
-		 id, 
-			catalog_id,title,content,create_time,update_time,sort,html,cipher,hint 
-	</sql>
+<mapper namespace="cn.harry12800.scan.mapper.DiaryMapper">
 	<select id='findById' resultMap='Diary'  parameterType='java.lang.String'>
-		select 
-			<include refid="Base_Column_List" />
-			 from scan.diary 
-			 where id = #{value}
+		select  id,catalog_id,title,content,create_time,update_time,sort,html,cipher,hint from scan.diary  where id = #{id}
 	</select>
-	
-	<select id='findByParam' resultMap='Diary' >
-		select 
-			<include refid="Base_Column_List" />
-			 from scan.diary 
-			 where ${propName} = #{value}
+	<select id='findBySql' parameterType='java.lang.String'  resultMap='Diary' >
+		 ${value}
+	</select>
+	<select id='findTop10' parameterType='java.lang.String'  resultMap='Diary' >
+		select id,catalog_id,title,content,create_time,update_time,html,sort,cipher,hint from scan.diary order by hint,update_time desc  LIMIT 9;      
 	</select>
 	
 	<select id='findAll' resultMap='Diary' >
-		select
-			<include refid="Base_Column_List" />
-			 from scan.diary
+		select id,catalog_id,title,content,create_time,update_time,html,sort,cipher,hint from scan.diary order by update_time desc
 	</select>
-	<select id='findByIds' parameterType='java.util.Set'>
-		select
-			<include refid="Base_Column_List" />
-			 from scan.diary where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+	<select id='findAllByUserId' resultMap='Diary'  parameterType='java.lang.String'>
+		select id,catalog_id,title,content,create_time,update_time,html,sort,cipher,hint from scan.diary,scan.user_diary where scan.diary.id=scan.user_diary.diary_id and scan.user_diary.user_id=#{userId} order by update_time desc
 	</select>
-	<insert id='save' parameterType='cn.harry12800.db.entity.Diary'>
+	<select id='findAllByCatalogId' resultMap='Diary'  parameterType='java.lang.String'>
+		select id,catalog_id,title,content,create_time,update_time,html,sort,cipher,hint from scan.diary  where catalog_id = #{catalogId} order by sort
+	</select>
+	<select id='findAllContainKey' resultMap='Diary'  parameterType='java.lang.String'>
+		select id,catalog_id,title,content,create_time,update_time,html,sort,cipher,hint from scan.diary  where title like CONCAT('%',#{key},'%' ) or content like CONCAT('%',#{key},'%' ) order by sort
+	</select>
+	<select id='findAllByUserIdContainKey' resultMap='Diary'  parameterType='java.lang.String'>
+		select id,catalog_id,title,content,create_time,update_time,html,sort,cipher,hint from scan.diary,scan.user_diary where scan.diary.id=scan.user_diary.diary_id and scan.user_diary.user_id=#{userId} and (title like CONCAT('%',#{key},'%' ) or content like CONCAT('%',#{key},'%' ) ) order by sort
+	</select>
+	
+	<insert id='save' parameterType='cn.harry12800.scan.entity.Diary'>
 		insert into scan.diary(
-		 catalog_id,  title,  content,  create_time,  update_time,  sort,  html,  cipher,   hint)
-		values(#{catalogId},
+		 id,  catalog_id,  title,  content,  create_time,  update_time,   sort,html,cipher)
+		values(#{id},
+		#{catalogId},
 		#{title},
 		#{content},
 		#{createTime},
 		#{updateTime},
 		#{sort},
 		#{html},
-		#{cipher},
-		#{hint}
+		#{cipher}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.db.entity.Diary'>
+	<insert id='saveUserDiary' parameterType='java.lang.String'>
+		insert into scan.user_diary(  user_id,  diary_id ) values(#{userId}, #{diaryId} )
+	</insert>
+	
+	<update id='update' parameterType='cn.harry12800.scan.entity.Diary'>
 		update scan.diary set
-		 catalog_id=#{catalogId},
+		 id=#{id},
+		 		 catalog_id=#{catalogId},
 		 		 title=#{title},
 		 		 content=#{content},
 		 		 create_time=#{createTime},
 		 		 update_time=#{updateTime},
-		 		 sort=#{sort},
-		 		 html=#{html},
-		 		 cipher=#{cipher},
-		 		 
-		 hint=#{hint}
+		 		  html=#{html},
+		 		   cipher=#{cipher},
+		 sort=#{sort}
 		 where id=#{id}
 	</update>
+	<update id='incHint' parameterType='cn.harry12800.scan.entity.Diary'>
+		update scan.diary set  hint=hint+1  where id=#{id}
+	</update>
+	
+	<update id='decipher'  parameterType='java.lang.String'>
+		update scan.diary set  cipher=0  where id=#{id}
+	</update>
+	<update id='encipher' parameterType='java.lang.String'>
+		update scan.diary set  cipher=1 where id=#{id}
+	</update>
+	<delete id='deleteByIds' parameterType='java.lang.String'>
+		delete from scan.diary where  ${value}
+	</delete>
 	<delete id='deleteById' parameterType='java.lang.String'>
-		delete from scan.diary where  id = #{value}
+		delete from scan.diary where  id = #{id}
 	</delete>
-	<!-- #{value} -->
-	<delete id='deleteByIds' parameterType='java.util.Set'>
-		delete from scan.diary where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+	<delete id='deleteByCatalogId' parameterType='java.lang.String'>
+		delete from scan.diary where  catalog_id = #{id}
+	</delete>
+	<delete id='deleteUserDiaryByCatalogId' parameterType='java.lang.String'>
+		delete from scan.user_diary where  diary_id in (select id from scan.diary where  catalog_id = #{id})
+	</delete>
+	<delete id='deleteUserDiaryByDiaryId' parameterType='java.lang.String'>
+		delete from scan.user_diary where  diary_id = #{id}
 	</delete>
 	
-	
-	<resultMap type='cn.harry12800.db.entity.Diary' id='Diary'>
+	<resultMap type='cn.harry12800.scan.entity.Diary' id='Diary'>
 			<result property='id' column='id'/>
 			<result property='catalogId' column='catalog_id'/>
 			<result property='title' column='title'/>

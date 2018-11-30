@@ -1,5 +1,5 @@
 /**
- * Copyright &copy; 2015-2020 <a href="http://www.harry12800.xyz/">harry12800</a> All rights reserved.
+ * Copyright &copy; 2015-2020 <a href=" ">harry12800</a> All rights reserved.
  */
 package cn.harry12800.db.mapper;
 
@@ -7,53 +7,47 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Update;
 
 import cn.harry12800.db.entity.AutoApiMarkdown;
+
 /**
  * 自动拼接接口文档Mapper
  * @author 周国柱
  * @version 1.0
- * <dt>jdbc:mysql://120.78.177.24:3306/docs?useSSL=false&useUnicode=true&characterEncoding=utf-8
- * <dt>scan
- * <dt>Zhouguozhu@123
+ * <dt>jdbc:mysql://10.3.9.142:3306/fingerchat_dev_docs?useSSL=false&allowMultiQueries=true
+ * <dt>root
+ * <dt>Lenovo,,123
+ * <dt>代码自动生成!数据库的资源文件.
  * <dt>代码自动生成!数据库的资源文件.
  */
-@Component
+
 public interface AutoApiMarkdownMapper { //extends CrudDao<AutoApiMarkdown> {
 	static final long serialVersionUID = 1L;
-	
+
 	/**
 	* 通过多个id删除多行数据
-	* 字符串ids的样子 eg:  `id in ('a','b')`  数字型的是  `id in (a,b)`
-	*/
+	* 字符串ids的样子 eg:  `id in ('a','b')`
+	**/
 	int deleteByIds(Set<?> ids);
-	
+
 	/**
-	 * 删除单行数据 主键
-	 * @param id
-	 * @return
-	 */
- 	int deleteById(Long id);
- 	/**
+	* 删除单行数据
+	*/
+	int deleteById(Long id);
+
+	/**
 	 * 查找一行数据
 	 * @param id
 	 * @return
 	 */
 	AutoApiMarkdown findById(Long id);
-	
-	/**
-	* 查询根据字段名称和数据
-	**/
-	List<AutoApiMarkdown> findByParam(@Param("propName") String propName,@Param("value") Object value);
+
 	/**
 	* 删除多行数据
 	**/
 	List<AutoApiMarkdown> findAll();
-	/**
-	* 查询多行数据
-	**/
-	List<AutoApiMarkdown> findByIds(Set<?> set);
+
 	/**
 	* 保存数据
 	*/
@@ -63,6 +57,27 @@ public interface AutoApiMarkdownMapper { //extends CrudDao<AutoApiMarkdown> {
 	* 更新数据，通过id 修改所有字段属性
 	*/
 	int update(AutoApiMarkdown t);
-	
+
+	List<AutoApiMarkdown> findByIds(@Param("autoApiMarkdownIds") String autoApiMarkdownIds);
+
+	/**
+	 * 单独修改前缀
+	 * @param prefix
+	 * @param id
+	 * @return
+	 */
+	@Update("update auto_api_markdown set prefix_content=#{prefix} where id=#{id}")
+	int updatePrefix(@Param("prefix") String prefix, @Param("id") long id);
+
+	/**
+	 * 单独修改后缀
+	 * @param prefix
+	 * @param id
+	 * @return
+	 */
+	@Update("update auto_api_markdown set suffix_content=#{suffix} where id=#{id}")
+	int updateSuffix(@Param("suffix") String suffix, @Param("id") long id);
+
+	List<AutoApiMarkdown> search(@Param("content") String content);
+
 }
-	

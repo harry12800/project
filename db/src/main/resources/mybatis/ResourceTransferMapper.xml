@@ -2,93 +2,64 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.db.mapper.ResourceTransferMapper">
-	<sql id="Base_Column_List">
-		 id, 
-			resource_id,from_user,to_user,create_time,remark 
-	</sql>
-	<select id='findById' resultMap='ResourceTransfer'  parameterType='java.lang.Long'>
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.resource_transfer 
-			 where id = #{value}
-	</select>
-	
-	<select id='findByParam' resultMap='ResourceTransfer' >
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.resource_transfer 
-			 where ${propName} = #{value}
-	</select>
-	
-	<select id='findAll' resultMap='ResourceTransfer' >
+<mapper namespace="cn.harry12800.scan.doc.mapper.ResourceTransferMapper">
+	<select id='findById' resultMap='ResourceTransfer'
+		parameterType='java.lang.String'>
 		select
-			<include refid="Base_Column_List" />
-			 from docs.resource_transfer
+		id,resource_id,from_user,to_user,create_time,remark from
+		docs.resource_transfer where id = #{id}
 	</select>
-	<select id='findByIds' parameterType='java.util.Set'>
+	<select id='findByResourceId' resultMap='ResourceTransfer'
+		parameterType='java.lang.Long'>
 		select
-			<include refid="Base_Column_List" />
-			 from docs.resource_transfer where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+		id,resource_id,from_user,to_user,create_time,remark from
+		docs.resource_transfer
+		where resource_id = #{resourceId} order by create_time desc
 	</select>
-	<insert id='save' parameterType='cn.harry12800.db.entity.ResourceTransfer'>
+	<select id='findAll' resultMap='ResourceTransfer'>
+		select id,
+		resource_id, from_user, to_user, create_time, remark from
+		docs.resource_transfer
+	</select>
+	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.ResourceTransfer'>
 		insert into docs.resource_transfer(
-		 resource_id,  from_user,  to_user,  create_time,   remark)
-		values(#{resourceId},
+		id, resource_id, from_user, to_user, create_time, remark)
+		values(#{id},
+		#{resourceId},
 		#{fromUser},
 		#{toUser},
 		#{createTime},
 		#{remark}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.db.entity.ResourceTransfer'>
+	<update id='update' parameterType='cn.harry12800.scan.doc.entity.ResourceTransfer'>
 		update docs.resource_transfer set
-		 resource_id=#{resourceId},
-		 		 from_user=#{fromUser},
-		 		 to_user=#{toUser},
-		 		 create_time=#{createTime},
-		 		 
-		 remark=#{remark}
-		 where id=#{id}
+		id=#{id},
+		resource_id=#{resourceId},
+		from_user=#{fromUser},
+		to_user=#{toUser},
+		<!-- create_time=#{createTime}, -->
+
+		remark=#{remark}
+		where id=#{id}
 	</update>
-	<delete id='deleteById' parameterType='java.lang.Long'>
-		delete from docs.resource_transfer where  id = #{value}
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from
+		docs.resource_transfer where id = #{value}
 	</delete>
-	<!-- #{value} -->
 	<delete id='deleteByIds' parameterType='java.util.Set'>
-		delete from docs.resource_transfer where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+		delete from
+		docs.resource_transfer where id in <foreach item='id' collection='ids' open='(' separator=',' close=')'>
+		#{id}
+		</foreach>
 	</delete>
-	
-	
-	<resultMap type='cn.harry12800.db.entity.ResourceTransfer' id='ResourceTransfer'>
-			<result property='id' column='id'/>
-			<result property='resourceId' column='resource_id'/>
-			<result property='fromUser' column='from_user'/>
-			<result property='toUser' column='to_user'/>
-			<result property='createTime' column='create_time'/>
-			<result property='remark' column='remark'/>
+	<resultMap type='cn.harry12800.scan.doc.entity.ResourceTransfer' id='ResourceTransfer'>
+		<result property='id' column='id' />
+		<result property='resourceId' column='resource_id' />
+		<result property='fromUser' column='from_user' />
+		<result property='toUser' column='to_user' />
+		<result property='createTime' column='create_time' />
+		<result property='remark' column='remark' />
 	</resultMap>
 </mapper>
 	

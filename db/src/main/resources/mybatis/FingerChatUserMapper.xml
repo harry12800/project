@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.scan.doc.mapper.FingerChatUserMapper">
+	<select id='findById' resultMap='FingerChatUser' parameterType='java.lang.String'>
+		select
+		id,user_id,nick_name,real_name,employee_no,avatar_url,finger_token,create_time
+		from docs.fingerchat_user where id = #{id}
+	</select>
+	<select id='findByUserId' resultMap='FingerChatUser' parameterType='java.lang.String'>
+		select
+		id,user_id,nick_name,real_name,employee_no,avatar_url,finger_token,create_time
+		from docs.fingerchat_user where user_id = #{userId}
+	</select>
+	<select id='findAll' resultMap='FingerChatUser'>
+		select id, user_id,
+		nick_name, real_name, employee_no, avatar_url, finger_token,
+		create_time from docs.fingerchat_user
+	</select>
+	<select id='getResourceUserByResourceId' resultMap='FingerChatUser' parameterType='java.lang.Long'>
+		select id, user_id,
+		nick_name, real_name, employee_no, avatar_url, finger_token,
+		create_time from docs.fingerchat_user where user_id in (select user_id from docs.user_resource where resource_id=#{resourceId})
+	</select>
+	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.FingerChatUser'>
+		insert into docs.fingerchat_user(
+		id, user_id, nick_name, real_name, employee_no, avatar_url, finger_token,
+		create_time)
+		values(#{id},
+		#{userId},
+		#{nickName},
+		#{realName},
+		#{employeeNo},
+		#{avatarUrl},
+		#{fingerToken},
+		#{createTime}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.scan.doc.entity.FingerChatUser'>
+		update docs.fingerchat_user set
+		user_id=#{userId},
+		nick_name=#{nickName},
+		real_name=#{realName},
+		employee_no=#{employeeNo},
+		avatar_url=#{avatarUrl},
+		finger_token=#{fingerToken}
+
+		<!-- create_time=#{createTime} -->
+		where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from docs.fingerchat_user where id
+		= #{value}
+	</delete>
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from docs.fingerchat_user where
+		 id in <foreach item='id' collection='ids' open='(' separator=',' close=')'>
+		#{id}
+		</foreach>
+	</delete>
+	<resultMap type='cn.harry12800.scan.doc.entity.FingerChatUser' id='FingerChatUser'>
+		<result property='id' column='id' />
+		<result property='userId' column='user_id' />
+		<result property='nickName' column='nick_name' />
+		<result property='realName' column='real_name' />
+		<result property='employeeNo' column='employee_no' />
+		<result property='avatarUrl' column='avatar_url' />
+		<result property='fingerToken' column='finger_token' />
+		<result property='createTime' column='create_time' />
+	</resultMap>
+</mapper>
+	

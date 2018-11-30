@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>日记</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" charset="utf-8"
+	src="/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8"
+	src="/ueditor/ueditor.all.min.js">
+	
+</script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8"
+	src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<style type="text/css">
+div {
+	width: 100%;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<input type="hidden" id="contentd" name="contentd"
+					 value="" /> <input type="hidden" id="id"
+					name="id"  value="" /> <input type="text"
+					class="form-control" id="title" name="title"
+					  placeholder="标题" />
+			</div>
+			<div class="col-md-2 col-md-offset-2">
+				<button id="save" class='btn btn-info'>保存</button>
+				<button id="newDiary" class='btn btn-info'>新建文章</button>
+			</div>
+		</div>
+		 <input id = "catalogId" type="hidden" />
+		 <input id = "id" type="hidden" />
+		 <div class="input-group">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择文章目录 <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li th:each="diaryCatalog,status: ${DiaryCatalogs}">
+         	 <a onclick="selectCatalog(this)"   th:cid="${diaryCatalog.id}" th:text="${diaryCatalog.name}">选择文章目录</a>
+          </li>
+        </ul>
+      </div><!-- /btn-group -->
+      <input id = "catalogName" type="text" class="form-control" aria-label="...">
+     
+    </div><!-- /input-group -->
+		<div id="editor" type="text/plain"
+			style="width: 1024px; height: 500px;"></div>
+	</div>
+
+	<script type="text/javascript">
+	function selectCatalog(obj) {
+		$("#catalogName").val($(obj).text());
+		$("#catalogId").val($(obj).attr("cid"));
+	}
+		var s = $("#contentd").text();
+		//实例化编辑器
+		//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+		var ue = UE.getEditor('editor');
+		//  UE.getEditor('editor').setContent(s);
+		$(document).ready(function() {
+			$('#newDiary').click(function(){
+				$('#id').val('');
+				$("#catalogId").val('');
+				$("#catalogName").val('');
+				$('#title').val('');
+			});
+			$('#save').click(function() {
+				$.ajax({
+					url : '/v1/diary/saveOrUpdate',
+					type : 'post',
+					dataType : 'json',
+					data : JSON.stringify({
+						'id': $('#id').val(),						
+						'catalogId': $('#catalogId').val(),
+						'title':$('#title').val(),
+						'html': UE.getEditor('editor').getContent(),
+						'content': UE.getEditor('editor').getPlainTxt() }),
+					contentType : 'application/json',
+					success : function(data) {
+						if(data.code ==10) {
+							$('#id').val(data.content.id);
+							alert("操作成功！");
+						}else{
+							alert("操作失败！");
+						}
+					}
+				})
+			});
+
+		});
+		
+	</script>
+</body>
+</html>

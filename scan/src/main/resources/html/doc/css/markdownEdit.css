@@ -1,0 +1,135 @@
+.showTitle{
+    border:1px solid ;
+    border-color: transparent;
+    padding:5px 10px;
+    height:35px;
+    line-height: 35px;
+    text-align: center;
+}
+.editSave{
+    height:70px;
+}
+.editSave h1{
+    width:50%;
+    float:left;
+    cursor:pointer
+}
+.editSave .save{
+    height:40px;
+    line-height:40px;
+    border-radius: 21px;
+    float:right;
+    background-color: #FFB710;
+    color:#ffffff;
+    text-align: center;
+    padding:0 30px;
+    cursor:pointer;
+    margin-left:10px;
+}
+.editSave  .choose{
+    color:#FFB710;
+    border: 1px solid #FFB710;
+    background-color: #ffffff;
+}
+.changeName{
+    padding:36px 5px 0 5px;
+}
+.layui-layer-btn a{
+    height: 35px!important;
+    line-height: 35px!important;
+    margin: 0 5px 0!important;
+}
+.layui-layer-title{
+    padding: 0!important;
+}
+
+/**/
+.chooseContent{
+    display: none;
+}
+.chooseContent>div{
+    float:left;
+    height: 401px;
+    width:290px;
+    margin:0 5px;
+    border: 1px solid #dedede;
+    overflow-y: auto;
+}
+
+.chooseContent li{
+    padding-left: 20px;
+    height: 35px;
+    line-height: 35px;
+    color: #656565;
+    cursor: pointer;
+    border-bottom: 1px solid #E7E7E7;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.chooseContent .package li.active{
+    background-color:#FFB710;
+    color:#FFffff;
+}
+.chooseContent ul li span.active{
+    color: #FFB710;
+
+}
+.chooseContent .project li{
+    padding-right:35px;
+    position: relative;
+}
+.chooseContent .project li span.titles{
+    display: inline-block;
+    width:100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+
+}
+.chooseContent .project li span.layui-icon{
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #FFB710;
+    width: 30px;
+}
+.chooseContent .menu li.active {
+    color: #FFB710;
+}
+.chooseContent ::-webkit-scrollbar{
+    width: 6px;
+    height: 6px;
+    background-color: #F5F5F5;
+}
+.menu .allContent {
+    height:390px;
+    overflow: hidden;
+}
+.menu .allContent li{
+    height:399px;
+    border:none;
+    text-align: center;
+    color: #FFB710;
+}
+.menu .allContent li span.layui-icon{
+    display: block;
+    font-size: 61px;
+    color: #FFB710;
+    text-align: center;
+    margin: 100px 0 50px 0 ;
+}
+.chooseContent ::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #FFF;
+}
+
+.chooseContent ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #AAA;
+}
+.btnRadius .layui-layer-btn a{
+    border-radius: 20px;
+}

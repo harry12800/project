@@ -2,87 +2,53 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.db.mapper.AutoApiMarkdownMapper">
-	<sql id="Base_Column_List">
-		 id, 
-			name,prefix_content,suffix_content 
-	</sql>
-	<select id='findById' resultMap='AutoApiMarkdown'  parameterType='java.lang.Long'>
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.auto_api_markdown 
-			 where id = #{value}
+<mapper namespace="cn.harry12800.scan.doc.mapper.AutoApiMarkdownMapper">
+	<select id='findById' resultMap='AutoApiMarkdown' parameterType='java.lang.Long'>
+		select id,name,prefix_content,suffix_content from docs.auto_api_markdown
+		where id = #{id}
 	</select>
-	
-	<select id='findByParam' resultMap='AutoApiMarkdown' >
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.auto_api_markdown 
-			 where ${propName} = #{value}
+	<select id='findAll' resultMap='AutoApiMarkdown'>
+		select id,
+		name,prefix_content, suffix_content from docs.auto_api_markdown
 	</select>
-	
-	<select id='findAll' resultMap='AutoApiMarkdown' >
-		select
-			<include refid="Base_Column_List" />
-			 from docs.auto_api_markdown
+	<select id='findByIds' resultMap='AutoApiMarkdown' parameterType='java.lang.String'>
+		select id,
+		name,prefix_content, suffix_content from docs.auto_api_markdown where ${autoApiMarkdownIds}
 	</select>
-	<select id='findByIds' parameterType='java.util.Set'>
-		select
-			<include refid="Base_Column_List" />
-			 from docs.auto_api_markdown where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
-	</select>
-	<insert id='save' parameterType='cn.harry12800.db.entity.AutoApiMarkdown'>
+	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.AutoApiMarkdown'>
 		insert into docs.auto_api_markdown(
-		 name,  prefix_content,   suffix_content)
-		values(#{name},
+		id, name, prefix_content, suffix_content)
+		values(#{id},
+		#{name},
 		#{prefixContent},
 		#{suffixContent}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.db.entity.AutoApiMarkdown'>
+	<update id='update' parameterType='cn.harry12800.scan.doc.entity.AutoApiMarkdown'>
 		update docs.auto_api_markdown set
-		 name=#{name},
-		 		 prefix_content=#{prefixContent},
-		 		 
-		 suffix_content=#{suffixContent}
-		 where id=#{id}
+		name=#{name},
+		prefix_content=#{prefixContent},
+		suffix_content=#{suffixContent}
+		where id=#{id}
 	</update>
 	<delete id='deleteById' parameterType='java.lang.Long'>
-		delete from docs.auto_api_markdown where  id = #{value}
+		delete from
+		docs.auto_api_markdown where id = #{value}
 	</delete>
-	<!-- #{value} -->
-	<delete id='deleteByIds' parameterType='java.util.Set'>
-		delete from docs.auto_api_markdown where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+	<delete id='deleteByIds' parameterType='java.lang.String'>
+		delete from
+		docs.auto_api_markdown where id in <foreach item='id' collection='ids' open='(' separator=',' close=')'>
+		#{id}
+		</foreach>
 	</delete>
-	
-	
-	<resultMap type='cn.harry12800.db.entity.AutoApiMarkdown' id='AutoApiMarkdown'>
-			<result property='id' column='id'/>
-			<result property='name' column='name'/>
-			<result property='prefixContent' column='prefix_content'/>
-			<result property='suffixContent' column='suffix_content'/>
+	<select id="search" parameterType='java.lang.String' resultMap='AutoApiMarkdown'>
+		select * from docs.auto_api_markdown where prefix_content like ${content} or suffix_content like ${content}
+	</select>
+	<resultMap type='cn.harry12800.scan.doc.entity.AutoApiMarkdown' id='AutoApiMarkdown'>
+		<result property='id' column='id' />
+		<result property='name' column='name' />
+		<result property='prefixContent' column='prefix_content' />
+		<result property='suffixContent' column='suffix_content' />
 	</resultMap>
 </mapper>
 	

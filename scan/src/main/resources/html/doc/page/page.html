@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>内页</title>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/page.css">
+    <link rel="stylesheet" href="../css/transfer.css">
+    <script>
+
+    </script>
+</head>
+<body >
+<div class="top" id="top">
+    <div class="layui-form cupLf " >
+        <input type="radio" name="message" lay-filter="chooseMessage" value="0" title="全部" checked>
+        <input type="radio" name="message" lay-filter="chooseMessage" value="2" title="别人" >
+        <input type="radio" name="message" lay-filter="chooseMessage" value="1" title="自己" >
+    </div>
+    <div class="sortTime cupLf sortTime-js">
+        <span class="layui-icon layui-icon-loading "></span>
+    </div>
+    <div class="layui-form cupRt cupSearch cupSearch-js">
+        <input type="text" name="title"   placeholder="请输入标题/内容"  class="layui-input">
+        <span class="layui-icon layui-icon-search"></span>
+    </div>
+</div>
+<div class="Content Content-js"></div>
+<div id="paging"></div>
+
+<div class="transfer transfer-js">
+    <div class="topTitle cupClearFix">
+        <div class="layui-form  cupSearch">
+
+        </div>
+    </div>
+    <div class="topContnet">
+        <div class="transferScroll transferScroll-js">
+
+        </div>
+    </div>
+    <div class="topBottom">
+        <span class="layui-btn layui-btn-radius layui-btn-warm topBottomTra-js">转让</span>
+        <span class="layui-btn layui-btn-radius layui-btn-primary topBottomCan-js">取消</span>
+    </div>
+
+</div>
+
+<div class="transfer traChoose traChoose-js cupClearFix">
+    <div class="transferContent cupLf">
+        <div class="topTitle cupClearFix">
+            <div class="layui-form  cupSearch">
+            </div>
+        </div>
+        <div class="topContnet topContnet-js">
+            <div class="transferScroll transferScroll-js">
+
+            </div>
+        </div>
+        <div class="topBottom">
+         	<span class="layui-btn layui-btn-radius layui-btn-warm topBottomAll-js">公开</span>
+            <span class="layui-btn layui-btn-radius layui-btn-warm topBottomEnsure-js">确认</span>
+            <span class="layui-btn layui-btn-radius layui-btn-primary topBottomCan-js">取消</span>
+        </div>
+    </div>
+    <div class="transferChoose cupLf transferChoose-js">
+        <ul></ul>
+    </div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../layui/layui.js"></script>
+<script src="../js/jsrender.min.js"></script>
+<script src="../js/hostUrl.js"></script>
+<script src="../js/clipboard.min.js"></script>
+<script>
+	
+    function gotoMarkdown(data){
+        window.open(""+data)
+    }
+    function gotoMarkdownEdit(data) {
+        window.open('../markdownEdit.html#'+data)
+    }
+    function gotoMarkdownHalfEdit(data) {
+        window.open('../markdownHalfEdit.html#'+data)
+    }
+    /*复制url*/
+    
+    
+
+    
+
+    layui.use(['jquery', 'form','layer','laypage','element'], function () {
+        var $ = layui.jquery
+            ,form=layui.form
+            ,element=layui.element
+            ,laypage = layui.laypage
+            ,layer = layui.layer;
+
+        var transferId='', postData={};
+        postData.directoryId=top.location.hash.split("=")[1];
+        postData.pageSize=10;
+        /* 复制 */
+        var clipboard = new ClipboardJS('.copyUrl-js');
+        clipboard.on('success', function(e) {
+        	layer.msg("复制成功！")
+        });
+
+        clipboard.on('error', function(e) {
+            layer.msg("复制失败！")
+        });
+        
+
+        /*目录模块取消*/
+        document.oncontextmenu = function(){return false};
+        document.onmouseup = function(e){
+            var res = top.document.getElementById('addContents');
+            res.style.display = 'none';
+        };
+        /*ajax封装*/
+        function ajaxContent(url,data,fn) {
+            $.ajax({
+                type: 'post',
+                contentType: "application/json;charset=UTF-8",
+                url: url,
+                data: JSON.stringify(data),
+                success: fn
+            })
+        }
+
+        /*生成内容页封装 */
+        function creatContent(url,postData) {
+            ajaxContent(url,postData,function (data) {
+                postData.total=data.content.total;
+                //内容
+                $(".Content-js").html(
+                    $( "#content" ).render(data)
+                );
+                element.init();
+                //分页
+                laypage.render({
+                    elem: 'paging'
+                    ,count:postData.total
+                    ,limit:postData.pageSize
+                    ,layout: ['count', 'prev', 'page', 'next', 'skip']
+                    ,jump: function(obj){
+                        postData.pageIndex= obj.curr;
+                        ajaxContent(url,postData,function (data) {
+                                $(".Content-js").html(
+                                    $( "#content" ).render(data)
+                                );
+                                element.init();
+                            }
+                        )
+                    }
+                })
+            })
+        }
+        /*初始*/
+        creatContent(hostUrl+'/v1/doc/resource/findReadableResource',postData);
+        /*筛选*/
+        form.on('radio(chooseMessage)', function(data){
+            $(".cupSearch-js input").val('');
+            if(data.value==1){
+                creatContent(hostUrl+'/v1/doc/resource/findSelfResource',postData)
+            }else if(data.value==0){
+                creatContent(hostUrl+'/v1/doc/resource/findReadableResource',postData)
+            }else if(data.value==2){
+                creatContent(hostUrl+'/v1/doc/resource/getOtherByDirectoryId',postData)
+            }
+        });
+        /*查询*/
+        $(".cupSearch-js span").click(function () {
+            var searchData={};
+            searchData.state=$("input[name='message']:checked").val();
+            searchData.pageSize=10;
+            searchData.keyWord=$(this).siblings().val();
+            searchData.directoryId= postData.directoryId;
+            creatContent(hostUrl+'/v1/doc/resource/findDifferentResource',searchData)
+        });
+        //弹框人员内容生成
+        ajaxContent(hostUrl+'/v1/doc/user/alphabetUser','',function(data){
+            $( ".transferScroll-js" ).html(
+                $( "#alphabetUser" ).render( data )
+            );
+        });
+
+
+        /*转让，查看弹框*/
+        var cupUserId;
+        $.ajax({
+            type:'post',
+            headers:{'Content-Type':'application/json;charset=UTF-8'},
+            url:hostUrl+'/v1/doc/user/getCurrentUser',
+            success:function (data) {
+                cupUserId=data.content.userId
+            }
+
+        });
+        $(' .Content-js').on('click',".transferShow-js", function(){
+            transferId=$(this).parent().parent().data('transfer');
+            layer.open({
+                type: 1,
+                title: false,
+                content: $('.transfer-js') ,
+                area: ['400px', '500px'],
+                shade: 0,
+                success: function (data) {
+                    $(".transferScroll-js li").removeClass("active");
+                    $(".transferScroll-js li[data-userid='"+cupUserId+"']").addClass("active");
+
+                }
+            });
+
+        });
+        /*删除*/
+        $(' .Content-js').on('click',".delete-js", function(){
+            transferId=$(this).parent().parent().data('transfer');
+            layer.open({
+                type: 1,
+                shade: 0,
+                title:'是否删除',
+                content:"<div class='deleteContent'>亲，确定删除吗？</div>",
+                area: ['300px', '200px'],
+                btn:["确定",'取消'],
+                yes:function (index) {
+                    ajaxContent(hostUrl+'/v1/doc/resource/delete?id='+transferId,'',function(data){
+                        layer.close(index);
+                        layer.msg("删除成功",function(){
+                                location.reload()
+                            }
+                         );
+
+                    })
+                }
+            })
+        });
+        /*转让查看收缩功能*/
+        $(".transferScroll-js").on('click','.shrink-js',function () {
+            $(this).next().slideToggle()
+        });
+        /*谁可查看*/
+        $(' .Content-js').on('click',".look-js", function(){
+            transferId=$(this).parent().parent().data('transfer');
+            layer.open({
+                type: 1,
+                title: false,
+                shade: 0,
+                content: $('.traChoose-js') ,
+                area: ['800px', '500px'],
+                success: function (data) {
+                    ajaxContent(hostUrl+'/v1/doc/resourceTransfer/getReadableUser?resourceId='+transferId,'',function(data){
+                        $(".transferScroll-js li").removeClass("active");
+                        $(".transferChoose-js ul").html('');
+                        var htmls='';
+                        if(data.content.readable == 1) {
+                        	$(".topBottomAll-js").html("已公开");
+                        }
+                        $.each(data.content.users,function (index,element) {
+                            $(".transferScroll-js li[data-userid='"+element.userId+"']").addClass('active');
+                            htmls+=`
+                                  <li data-userid="${element.userId}"><span class="close close-js">&times;</span><a href="">${element.realName}</a></li>
+                                `
+                        });
+                        $(".transferChoose-js ul").append(htmls);
+
+                        $(".transferChoose-js ul li[data-userid='"+cupUserId+"'] span").removeClass("close-js");
+                    });
+
+                }
+            });
+        });
+        /*刷新当前页面*/
+        $(".sortTime-js span").click(function () {
+            location.reload()
+        });
+        /*转让选择和确认*/
+        var transferUserid;
+        $(".transfer-js .transferScroll-js").on("click","li",function () {
+            $(".transferScroll-js li").removeClass("active");
+            $(this).addClass("active");
+            transferUserid=$(this).attr('data-userid');
+        });
+        $(".topBottomTra-js").click(function () {
+            ajaxContent(hostUrl+'/v1/doc/resourceTransfer/transfer?userId='+transferUserid+"&resourceId="+transferId,'',function(data){
+                layer.closeAll();
+                 location.reload()
+            });
+        });
+        /*查看选择和确认*/
+        $(".traChoose-js .transferScroll-js").on("click","li",function () {
+            $(this).addClass("active");
+            var data=$(this).text();
+            var useId=$(this).data("userid");
+            var rightUserid=[];
+            $.each($(".transferChoose-js li"),function () {
+                rightUserid.push($(this).data("userid"))
+            });
+            if(rightUserid.indexOf(useId)==-1){
+                html=`
+                       <li data-userid="${useId}"><span class="close close-js">&times;</span><a href="">${data}</a></li>
+                    `;
+                $(".transferChoose-js ul").append(html);
+            }
+        });
+        $(".topBottomEnsure-js").click(function () {
+            var user={};
+            user.userIds=[];
+            user.resourceId=transferId;
+            $.each($(".transferChoose-js li"),function () {
+                user.userIds.push($(this).data("userid"));
+            });
+            ajaxContent(hostUrl+'/v1/doc/resourceTransfer/setReadableUser',user,function(data){
+                layer.closeAll();
+                location.reload()
+            });
+        });
+		/*所有人可查看  */
+		$(".topBottomAll-js").click(function () {		
+            ajaxContent(hostUrl+'/v1/doc/resource/public?resourceId='+transferId,'',function(data){
+                layer.closeAll();
+            });
+        });
+		
+
+        /*谁可查看关闭按钮*/
+        $(".transferChoose-js").on("click",".close-js",function () {
+            $(this).parent().remove();
+            var data=$(this).parent().data("userid");
+            $(".transferScroll-js li[data-userid='"+data+"']").removeClass("active")
+        });
+        /*弹框取消按钮*/
+        $(".topBottomCan-js").click(function () {
+            layer.closeAll()
+        })
+    })
+</script>
+
+<script type="text/x-jsrender" id="content">
+    {{for content.data}}
+        <div class="contentMenu " data-transfer="{{:id}}">
+              <p class="cupLf time">{{:updateTimeStr}}</p>
+            <div class="title cupLf">
+                <a class="titleName"  target="_blank" href="{{:url}}">{{:name}}</a>
+                <p class="titleContent">{{:content}}</p>
+            </div>
+                <p class="modify cupRt">
+                 <span class="copyUrl-js" data-clipboard-text="{{:copyUrl}}">复制</span>
+            {{if isOwner}}
+                {{if resourceType==1}}
+                    <span onclick="gotoMarkdownEdit('{{:id}}')">修改</span>
+                {{else resourceType==2}}
+                    <span onclick="gotoMarkdownHalfEdit('{{:id}}')">修改</span>
+                {{else}}
+                {{/if}}
+
+                <span  class="transferShow-js">转让</span>
+                <span  class="look look-js">谁可查看</span>
+                <span class="detail" onclick="gotoMarkdown('{{:url}}')">详情</span>
+                 <span class="delete delete-js layui-icon layui-icon-delete"></span>
+            {{else}}
+                <span class="detail" onclick="gotoMarkdown('{{:url}}')">详情</span>
+            {{/if}}
+            </p>
+         </div>
+    {{/for}}
+</script>
+<script type="text/x-jsrender" id="alphabetUser">
+    {{for content}}
+        <p class="shrink-js">{{:alphabet}}</p>
+        <ul>
+        {{for users}}
+            <li data-userid="{{:userId}}">{{:realName}}</li>
+        {{/for}}
+        </ul>
+     {{/for}}
+</script>
+</body>
+</html>

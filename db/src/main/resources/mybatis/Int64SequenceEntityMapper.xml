@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.scan.mapper.Int64SequenceEntityMapper">
+	<resultMap id="BaseResultMap" type="cn.harry12800.scan.entity.Int64SequenceEntity">
+		<id column="sequence_name" jdbcType="VARCHAR" property="sequenceName" />
+		<result column="sequence_value" jdbcType="BIGINT" property="sequenceValue" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		sequence_name, sequence_value
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from int64_sequence
+		where sequence_name = #{sequenceName,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- Long getNextSequence(String sequenceName); -->
+	<select id="getNextSequence" parameterType="java.lang.String" resultType="java.lang.Long">
+		SELECT scan.func_sequence( #{sequenceName,jdbcType=VARCHAR} ) AS NewSequence
+	</select>
+</mapper>

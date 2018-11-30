@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.scan.doc.mapper.ResourceUploadMapper">
+	<select id='findById' resultMap='Upload' parameterType='java.lang.Long'>
+		select
+		id,file_name,upload_name,file_url from docs.resources_attachment where id = #{id}
+	</select>
+	<select id='findAll' resultMap='Upload'>
+		select id, file_name,
+		upload_name,file_url from docs.resources_attachment
+	</select>
+	<select id='findByIds' resultMap='Upload' parameterType='java.lang.String'>
+		select id, file_name,
+		upload_name,file_url from docs.resources_attachment where  ${uploadIds}
+	</select>
+	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.ResourcesUpload'>
+		insert into docs.resources_attachment(
+		id, file_name, upload_name,file_url)
+		values(#{id},
+		#{fileName},
+		#{uploadName},
+		#{fileUrl}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.scan.doc.entity.ResourcesUpload'>
+		update docs.resources_attachment set
+		file_name=#{fileName},
+		upload_name=#{uploadName},
+		file_url=#{fileUrl}
+		where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.Long'>
+		delete from docs.resources_attachment where
+		id = #{value}
+	</delete>
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from docs.resources_attachment
+		where id in <foreach item='id' collection='ids' open='(' separator=',' close=')'>
+		#{id}
+		</foreach>
+	</delete>
+<!-- 	<select id="search" parameterType="java.lang.String" resultMap='Upload'>
+		select * from resources_attachment 
+		where content like ${content}
+	</select> -->
+	<resultMap type='cn.harry12800.scan.doc.entity.ResourcesUpload' id='Upload'>
+		<result property='id' column='id' />
+		<result property='fileName' column='file_name' />
+		<result property='uploadName' column='upload_name' />
+		<result property='fileUrl' column='file_url' />
+	</resultMap>
+</mapper>
+	

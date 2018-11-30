@@ -9,8 +9,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 //import org.springframework.transaction.annotation.Transactional;
- 
+
 import cn.harry12800.db.entity.Diary;
+import cn.harry12800.db.entity.User;
 import cn.harry12800.db.mapper.DiaryMapper;
 
 /**
@@ -42,6 +43,45 @@ public class DiaryService {// extends CrudService<DiaryMapper, Diary> {
 	 
 	public int deleteByIds(Set<?> set){
 		return mapper.deleteByIds(set);
+	}
+	public void save(Diary diary, String userId) {
+		
+	}
+	public Diary findById(String id) {
+		return null;
+	}
+	public void deleteById(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+	public List<Diary> findAllByUserIdContainKey(String key, String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public List<Diary> findAllByUserId(String userId) {
+		return null;
+	}
+	public List<Diary> findTop10() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public List<Diary> findAllByCatalogId(String diaryCatalogId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void incHint(String id) {
+		
+	}
+	public User findUserByDiaryId(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public Object encipher(String id) {
+		
+		return null;
+	}
+	public Object decipher(String id) {
+		return null;
 	}
 	 
 }

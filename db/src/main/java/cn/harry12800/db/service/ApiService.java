@@ -1,5 +1,5 @@
 /**
- * Copyright &copy; 2015-2020 <a href="http://www.harry12800.xyz/">harry12800</a> All rights reserved.
+ * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
  */
 package cn.harry12800.db.service;
 
@@ -9,7 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 //import org.springframework.transaction.annotation.Transactional;
- 
+
 import cn.harry12800.db.entity.Api;
 import cn.harry12800.db.mapper.ApiMapper;
 
@@ -24,25 +24,28 @@ public class ApiService {// extends CrudService<ApiMapper, Api> {
 
 	@Autowired
 	ApiMapper mapper;
-	
-	 
+
+	public Api findById(Long id) {
+		return mapper.findById(id);
+	}
+
 	public List<Api> findAll() {
 		return mapper.findAll();
 	}
-	public List<Api> findByIds(Set<?> set){
-		return mapper.findByIds(set);
-	}
-	
-	public int save(Api t){
+
+	public int save(Api t) {
 		return mapper.save(t);
 	}
-	public int update(Api t){
+
+	public int update(Api t) {
 		return mapper.update(t);
 	}
-	 
-	public int deleteByIds(Set<?> set){
-		return mapper.deleteByIds(set);
+
+	public int deleteByIds(Set<?> ids) {
+		return mapper.deleteByIds(ids);
 	}
-	 
+
+	public int deleteById(String id) {
+		return mapper.deleteById(id);
+	}
 }
-	

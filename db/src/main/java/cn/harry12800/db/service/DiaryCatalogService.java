@@ -9,7 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 //import org.springframework.transaction.annotation.Transactional;
- 
+
 import cn.harry12800.db.entity.DiaryCatalog;
 import cn.harry12800.db.mapper.DiaryCatalogMapper;
 
@@ -42,6 +42,20 @@ public class DiaryCatalogService {// extends CrudService<DiaryCatalogMapper, Dia
 	 
 	public int deleteByIds(Set<?> set){
 		return mapper.deleteByIds(set);
+	}
+	public List<DiaryCatalog> findAllByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public DiaryCatalog findById(String id) {
+		return null;
+	}
+	public void deleteById(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void deleteByIds(String id) {
+		
 	}
 	 
 }

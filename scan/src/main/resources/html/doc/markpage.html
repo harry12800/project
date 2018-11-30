@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>markdown</title>
+        <link rel="stylesheet" href="css/style.min.css">
+        <link rel="stylesheet" href="css/editormd.preview.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="lib/marked.min.js"></script>
+        <script src="lib/prettify.min.js"></script>
+        <script src="lib/raphael.min.js"></script>
+        <script src="lib/underscore.min.js"></script>
+        <script src="lib/sequence-diagram.min.js"></script>
+        <script src="lib/flowchart.min.js"></script>
+        <script src="lib/jquery.flowchart.min.js"></script>
+        <script src="lib/editormd.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                var testEditormdView;
+                var url=location.hash.replace("#","");
+                if(url){
+                    $.get(""+url, function(markdown) {
+                        console.log(markdown)
+                        testEditormdView = editormd.markdownToHTML("test-editormd-view", {
+                            markdown        : markdown ,//+ "\r\n" + $("#append-test").text(),
+                            htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                            tocm            : true,    // Using [TOCM]
+                            emoji           : true,
+                            taskList        : true,
+                            tex             : true,  // 默认不解析
+                            flowChart       : true,  // 默认不解析
+                            sequenceDiagram : true // 默认不解析
+                        });
+                    });
+                }
+
+            });
+        </script>
+        <style>            
+            .editormd-html-preview {
+                width: 80%;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="layout">
+            <div id="test-editormd-view">
+               <textarea style="display:none;" name="test-editormd-markdown-doc" title="showMessage"></textarea>
+            </div>
+        </div>
+
+    </body>
+</html>

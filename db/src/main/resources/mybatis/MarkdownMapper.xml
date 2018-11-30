@@ -2,84 +2,51 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.db.mapper.MarkdownMapper">
-	<sql id="Base_Column_List">
-		 id, 
-			name,content 
-	</sql>
-	<select id='findById' resultMap='Markdown'  parameterType='java.lang.Long'>
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.markdown 
-			 where id = #{value}
-	</select>
-	
-	<select id='findByParam' resultMap='Markdown' >
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.markdown 
-			 where ${propName} = #{value}
-	</select>
-	
-	<select id='findAll' resultMap='Markdown' >
+<mapper namespace="cn.harry12800.scan.doc.mapper.MarkdownMapper">
+	<select id='findById' resultMap='Markdown' parameterType='java.lang.Long'>
 		select
-			<include refid="Base_Column_List" />
-			 from docs.markdown
+		id,name,content from docs.markdown where id = #{id}
 	</select>
-	<select id='findByIds' parameterType='java.util.Set'>
-		select
-			<include refid="Base_Column_List" />
-			 from docs.markdown where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+	<select id='findAll' resultMap='Markdown'>
+		select id, name,
+		content from docs.markdown
 	</select>
-	<insert id='save' parameterType='cn.harry12800.db.entity.Markdown'>
+	<select id='findByIds' resultMap='Markdown' parameterType='java.lang.String'>
+		select id, name,
+		content from docs.markdown where  ${markdownIds}
+	</select>
+	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.Markdown'>
 		insert into docs.markdown(
-		 name,   content)
-		values(#{name},
+		id, name, content)
+		values(#{id},
+		#{name},
 		#{content}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.db.entity.Markdown'>
+	<update id='update' parameterType='cn.harry12800.scan.doc.entity.Markdown'>
 		update docs.markdown set
-		 name=#{name},
-		 		 
-		 content=#{content}
-		 where id=#{id}
+		name=#{name},
+		content=#{content}
+		where id=#{id}
 	</update>
 	<delete id='deleteById' parameterType='java.lang.Long'>
-		delete from docs.markdown where  id = #{value}
+		delete from docs.markdown where
+		id = #{value}
 	</delete>
-	<!-- #{value} -->
 	<delete id='deleteByIds' parameterType='java.util.Set'>
-		delete from docs.markdown where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+		delete from docs.markdown
+		where  id in <foreach item='id' collection='ids' open='(' separator=',' close=')'>
+		#{id}
+		</foreach>
 	</delete>
-	
-	
-	<resultMap type='cn.harry12800.db.entity.Markdown' id='Markdown'>
-			<result property='id' column='id'/>
-			<result property='name' column='name'/>
-			<result property='content' column='content'/>
+	<select id="search" parameterType="java.lang.String" resultMap='Markdown'>
+		select * from docs.markdown 
+		where content like ${content}
+	</select>
+	<resultMap type='cn.harry12800.scan.doc.entity.Markdown' id='Markdown'>
+		<result property='id' column='id' />
+		<result property='name' column='name' />
+		<result property='content' column='content' />
 	</resultMap>
 </mapper>
 	

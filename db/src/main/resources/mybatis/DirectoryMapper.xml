@@ -2,108 +2,86 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.db.mapper.DirectoryMapper">
-	<sql id="Base_Column_List">
-		 id, 
-			parent_id,app_id,name,create_time,update_time,create_user,owner,update_user,sort,remark 
-	</sql>
-	<select id='findById' resultMap='Directory'  parameterType='java.lang.Long'>
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.directory 
-			 where id = #{value}
+<mapper namespace="cn.harry12800.scan.doc.mapper.DirectoryMapper">
+	<select id='findById' resultMap='Directory' parameterType='java.lang.Long'>
+		select
+		id,parent_id,app_id,name,create_time,update_time,create_user,update_user,remark,owner,sort
+		from docs.directory where id = #{id}
+	</select>
+	<select id='findByAppId' resultMap='Directory' parameterType='java.lang.Long'>
+		select
+		id,parent_id,app_id,name,create_time,update_time,create_user,update_user,remark,owner,sort
+		from docs.directory where app_id = #{appId}
+	</select>
+	<select id='findByAppIdAndUserId' resultMap='Directory'>
+		select
+		id,parent_id,app_id,name,create_time,update_time,create_user,update_user,remark,owner,sort
+		from docs.directory where app_id = #{appId} and owner = #{userId}
 	</select>
 	
-	<select id='findByParam' resultMap='Directory' >
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.directory 
-			 where ${propName} = #{value}
-	</select>
-	
-	<select id='findAll' resultMap='Directory' >
+	<select id='findAll' resultMap='Directory'>
 		select
-			<include refid="Base_Column_List" />
-			 from docs.directory
+		id,parent_id,app_id,name,create_time,update_time,create_user,update_user,remark,owner,sort
+		from directory
 	</select>
-	<select id='findByIds' parameterType='java.util.Set'>
-		select
-			<include refid="Base_Column_List" />
-			 from docs.directory where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
-	</select>
-	<insert id='save' parameterType='cn.harry12800.db.entity.Directory'>
+	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.Directory'>
 		insert into docs.directory(
-		 parent_id,  app_id,  name,  create_time,  update_time,  create_user,  owner,  update_user,  sort,   remark)
-		values(#{parentId},
+		id, parent_id, app_id, name, create_time, update_time, create_user,
+		update_user, remark,owner,sort)
+		values(#{id},
+		#{parentId},
 		#{appId},
 		#{name},
 		#{createTime},
 		#{updateTime},
 		#{createUser},
-		#{owner},
 		#{updateUser},
-		#{sort},
-		#{remark}
+		#{remark},
+		#{owner},
+		#{sort}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.db.entity.Directory'>
+	<update id='update' parameterType='cn.harry12800.scan.doc.entity.Directory'>
 		update docs.directory set
-		 parent_id=#{parentId},
-		 		 app_id=#{appId},
-		 		 name=#{name},
-		 		 create_time=#{createTime},
-		 		 update_time=#{updateTime},
-		 		 create_user=#{createUser},
-		 		 owner=#{owner},
-		 		 update_user=#{updateUser},
-		 		 sort=#{sort},
-		 		 
-		 remark=#{remark}
-		 where id=#{id}
+		parent_id=#{parentId},
+		app_id=#{appId},
+		name=#{name},
+		<!--create_time=#{createTime}, -->
+		update_time=#{updateTime},
+		<!-- create_user=#{createUser}, -->
+		update_user=#{updateUser},
+
+		remark=#{remark}
+		where id=#{id}
 	</update>
+	<update id='updateName'>
+		update docs.directory set
+		name=#{name},
+		where id=#{id}
+	</update>
+	
 	<delete id='deleteById' parameterType='java.lang.Long'>
-		delete from docs.directory where  id = #{value}
+		delete from docs.directory
+		where id = #{value}
 	</delete>
-	<!-- #{value} -->
 	<delete id='deleteByIds' parameterType='java.util.Set'>
-		delete from docs.directory where  
-		<choose>
-			<when test='set !=null and set.size()>0'>
-				 id  in 
-				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
-					#{id}
-				</foreach>
-			</when>
-			<otherwise>
-			 0 = 1
-			</otherwise>
-		</choose>
+		delete from docs.directory
+		where  id in <foreach item='id' collection='ids' open='(' separator=',' close=')'>
+		#{id}
+		</foreach>
 	</delete>
-	
-	
-	<resultMap type='cn.harry12800.db.entity.Directory' id='Directory'>
-			<result property='id' column='id'/>
-			<result property='parentId' column='parent_id'/>
-			<result property='appId' column='app_id'/>
-			<result property='name' column='name'/>
-			<result property='createTime' column='create_time'/>
-			<result property='updateTime' column='update_time'/>
-			<result property='createUser' column='create_user'/>
-			<result property='owner' column='owner'/>
-			<result property='updateUser' column='update_user'/>
-			<result property='sort' column='sort'/>
-			<result property='remark' column='remark'/>
+	<resultMap type='cn.harry12800.scan.doc.entity.Directory' id='Directory'>
+		<result property='id' column='id' />
+		<result property='parentId' column='parent_id' />
+		<result property='appId' column='app_id' />
+		<result property='name' column='name' />
+		<result property='createTime' column='create_time' />
+		<result property='updateTime' column='update_time' />
+		<result property='createUser' column='create_user' />
+		<result property='updateUser' column='update_user' />
+		<result property='remark' column='remark' />
+		<result property='owner' column='owner' />
+		<result property='sort' column='sort' />
 	</resultMap>
 </mapper>
 	

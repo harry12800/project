@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8" />
+    <title>编辑</title>
+    <link rel="stylesheet" href="css/style.min.css" />
+    <link rel="stylesheet" href="css/editormd.css" />
+    <link rel="stylesheet" href="css/markdownEdit.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="layout">
+    <header class="editSave">
+        <h1>《<input type="text" class="showTitle" placeholder="此处点击输入文档标题">》</h1>
+        <span class="save save-js">保存</span>
+        <span class="save choose choose-js">选择</span>
+    </header>
+    <div id="prefix-editormd">
+        <textarea style="display:none;"></textarea>
+    </div>
+    <div id="suffix-editormd">
+        <textarea style="display:none;"></textarea>
+    </div>
+    <div class="chooseContent chooseContent-js">
+        <div class="package package-js"></div>
+        <div class="project project-js"></div>
+        <div class="menu menu-js"></div>
+    </div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/editormd.js"></script>
+<script src="layui/layui.js"></script>
+<script src="js/hostUrl.js"></script>
+<script type="text/javascript">
+    var testEditor;
+    $(function() {
+        testEditor = editormd("prefix-editormd", {
+            width   : "90%",
+            height  : 340,
+            syncScrolling : "single",
+            path    : "lib/"
+        });
+        testEditor = editormd("suffix-editormd", {
+            width   : "90%",
+            height  : 340,
+            syncScrolling : "single",
+            path    : "lib/"
+        });
+
+    });
+
+    layui.use(['jquery','layer'],function () {
+        var layer = layui.layer;
+        var $=layui.jquery;
+        var postData={};
+
+        $(".showTitle").focus(function () {
+            $(this).css('border-color',"#cccccc")
+        }).blur(function(){
+            $(this).css('border-color',"transparent")
+        });
+
+        /*ajax封装*/
+        function ajaxContent(url,data,fn) {
+            $.ajax({
+                type: 'post',
+                contentType: "application/json;charset=UTF-8",
+                url: url,
+                data: JSON.stringify(data),
+                success: fn
+            })
+        }
+
+        /*选择按钮*/
+        var number=0;
+        $(".choose-js").click(function () {
+            var htmls=$(".chooseContent-js").html();
+            layer.open({
+                type: 1,
+                title:['文件选择','text-align:center'] ,
+                content: $('.chooseContent-js') ,
+                area: ['900px', '500px'],
+                skin: 'btnRadius',
+                shade: 0,
+                btn: ['确认', '取消','一鍵清空'],
+                yes: function(index, layero){
+                    layer.close(index);
+                    $(".chooseContent-js>div").unbind('click')
+                },
+                btn2: function(index, layero){
+                    $(".chooseContent-js").html(htmls);
+                    $(".chooseContent-js>div").unbind('click')
+                },
+                btn3: function(index, layero){
+                    $(".package-js li").removeClass('active');
+                    $(".chooseContent-js>div.project-js,.chooseContent-js>div.menu-js").html('');
+                        return false
+                },
+                cancel: function(index){
+                    $(".chooseContent-js").html(htmls);
+                    $(".chooseContent-js>div").unbind('click')
+                },
+                success: function (data) {
+                    /*初始加载第一层*/
+                    var packagestate=$(".package-js ul");
+                    if(packagestate.length==0){
+                        ajaxContent(hostUrl+'/v1/doc/application/getAllMarkdownApp','',function (data) {
+                            var htmls='<ul>';
+                            $.each(data.content,function (index) {
+                                htmls+=`
+                            <li data-appid="${data.content[index].id}">
+                                <span>${data.content[index].appName}</span>
+                            </li>
+                        `
+                            });
+                            htmls+='</ul>';
+                            $(".package-js").append(htmls);
+                       })
+                    }
+                    /*点击第一层*/
+                    $(".package-js").on('click',' li',function () {
+                        $(".package-js li").removeClass('active');
+                        $(".menu-js ul").css("display","none");
+                        $(this).addClass('active');
+                        var modelId=$(this).data('appid');
+                        var state=$(".project-js ul[id='"+modelId+"']");
+                        /* console.log(state)*/
+                        if(state.length==0){
+                            /*点击加载第二层数据*/
+                            ajaxContent(hostUrl+'/v1/doc/application/getModuleByAppid?id='+modelId,'',function (data) {
+                                var htmls='<ul id="'+modelId+'">';
+                                $.each(data.content,function (index) {
+                                    htmls+=`
+                                        <li data-appid="${data.content[index].id}">
+                                            <span class="titles">${data.content[index].name}</span>
+                                            <span class="layui-icon layui-icon-rate"></span>
+                                        </li>
+                                    `
+                                });
+                                htmls+='</ul>';
+                                $(".project-js ul").hide();
+                                $(".project-js").append(htmls);
+                            })
+
+                        }else{
+                            $(".project-js ul").hide();
+                            state.show()
+                        }
+                    });
+                    /*选中二层目录所有点亮星星*/
+                    $(".project-js").on('click',' li span.layui-icon',function () {
+
+                        $(this).toggleClass('layui-icon-rate layui-icon-rate-solid').siblings().removeClass('active');
+                        var child=$(this).parent().data('appid');
+
+                        if(!$('.menu-js ul[data-modelid='+child+']').length==0) {
+                            $('.menu-js ul[data-modelid='+child+'] li').removeClass('active')
+                        }
+                    });
+                    /*点击第二层*/
+                    $(".project-js").on('click',' li span.titles',function () {
+                        var appid=$('.package-js li.active').data('appid');
+                        var modelId=$(this).parent().data('appid');
+                        $(".project-js li span.titles").removeClass('active');
+                        $(this).addClass('active').siblings().removeClass('layui-icon-rate-solid').addClass('layui-icon-rate ');
+
+                        var parAppid=$(this).parent().parent().attr('id');
+                        var state=$(".menu-js ul[data-modelId='"+modelId+"']");
+
+                        if(state.length==0) {
+                            /*点击加载第三层数据*/
+                            ajaxContent(hostUrl+'/v1/doc/application/getApiByAppIdModuleId?appId=' + appid + '&mId=' + modelId, '', function (data) {
+                                if(!data.content){
+                                    var htmls = '<ul data-modelId="' + modelId + '" class="allContent"><li><span class="layui-icon layui-icon-face-surprised"></span><span>此目录下无内容</span></li></ul>';
+                                }else{
+                                    var htmls = '<ul data-modelId="' + modelId + '" data-appid="'+parAppid+'">';
+                                    $.each(data.content, function (index) {
+                                        htmls += `
+                                        <li ><span title="${data.content[index].summary}">${data.content[index].path}</span></li>
+                                    `
+                                    });
+                                    htmls += '</ul>';
+                                }
+                                $(".menu-js ul").hide();
+                                $(".menu-js").append(htmls);
+
+                            })
+                        }else{
+                            $(".menu-js ul").hide();
+                            state.show()
+                        }
+                    });
+                    /*点击第三层*/
+                    $(".menu-js").on('click',' li ',function () {
+                        var state=$(".project-js li[data-appid='"+$(this).parent().data('modelid')+"'] span.layui-icon").hasClass('layui-icon-rate-solid');
+                        if(state){
+                            $(".project-js li[data-appid='"+$(this).parent().data('modelid')+"'] span.layui-icon").toggleClass('layui-icon-rate layui-icon-rate-solid').siblings().addClass('active')
+                        }
+                        $(this).toggleClass('active')
+
+                    });
+                }
+            });
+
+        });
+
+
+        /*保存*/
+        $(".save-js").click(function () {
+            postData.directoryId=Number(location.hash.split("=")[1]);
+            postData.name=$(".showTitle").val().replace(/\s+/g, "");
+            postData.prefix=$("#prefix-editormd textarea").val();
+            postData.suffix=$("#suffix-editormd textarea").val();
+            postData.apis=[];
+            var mennObj=$('.menu-js ul li.active');
+            var projectObj=$(".project-js ul li span.layui-icon-rate-solid");
+
+            $.each(mennObj,function (index,element) {
+                var obj = {};
+                var thisAppid=$(element).parent().data('appid');
+                var thisPath=$(element).text();
+                postData.apis.push({
+                    appId:thisAppid,
+                    moduleId:'',
+                    path:thisPath
+                })
+            });
+            $.each(projectObj,function (index,element) {
+                var obj = {};
+                var thisId=Number($(element).parent().parent().attr('id'));
+                var thisAppid=$(element).parent().data('appid');
+                postData.apis.push({
+                    appId:thisId,
+                    moduleId:thisAppid,
+                    path:''
+                });
+
+            });
+            if(postData.name==''){
+                layer.msg('请输入文档名称');
+            }else {
+                $.ajax({
+                    type: 'post',
+                    headers: {'Content-Type': 'application/json;charset=UTF-8'},
+                    url: hostUrl+'/v1/doc/autoApiMarkdown/add',
+                    data: JSON.stringify(postData),
+                    success: function (data) {
+                        layer.msg('保存成功', {
+                            time: 2000,
+                            end:function(){
+                                window.close()
+                            }
+                        });
+
+                    }
+
+                })
+            }
+
+        });
+
+
+    })
+</script>
+<script type="text/x-jsrender" id="direcAdd">
+ <ul>
+    {{for content}}
+            <li data-userid="{{:id}}">{{:name}}</li>
+     {{/for}}
+   </ul>
+</script>
+</body>
+</html>

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
+
 import cn.harry12800.db.entity.User;
 /**
  * Mapper
@@ -61,6 +62,10 @@ public interface UserMapper { //extends CrudDao<User> {
 	* 更新数据，通过id 修改所有字段属性
 	*/
 	int update(User t);
+
+	User getUserById(long l);
+
+	User findUserByDiaryId(String id);
 	
 }
 	

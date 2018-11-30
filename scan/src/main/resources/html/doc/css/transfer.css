@@ -1,0 +1,146 @@
+.cupLf{
+    float:left;
+    height:100%
+}
+.cupRt{
+    float:right;
+    height:100%
+}
+.cupClearFix:after{
+    clear: both;
+    content: "";
+    display: block;
+
+}
+/*����*/
+.transfer{
+    display: none;
+}
+
+.transfer .topTitle{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    height: 70px;
+}
+.transfer .topTitle .cupSearch{
+    margin:0 auto;
+    width:220px;
+}
+.transfer .topTitle .cupSearch span{
+    top:5px;
+
+}
+
+.transfer .topContnet{
+    height: 380px;
+    margin-top: 70px;
+    margin-bottom: 50px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    width: 100%;
+
+}
+
+.transfer ::-webkit-scrollbar{
+    width: 6px;
+    height: 6px;
+    background-color: #F5F5F5;
+}
+
+.transfer ::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #FFF;
+}
+
+.transfer ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #AAA;
+}
+.transfer .topContnet p{
+    background-color: #E7E7E7;
+    height: 30px;
+    line-height: 30px;
+    color: #949596;
+    padding-left: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.transfer .topContnet ul li{
+    padding: 0 20px;
+    height:35px;
+    line-height: 35px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color:#656565;
+    cursor: pointer;
+    border-bottom:1px solid #E7E7E7
+}
+.transfer .topContnet ul li.active{
+    background-color:#FFB710 ;
+    color:#FFffff;
+}
+.transfer  .topBottom{
+    position: absolute;
+    bottom:0;
+    height:50px;
+    line-height: 50px;
+    width:100%;
+    text-align: center;
+}
+.transfer  .topBottom span{
+    display: inline-block;
+
+}
+.cupSearch{
+    position: relative;
+}
+.cupSearch input{
+    margin-top:0px;
+    border-radius: 40px;
+    background-color: #E7E7E7;
+    padding-right:38px;
+    height:40px;
+
+}
+.cupSearch span{
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 999px;
+    background-color: #FFB710;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 26px;
+    cursor: pointer;
+}
+/*����Ŀ¼*/
+.direcAddContent  .topTitle .cupSearch{
+    width:400px;
+}
+.direcAddContent .topTitle{
+    height:80px;
+}
+.direcAddContent .topContnet{
+    margin-top:80px;
+    height:370px;
+}
+.direcAddContent .topTitle .cupSearch span {
+    top: 17px;
+    right: 19px;
+}
+.direcAddContent .cupSearch input{
+    width: 182px;
+    display: inline-block;
+    margin-left: 10px;
+    padding: 0 0 0 10px;
+}
+.direcAddContent .cupSearch input:nth-child(2){
+    padding-right:34px;
+}

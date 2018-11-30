@@ -1,0 +1,162 @@
+body{
+    padding:5px;
+    background-color: #F1F1F1;
+}
+
+.top{
+   height:40px;
+        line-height: 40px;
+    background-color: #ffffff;
+    border-left:5px solid #FFB710;
+    padding-left:20px;
+    margin-bottom:5px;
+}
+@media screen and (max-width: 1400px){
+    .top{
+        height:40px;
+        line-height: 40px;
+        margin-bottom:5px;
+    }	
+}
+.top .sortTime{
+    line-height: 50px;
+    margin-left:10px;
+    cursor: pointer;
+    color:#FFB710;
+}
+.top .sortTime span{
+    font-size: 20px;
+    font-weight: bold;
+}
+.top .sortTime:hover{
+    color: #b9840b;
+
+}
+.Content .contentMenu{
+    background-color: #ffffff;
+    height:44px;
+    margin-bottom:0px;
+}
+.Content .contentMenu:hover {
+	 background-color:#C0D9FF;
+}
+@media screen and (max-width: 1400px){
+    .Content .contentMenu{
+        height:44px;
+    }
+}
+.Content .contentMenu p{
+    height:44px;
+    line-height: 44px;
+}
+@media screen and (max-width: 1400px){
+    .Content .contentMenu p{
+        height:44px;
+        line-height: 44px;
+    }
+}
+.Content .contentMenu .time{
+    color:#AAAAAA;
+    font-size: 20px;
+    font-weight: bold;
+    padding:0 40px
+}
+@media screen and (max-width: 1400px){
+    .Content .contentMenu .time{
+        font-size: 18px;
+    }
+
+}
+.Content .contentMenu .modify span{
+    display: inline-block;
+    line-height: 25px;
+    text-align: center;
+    border-radius: 12.5px;
+    border: 1px solid #FFB710;
+    color: #FFB710;
+    margin-right: 8px;
+    cursor: pointer;
+    font: 12px/1.5 tahoma,arial;
+    padding: 0 6px;
+}
+.Content .contentMenu .modify span:hover{
+    color: #ffffff;
+    background-color:#FFB710;
+}
+.Content .contentMenu .title .titleName{
+    height:44px;
+    line-height: 44px;
+    font-weight: bold;
+    font: 12px/1.5 tahoma,arial;
+    color: #333333;
+}
+@media screen and (max-width: 1400px){
+    .Content .contentMenu .title .titleName{
+        line-height: 44px;
+        height:44px;
+    }
+}
+.Content .contentMenu .title .titleContent{
+    line-height: 44px;
+    color: #cccccc;
+    max-width:550px;
+    font-size: 12px;
+    margin-top:-18px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+@media screen and (max-width: 1400px){
+    .Content .contentMenu .title .titleContent{
+        max-width:550px;
+        height:25px;
+        line-height: 25px;
+    }
+}
+/*kexuan */
+.traChoose{
+    display: none;
+}
+.traChoose>div{
+    width:50%;
+}
+.traChoose .transferChoose{
+    border-left:1px solid #CCCCCC;
+    height: 380px;
+    margin-top: 70px;
+    margin-bottom: 50px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding:0 20px;
+}
+.traChoose .transferChoose li{
+    width:50%;
+    float:left
+}
+.traChoose .transferChoose li a{
+    display: inline-block;
+    height:27px;
+    line-height: 27px;
+}
+.traChoose .transferChoose span.close{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background-color: #BBBBBB;
+    text-align: center;
+    line-height: 24px;
+    color: #ffffff;
+    font-size: 24px;
+    position: relative;
+    top:4px;
+    margin-right:10px;
+    cursor: pointer;
+}
+.traChoose .transferChoose span.close-js:hover{
+    background-color: #FFB710;
+}
+.deleteContent{
+    padding: 20px 50px;
+    text-align: center;
+}

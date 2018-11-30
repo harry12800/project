@@ -1,0 +1,12 @@
+
+{"code":10,
+  "message":"Ok",
+  "content":[
+    {"id":6,"pid":10,"name":"xdata后台服务","isEnd":false,"url":"","menu":[
+      {"id":1,"pid":0,"name":"想打他","isEnd":true,"url":"page/page.html","menu":[]},
+      {"id":2,"pid":0,"name":"自行车他","isEnd":true,"url":"page/page.html","menu":[]},
+      {"id":3,"pid":0,"name":"自行车是他","isEnd":true,"url":"page/page.html","menu":[]}]},
+    {"id":10,"pid":0,"name":"xdata-proxy服务","isEnd":true,"url":"page/page.html","menu":[
+      {"id":"","pid":"","name":"","":true,"url":"","menu":[]},
+    ]}]
+}

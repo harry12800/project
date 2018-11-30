@@ -6,9 +6,7 @@ package cn.harry12800.db.mapper;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
 
 import cn.harry12800.db.entity.UserInfo;
 
@@ -20,8 +18,9 @@ import cn.harry12800.db.entity.UserInfo;
  * <dt>root
  * <dt>Lenovo,,123
  * <dt>代码自动生成!数据库的资源文件.
+ * <dt>代码自动生成!数据库的资源文件.
  */
-@Component
+
 public interface UserInfoMapper { //extends CrudDao<User> {
 	static final long serialVersionUID = 1L;
 
@@ -41,7 +40,7 @@ public interface UserInfoMapper { //extends CrudDao<User> {
 	 * @param id
 	 * @return
 	 */
-	UserInfo findById(long id);
+	UserInfo findById(String id);
 
 	/**
 	* 删除多行数据
@@ -57,11 +56,14 @@ public interface UserInfoMapper { //extends CrudDao<User> {
 	* 更新数据，通过id 修改所有字段属性
 	*/
 	int update(UserInfo t);
-  
-	public List<UserInfo> getAllUserExcept(long userId);
+
 	UserInfo findByUserId(String userId);
 
 	List<UserInfo> getResourceUserByResourceId(@Param("resourceId") Long resourceId);
 
+	UserInfo findById(long targetUserId);
+
 	List<UserInfo> findByIds(Set<?> set);
+
+	List<UserInfo> getAllUserExcept(Long id);
 }

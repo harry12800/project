@@ -1,5 +1,5 @@
 /**
- * Copyright &copy; 2015-2020 <a href="http://www.harry12800.xyz/">harry12800</a> All rights reserved.
+ * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
  */
 package cn.harry12800.db.service;
 
@@ -9,7 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 //import org.springframework.transaction.annotation.Transactional;
- 
+
 import cn.harry12800.db.entity.Resource;
 import cn.harry12800.db.mapper.ResourceMapper;
 
@@ -24,25 +24,29 @@ public class ResourceService {// extends CrudService<ResourceMapper, Resource> {
 
 	@Autowired
 	ResourceMapper mapper;
-	
-	 
+
+	public Resource findById(Long id) {
+		return mapper.findById(id);
+	}
+
 	public List<Resource> findAll() {
 		return mapper.findAll();
 	}
-	public List<Resource> findByIds(Set<?> set){
-		return mapper.findByIds(set);
-	}
-	
-	public int save(Resource t){
+
+	public int save(Resource t) {
 		return mapper.save(t);
 	}
-	public int update(Resource t){
+
+	public int update(Resource t) {
 		return mapper.update(t);
 	}
-	 
-	public int deleteByIds(Set<?> set){
-		return mapper.deleteByIds(set);
+
+	public int deleteByIds(Set<?> ids) {
+		return mapper.deleteByIds(ids);
 	}
-	 
+
+	public int deleteById(Long id) {
+		mapper.deleteUserResourceByResouceId(id);
+		return mapper.deleteById(id);
+	}
 }
-	

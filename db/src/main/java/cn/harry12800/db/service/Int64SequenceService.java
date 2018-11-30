@@ -9,7 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 //import org.springframework.transaction.annotation.Transactional;
- 
+
 import cn.harry12800.db.entity.Int64Sequence;
 import cn.harry12800.db.mapper.Int64SequenceMapper;
 
