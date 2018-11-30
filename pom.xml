@@ -108,5 +108,6 @@
 		<module>vchatserver</module>
     <module>api</module>
     <module>scan</module>
-	</modules>
+    <module>vchatclient</module>
+  </modules>
 </project>
