@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.scan.doc.mapper.DirectoryMapper">
+<mapper namespace="cn.harry12800.db.mapper.DirectoryMapper">
 	<select id='findById' resultMap='Directory' parameterType='java.lang.Long'>
 		select
 		id,parent_id,app_id,name,create_time,update_time,create_user,update_user,remark,owner,sort
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		id,parent_id,app_id,name,create_time,update_time,create_user,update_user,remark,owner,sort
 		from directory
 	</select>
-	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.Directory'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Directory'>
 		insert into docs.directory(
 		id, parent_id, app_id, name, create_time, update_time, create_user,
 		update_user, remark,owner,sort)
@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{sort}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.scan.doc.entity.Directory'>
+	<update id='update' parameterType='cn.harry12800.db.entity.Directory'>
 		update docs.directory set
 		parent_id=#{parentId},
 		app_id=#{appId},
@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{id}
 		</foreach>
 	</delete>
-	<resultMap type='cn.harry12800.scan.doc.entity.Directory' id='Directory'>
+	<resultMap type='cn.harry12800.db.entity.Directory' id='Directory'>
 		<result property='id' column='id' />
 		<result property='parentId' column='parent_id' />
 		<result property='appId' column='app_id' />

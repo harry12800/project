@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.scan.doc.mapper.ResourceUploadMapper">
+<mapper namespace="cn.harry12800.db.mapper.ResourceUploadMapper">
 	<select id='findById' resultMap='Upload' parameterType='java.lang.Long'>
 		select
 		id,file_name,upload_name,file_url from docs.resources_attachment where id = #{id}
@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select id, file_name,
 		upload_name,file_url from docs.resources_attachment where  ${uploadIds}
 	</select>
-	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.ResourcesUpload'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.ResourcesUpload'>
 		insert into docs.resources_attachment(
 		id, file_name, upload_name,file_url)
 		values(#{id},
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{fileUrl}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.scan.doc.entity.ResourcesUpload'>
+	<update id='update' parameterType='cn.harry12800.db.entity.ResourcesUpload'>
 		update docs.resources_attachment set
 		file_name=#{fileName},
 		upload_name=#{uploadName},
@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from resources_attachment 
 		where content like ${content}
 	</select> -->
-	<resultMap type='cn.harry12800.scan.doc.entity.ResourcesUpload' id='Upload'>
+	<resultMap type='cn.harry12800.db.entity.ResourcesUpload' id='Upload'>
 		<result property='id' column='id' />
 		<result property='fileName' column='file_name' />
 		<result property='uploadName' column='upload_name' />

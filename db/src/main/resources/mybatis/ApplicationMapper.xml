@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.scan.doc.mapper.ApplicationMapper">
+<mapper namespace="cn.harry12800.db.mapper.ApplicationMapper">
 	<select id='findById' resultMap='Application' parameterType='java.lang.Long'>
 		select
 		id,app_name,doc_url,home_url,logo_url,app_type,app_state,create_time,update_time,create_user,update_user,host,base_path,port,remark
@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		create_time, update_time, create_user, update_user, host, base_path,
 		port, remark from docs.application
 	</select>
-	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.Application'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Application'>
 		insert into docs.application(
 		id, app_name, doc_url, home_url, logo_url, app_type, app_state,
 		create_time, update_time, create_user, update_user, host, base_path,
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{remark}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.scan.doc.entity.Application'>
+	<update id='update' parameterType='cn.harry12800.db.entity.Application'>
 		update docs.application set
 		id=#{id},
 		app_name=#{appName},
@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{id}
 		</foreach>
 	</delete>
-	<resultMap type='cn.harry12800.scan.doc.entity.Application' id='Application'>
+	<resultMap type='cn.harry12800.db.entity.Application' id='Application'>
 		<result property='id' column='id' />
 		<result property='appName' column='app_name' />
 		<result property='docUrl' column='doc_url' />

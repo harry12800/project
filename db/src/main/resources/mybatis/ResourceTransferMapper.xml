@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.scan.doc.mapper.ResourceTransferMapper">
+<mapper namespace="cn.harry12800.db.mapper.ResourceTransferMapper">
 	<select id='findById' resultMap='ResourceTransfer'
 		parameterType='java.lang.String'>
 		select
@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resource_id, from_user, to_user, create_time, remark from
 		docs.resource_transfer
 	</select>
-	<insert id='save' parameterType='cn.harry12800.scan.doc.entity.ResourceTransfer'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.ResourceTransfer'>
 		insert into docs.resource_transfer(
 		id, resource_id, from_user, to_user, create_time, remark)
 		values(#{id},
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{remark}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.scan.doc.entity.ResourceTransfer'>
+	<update id='update' parameterType='cn.harry12800.db.entity.ResourceTransfer'>
 		update docs.resource_transfer set
 		id=#{id},
 		resource_id=#{resourceId},
@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{id}
 		</foreach>
 	</delete>
-	<resultMap type='cn.harry12800.scan.doc.entity.ResourceTransfer' id='ResourceTransfer'>
+	<resultMap type='cn.harry12800.db.entity.ResourceTransfer' id='ResourceTransfer'>
 		<result property='id' column='id' />
 		<result property='resourceId' column='resource_id' />
 		<result property='fromUser' column='from_user' />

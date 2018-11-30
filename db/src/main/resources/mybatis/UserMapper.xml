@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.scan.mapper.UserMapper">
+<mapper namespace="cn.harry12800.db.mapper.UserMapper">
 	<sql id="Base_Column_List">
 		id,user_id,userName,passward,exp,level
 	</sql>
@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id='findAll' resultMap='User' >
 		select id,parent_id,title,content,create_time,update_time from scan.User
 	</select>
-	<insert id='save' parameterType='cn.harry12800.scan.entity.User'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.User'>
 		insert into scan.user(
 		 id,  parent_id,  title,  content,  create_time,  update_time,   is_folder)
 		values(#{id},
@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{isFolder}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.scan.entity.User'>
+	<update id='update' parameterType='cn.harry12800.db.entity.User'>
 		update scan.User set
 		 id=#{id},
 		 		 parent_id=#{parentId},
@@ -56,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<include refid="Base_Column_List" />
 	from user where id=#{userId}
 	</select>
-	<resultMap type='cn.harry12800.scan.entity.User' id='User'>
+	<resultMap type='cn.harry12800.db.entity.User' id='User'>
 			<result property='id' column='id'/>
 			<result property='userId' column='user_id'/>
 			<result property='userName' column='userName'/>

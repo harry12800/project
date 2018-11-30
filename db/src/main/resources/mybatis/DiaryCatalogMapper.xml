@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.scan.mapper.DiaryCatalogMapper">
+<mapper namespace="cn.harry12800.db.mapper.DiaryCatalogMapper">
 	<select id='findById' resultMap='DiaryCatalog'  parameterType='java.lang.String'>
 		select  id,parent_id,name,sort,create_time,update_time,user_id  from scan.diary_catalog  where id = #{id}
 	</select>
@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id='findAllByUserId' resultMap='DiaryCatalog'  parameterType='java.lang.String' >
 		select id,parent_id,name,create_time,update_time,sort,user_id from scan.diary_catalog where user_id=#{userId} order by sort
 	</select>
-	<insert id='save' parameterType='cn.harry12800.scan.entity.DiaryCatalog'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.DiaryCatalog'>
 		insert into scan.diary_catalog(
 		 id,  parent_id,  name,  create_time,  update_time,   sort,user_id)
 		values(#{id},
@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{userId}
 		)
 	</insert>
-	<update id='update' parameterType='cn.harry12800.scan.entity.DiaryCatalog'>
+	<update id='update' parameterType='cn.harry12800.db.entity.DiaryCatalog'>
 		update scan.diary_catalog set
 		 id=#{id},
 		 		 parent_id=#{parentId},
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id='deleteById' parameterType='java.lang.String'>
 		delete from scan.diary_catalog where  id = #{id}
 	</delete>
-	<resultMap type='cn.harry12800.scan.entity.DiaryCatalog' id='DiaryCatalog'>
+	<resultMap type='cn.harry12800.db.entity.DiaryCatalog' id='DiaryCatalog'>
 			<result property='id' column='id'/>
 			<result property='parentId' column='parent_id'/>
 			<result property='name' column='name'/>

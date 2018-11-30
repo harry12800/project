@@ -21,12 +21,12 @@ import cn.harry12800.api.util.JsonUtil;
 import cn.harry12800.api.util.PropertiesUtil;
 import cn.harry12800.db.entity.FingerChatUser;
 import cn.harry12800.db.mapper.FingerChatUserMapper;
-import cn.harry12800.db.service.UserService;
+import cn.harry12800.db.service.UserInfoService;
 
 @Controller
 public class LoginCallBack {
 	@Autowired
-	UserService userService;
+	UserInfoService userService;
 	@Autowired
 	FingerChatUserMapper userMapper;
 
@@ -59,7 +59,8 @@ public class LoginCallBack {
 				System.err.println(user_id);
 				System.out.println(access_token);
 				System.out.println(expires_in);
-				userService.saveOrUpdate(user_id, access_token, expires_in);
+				String path1 = PropertiesUtil.getValue("app.imsso.url");
+				userService.saveOrUpdate(user_id, access_token, expires_in,path1);
 				req.getSession().setAttribute("userId", user_id);
 				FingerChatUser user = userMapper.findByUserId(user_id);
 				UserCacheUtil.addUser(user);

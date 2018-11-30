@@ -15,7 +15,7 @@ import cn.harry12800.common.module.user.dto.ShowAllUserRequest;
 import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.db.service.ChatService;
-import cn.harry12800.db.service.UserService;
+import cn.harry12800.db.service.UserInfoService;
 
 /**
  * 用户模块
@@ -26,7 +26,7 @@ import cn.harry12800.db.service.UserService;
 public class UserHandlerImpl implements UserHandler {
 
 	@Autowired
-	private UserService userService;
+	private UserInfoService userService;
 	@Autowired
 	private ChatService chatService ;
 

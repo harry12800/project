@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.harry12800.scan.mapper.DiaryMapper">
+<mapper namespace="cn.harry12800.db.mapper.DiaryMapper">
 	<select id='findById' resultMap='Diary'  parameterType='java.lang.String'>
 		select  id,catalog_id,title,content,create_time,update_time,sort,html,cipher,hint from scan.diary  where id = #{id}
 	</select>
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select id,catalog_id,title,content,create_time,update_time,html,sort,cipher,hint from scan.diary,scan.user_diary where scan.diary.id=scan.user_diary.diary_id and scan.user_diary.user_id=#{userId} and (title like CONCAT('%',#{key},'%' ) or content like CONCAT('%',#{key},'%' ) ) order by sort
 	</select>
 	
-	<insert id='save' parameterType='cn.harry12800.scan.entity.Diary'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Diary'>
 		insert into scan.diary(
 		 id,  catalog_id,  title,  content,  create_time,  update_time,   sort,html,cipher)
 		values(#{id},
@@ -47,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into scan.user_diary(  user_id,  diary_id ) values(#{userId}, #{diaryId} )
 	</insert>
 	
-	<update id='update' parameterType='cn.harry12800.scan.entity.Diary'>
+	<update id='update' parameterType='cn.harry12800.db.entity.Diary'>
 		update scan.diary set
 		 id=#{id},
 		 		 catalog_id=#{catalogId},
@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 sort=#{sort}
 		 where id=#{id}
 	</update>
-	<update id='incHint' parameterType='cn.harry12800.scan.entity.Diary'>
+	<update id='incHint' parameterType='cn.harry12800.db.entity.Diary'>
 		update scan.diary set  hint=hint+1  where id=#{id}
 	</update>
 	
@@ -86,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from scan.user_diary where  diary_id = #{id}
 	</delete>
 	
-	<resultMap type='cn.harry12800.scan.entity.Diary' id='Diary'>
+	<resultMap type='cn.harry12800.db.entity.Diary' id='Diary'>
 			<result property='id' column='id'/>
 			<result property='catalogId' column='catalog_id'/>
 			<result property='title' column='title'/>

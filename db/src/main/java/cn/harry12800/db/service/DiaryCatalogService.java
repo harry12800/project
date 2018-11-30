@@ -8,55 +8,67 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 //import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.harry12800.db.entity.DiaryCatalog;
 import cn.harry12800.db.mapper.DiaryCatalogMapper;
+import cn.harry12800.db.mapper.DiaryMapper;
 
 /**
  * Service
+ * 
  * @author 周国柱
  * @version 1.0
  */
 @Component
-//@Transactional(readOnly = true)
-public class DiaryCatalogService {// extends CrudService<DiaryCatalogMapper, DiaryCatalog> {
+// @Transactional(readOnly = true)
+public class DiaryCatalogService {// extends CrudService<DiaryCatalogMapper,
+									// DiaryCatalog> {
 
 	@Autowired
 	DiaryCatalogMapper mapper;
-	
-	 
+	@Autowired
+	DiaryMapper diaryMapper;
+
 	public List<DiaryCatalog> findAll() {
 		return mapper.findAll();
 	}
-	public List<DiaryCatalog> findByIds(Set<?> set){
+
+	public List<DiaryCatalog> findByIds(Set<?> set) {
 		return mapper.findByIds(set);
 	}
-	
-	public int save(DiaryCatalog t){
+
+	public int save(DiaryCatalog t) {
 		return mapper.save(t);
 	}
-	public int update(DiaryCatalog t){
+
+	public int update(DiaryCatalog t) {
 		return mapper.update(t);
 	}
-	 
-	public int deleteByIds(Set<?> set){
+
+	public int deleteByIds(Set<?> set) {
 		return mapper.deleteByIds(set);
 	}
-	public List<DiaryCatalog> findAllByUserId(String userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	public DiaryCatalog findById(String id) {
-		return null;
+		return mapper.findById(id);
 	}
-	public void deleteById(String id) {
-		// TODO Auto-generated method stub
-		
+
+	public int deleteByIds(String ids) {
+		return mapper.deleteByIds("id=" + ids);
 	}
-	public void deleteByIds(String id) {
-		
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public int deleteById(String id) {
+		diaryMapper.deleteUserDiaryByCatalogId(id);
+		diaryMapper.deleteByCatalogId(id);
+		return mapper.deleteById(id);
 	}
-	 
+
+	public List<DiaryCatalog> findAllByUserId(String userId) {
+		return mapper.findAllByUserId(userId);
+	}
+
 }
-	

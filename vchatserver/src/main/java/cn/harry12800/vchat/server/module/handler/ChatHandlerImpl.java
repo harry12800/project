@@ -17,7 +17,7 @@ import cn.harry12800.common.module.chat.dto.PrivateChatRequest;
 import cn.harry12800.common.module.chat.dto.PublicChatRequest;
 import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.service.ChatService;
-import cn.harry12800.db.service.UserService;
+import cn.harry12800.db.service.UserInfoService;
 
 @Component
 public class ChatHandlerImpl implements ChatHandler {
@@ -25,7 +25,7 @@ public class ChatHandlerImpl implements ChatHandler {
 	@Autowired
 	private ChatService chatService;
 	@Autowired
-	private UserService userService;
+	private UserInfoService userService;
 
 	@Override
 	public Result<?> publicChat(long userId, byte[] data) {
