@@ -15,9 +15,9 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
 
-import cn.harry12800.scan.http.MyResponse;
-import cn.harry12800.scan.redis.JedisUtil;
-import cn.harry12800.scan.util.JsonUtil;
+import cn.harry12800.api.doc.http.MyResponse;
+import cn.harry12800.api.redis.JedisUtil;
+import cn.harry12800.api.util.JsonUtil;
 import cn.harry12800.tools.StringUtils;
 import redis.clients.jedis.Jedis;
 

@@ -2,7 +2,7 @@ package cn.harry12800.scan.service;
 
 import org.springframework.stereotype.Service;
 
-import cn.harry12800.scan.util.PropertiesUtil;
+import cn.harry12800.api.util.PropertiesUtil;
 
 @Service
 public class AppService {

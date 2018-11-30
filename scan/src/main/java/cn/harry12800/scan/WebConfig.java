@@ -15,6 +15,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import cn.harry12800.api.MyInterceptor;
+
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {

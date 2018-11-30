@@ -9,7 +9,8 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cn.harry12800.scan.SpringUtil;
+import cn.harry12800.api.SpringUtil;
+import cn.harry12800.api.redis.RedisProperties;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisSentinelPool;

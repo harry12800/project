@@ -7,13 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 
+import cn.harry12800.api.SpringUtil;
+import cn.harry12800.api.doc.cache.MarkDownCacheUtil;
+import cn.harry12800.api.doc.cache.UserCacheUtil;
+import cn.harry12800.api.doc.swagger2markdown.ProjectApiFactory;
 import cn.harry12800.db.entity.Application;
 import cn.harry12800.db.entity.FingerChatUser;
 import cn.harry12800.db.mapper.FingerChatUserMapper;
-import cn.harry12800.scan.SpringUtil;
-import cn.harry12800.scan.doc.cache.MarkDownCacheUtil;
-import cn.harry12800.scan.doc.cache.UserCacheUtil;
-import cn.harry12800.scan.doc.swagger2markdown.ProjectApiFactory;
 
 public class ApplicationReadyEventListenerImpl implements ApplicationListener<ApplicationReadyEvent> {
 

@@ -15,6 +15,9 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
+import cn.harry12800.api.doc.mybatis.DBSourceDefinition;
+import cn.harry12800.api.doc.mybatis.JDBCMasterDBConfig;
+
 //@Configuration
 //@MapperScan("com.hnlens.doc.mapper")
 public class SessionFactoryConfig {

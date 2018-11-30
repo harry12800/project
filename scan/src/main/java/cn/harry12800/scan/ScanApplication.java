@@ -8,7 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import cn.harry12800.scan.listener.ApplicationReadyEventListenerImpl;
+import cn.harry12800.api.listener.ApplicationReadyEventListenerImpl;
 
 @SpringBootApplication
 @EnableTransactionManagement

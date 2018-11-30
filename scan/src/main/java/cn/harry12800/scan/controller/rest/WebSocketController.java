@@ -12,18 +12,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.harry12800.api.doc.http.MyResponse;
+import cn.harry12800.api.doc.http.MyResponse.EResponseCode;
+import cn.harry12800.api.redis.JedisUtil;
 import cn.harry12800.scan.WebSocketServer;
 import cn.harry12800.scan.WebSocketServer.Letter;
-import cn.harry12800.scan.http.MyResponse;
-import cn.harry12800.scan.http.MyResponse.EResponseCode;
-import cn.harry12800.scan.redis.JedisUtil;
 import cn.harry12800.scan.service.AppService;
 import cn.harry12800.scan.service.DiaryCatalogService;
 import cn.harry12800.scan.service.DiaryService;
 import cn.harry12800.tools.StringUtils;
 import redis.clients.jedis.Jedis;
 
-@SuppressWarnings("unused")
 @RestController
 @RequestMapping(value = "/v1/websocket")
 public class WebSocketController {

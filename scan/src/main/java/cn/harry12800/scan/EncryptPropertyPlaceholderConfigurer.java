@@ -3,6 +3,8 @@ package cn.harry12800.scan;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.stereotype.Component;
 
+import cn.harry12800.api.DESUtils;
+
 /** 
  * 继承PropertyPlaceholderConfigurer定义支持密文版属性的属性配置器 
  *  

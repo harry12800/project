@@ -2,6 +2,8 @@ package cn.harry12800.scan.doc.http;
 
 import java.util.Objects;
 
+import cn.harry12800.api.doc.http.EResponseCode;
+
 public class ResponseEntity {
 
 	private int code = 0;

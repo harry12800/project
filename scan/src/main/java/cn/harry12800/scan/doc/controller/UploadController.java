@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import cn.harry12800.api.doc.http.EResponseCode;
+import cn.harry12800.api.doc.http.ResponseEntity;
+import cn.harry12800.api.util.PropertiesUtil;
 import cn.harry12800.db.entity.Application;
 import cn.harry12800.db.entity.Directory;
 import cn.harry12800.db.entity.Resource;
@@ -33,9 +36,6 @@ import cn.harry12800.db.mapper.DirectoryMapper;
 import cn.harry12800.db.mapper.Int64SequenceEntityMapper;
 import cn.harry12800.db.mapper.ResourceMapper;
 import cn.harry12800.db.mapper.ResourceUploadMapper;
-import cn.harry12800.scan.doc.http.EResponseCode;
-import cn.harry12800.scan.doc.http.ResponseEntity;
-import cn.harry12800.scan.util.PropertiesUtil;
 import cn.harry12800.tools.OSUtil;
 import io.swagger.annotations.ApiParam;
 
