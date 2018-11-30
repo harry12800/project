@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.RemindMapper">
+	<sql id="Base_Column_List">
+		 
+			id,title,detail,type,create_time,update_time,lunar,time 
+	</sql>
+	
+	
+	<select id='findAll' resultMap='Remind' >
+		select
+			<include refid="Base_Column_List" />
+			 from scan.remind
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from scan.remind where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Remind'>
+		insert into scan.remind(
+		 id,  title,  detail,  type,  create_time,  update_time,  lunar,   time)
+		values(#{id},
+		#{title},
+		#{detail},
+		#{type},
+		#{createTime},
+		#{updateTime},
+		#{lunar},
+		#{time}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.Remind'>
+		update scan.remind set
+		 id=#{id},
+		 		 title=#{title},
+		 		 detail=#{detail},
+		 		 type=#{type},
+		 		 create_time=#{createTime},
+		 		 update_time=#{updateTime},
+		 		 lunar=#{lunar},
+		 		 
+		 time=#{time}
+		 where id=#{id}
+	</update>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from scan.remind where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.Remind' id='Remind'>
+			<result property='id' column='id'/>
+			<result property='title' column='title'/>
+			<result property='detail' column='detail'/>
+			<result property='type' column='type'/>
+			<result property='createTime' column='create_time'/>
+			<result property='updateTime' column='update_time'/>
+			<result property='lunar' column='lunar'/>
+			<result property='time' column='time'/>
+	</resultMap>
+</mapper>
+	

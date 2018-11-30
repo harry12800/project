@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.RoomMapper">
+	<sql id="Base_Column_List">
+		 roomId, 
+			type,name,topic,muted,member,sysMes,msgSum,lastChatAt,creatorName,creatorId,jitsiTimeout,readOnly,archived,defaultRoom,createdAt,updatedAt,unreadCount,totalReadCount,lastMessage 
+	</sql>
+	<select id='findById' resultMap='Room'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.room 
+			 where roomId = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='Room' >
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.room 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='Room' >
+		select
+			<include refid="Base_Column_List" />
+			 from scan.room
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from scan.room where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 roomId  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Room'>
+		insert into scan.room(
+		 type,  name,  topic,  muted,  member,  sysMes,  msgSum,  lastChatAt,  creatorName,  creatorId,  jitsiTimeout,  readOnly,  archived,  defaultRoom,  createdAt,  updatedAt,  unreadCount,  totalReadCount,   lastMessage)
+		values(#{type},
+		#{name},
+		#{topic},
+		#{muted},
+		#{member},
+		#{sysmes},
+		#{msgsum},
+		#{lastchatat},
+		#{creatorname},
+		#{creatorid},
+		#{jitsitimeout},
+		#{readonly},
+		#{archived},
+		#{defaultroom},
+		#{createdat},
+		#{updatedat},
+		#{unreadcount},
+		#{totalreadcount},
+		#{lastmessage}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.Room'>
+		update scan.room set
+		 type=#{type},
+		 		 name=#{name},
+		 		 topic=#{topic},
+		 		 muted=#{muted},
+		 		 member=#{member},
+		 		 sysMes=#{sysmes},
+		 		 msgSum=#{msgsum},
+		 		 lastChatAt=#{lastchatat},
+		 		 creatorName=#{creatorname},
+		 		 creatorId=#{creatorid},
+		 		 jitsiTimeout=#{jitsitimeout},
+		 		 readOnly=#{readonly},
+		 		 archived=#{archived},
+		 		 defaultRoom=#{defaultroom},
+		 		 createdAt=#{createdat},
+		 		 updatedAt=#{updatedat},
+		 		 unreadCount=#{unreadcount},
+		 		 totalReadCount=#{totalreadcount},
+		 		 
+		 lastMessage=#{lastmessage}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from scan.room where  roomId = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from scan.room where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 roomId  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.Room' id='Room'>
+			<result property='roomid' column='roomId'/>
+			<result property='type' column='type'/>
+			<result property='name' column='name'/>
+			<result property='topic' column='topic'/>
+			<result property='muted' column='muted'/>
+			<result property='member' column='member'/>
+			<result property='sysmes' column='sysMes'/>
+			<result property='msgsum' column='msgSum'/>
+			<result property='lastchatat' column='lastChatAt'/>
+			<result property='creatorname' column='creatorName'/>
+			<result property='creatorid' column='creatorId'/>
+			<result property='jitsitimeout' column='jitsiTimeout'/>
+			<result property='readonly' column='readOnly'/>
+			<result property='archived' column='archived'/>
+			<result property='defaultroom' column='defaultRoom'/>
+			<result property='createdat' column='createdAt'/>
+			<result property='updatedat' column='updatedAt'/>
+			<result property='unreadcount' column='unreadCount'/>
+			<result property='totalreadcount' column='totalReadCount'/>
+			<result property='lastmessage' column='lastMessage'/>
+	</resultMap>
+</mapper>
+	

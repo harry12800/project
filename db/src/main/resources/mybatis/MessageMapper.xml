@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.MessageMapper">
+	<sql id="Base_Column_List">
+		 id, 
+			roomId,messageContent,groupable,timestamp,senderUsername,senderId,updatedAt,needToResend,progress,deleted,systemMessage,fileAttachmentId,imageAttachmentId 
+	</sql>
+	<select id='findById' resultMap='Message'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.message 
+			 where id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='Message' >
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.message 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='Message' >
+		select
+			<include refid="Base_Column_List" />
+			 from scan.message
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from scan.message where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Message'>
+		insert into scan.message(
+		 roomId,  messageContent,  groupable,  timestamp,  senderUsername,  senderId,  updatedAt,  needToResend,  progress,  deleted,  systemMessage,  fileAttachmentId,   imageAttachmentId)
+		values(#{roomid},
+		#{messagecontent},
+		#{groupable},
+		#{timestamp},
+		#{senderusername},
+		#{senderid},
+		#{updatedat},
+		#{needtoresend},
+		#{progress},
+		#{deleted},
+		#{systemmessage},
+		#{fileattachmentid},
+		#{imageattachmentid}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.Message'>
+		update scan.message set
+		 roomId=#{roomid},
+		 		 messageContent=#{messagecontent},
+		 		 groupable=#{groupable},
+		 		 timestamp=#{timestamp},
+		 		 senderUsername=#{senderusername},
+		 		 senderId=#{senderid},
+		 		 updatedAt=#{updatedat},
+		 		 needToResend=#{needtoresend},
+		 		 progress=#{progress},
+		 		 deleted=#{deleted},
+		 		 systemMessage=#{systemmessage},
+		 		 fileAttachmentId=#{fileattachmentid},
+		 		 
+		 imageAttachmentId=#{imageattachmentid}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from scan.message where  id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from scan.message where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.Message' id='Message'>
+			<result property='id' column='id'/>
+			<result property='roomid' column='roomId'/>
+			<result property='messagecontent' column='messageContent'/>
+			<result property='groupable' column='groupable'/>
+			<result property='timestamp' column='timestamp'/>
+			<result property='senderusername' column='senderUsername'/>
+			<result property='senderid' column='senderId'/>
+			<result property='updatedat' column='updatedAt'/>
+			<result property='needtoresend' column='needToResend'/>
+			<result property='progress' column='progress'/>
+			<result property='deleted' column='deleted'/>
+			<result property='systemmessage' column='systemMessage'/>
+			<result property='fileattachmentid' column='fileAttachmentId'/>
+			<result property='imageattachmentid' column='imageAttachmentId'/>
+	</resultMap>
+</mapper>
+	

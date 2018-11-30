@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.Int64SequenceMapper">
+	<sql id="Base_Column_List">
+		 sequence_name, 
+			sequence_value 
+	</sql>
+	<select id='findById' resultMap='Int64Sequence'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.int64_sequence 
+			 where sequence_name = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='Int64Sequence' >
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.int64_sequence 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='Int64Sequence' >
+		select
+			<include refid="Base_Column_List" />
+			 from scan.int64_sequence
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from scan.int64_sequence where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 sequence_name  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Int64Sequence'>
+		insert into scan.int64_sequence(
+		  sequence_value)
+		values(#{sequenceValue}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.Int64Sequence'>
+		update scan.int64_sequence set
+		 
+		 sequence_value=#{sequenceValue}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from scan.int64_sequence where  sequence_name = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from scan.int64_sequence where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 sequence_name  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.Int64Sequence' id='Int64Sequence'>
+			<result property='sequenceName' column='sequence_name'/>
+			<result property='sequenceValue' column='sequence_value'/>
+	</resultMap>
+</mapper>
+	

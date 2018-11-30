@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.DiaryCatalogMapper">
+	<sql id="Base_Column_List">
+		 id, 
+			parent_id,name,create_time,update_time,sort,user_id 
+	</sql>
+	<select id='findById' resultMap='DiaryCatalog'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.diary_catalog 
+			 where id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='DiaryCatalog' >
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.diary_catalog 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='DiaryCatalog' >
+		select
+			<include refid="Base_Column_List" />
+			 from scan.diary_catalog
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from scan.diary_catalog where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.DiaryCatalog'>
+		insert into scan.diary_catalog(
+		 parent_id,  name,  create_time,  update_time,  sort,   user_id)
+		values(#{parentId},
+		#{name},
+		#{createTime},
+		#{updateTime},
+		#{sort},
+		#{userId}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.DiaryCatalog'>
+		update scan.diary_catalog set
+		 parent_id=#{parentId},
+		 		 name=#{name},
+		 		 create_time=#{createTime},
+		 		 update_time=#{updateTime},
+		 		 sort=#{sort},
+		 		 
+		 user_id=#{userId}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from scan.diary_catalog where  id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from scan.diary_catalog where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.DiaryCatalog' id='DiaryCatalog'>
+			<result property='id' column='id'/>
+			<result property='parentId' column='parent_id'/>
+			<result property='name' column='name'/>
+			<result property='createTime' column='create_time'/>
+			<result property='updateTime' column='update_time'/>
+			<result property='sort' column='sort'/>
+			<result property='userId' column='user_id'/>
+	</resultMap>
+</mapper>
+	

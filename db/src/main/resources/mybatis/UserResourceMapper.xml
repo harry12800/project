@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.UserResourceMapper">
+	<sql id="Base_Column_List">
+		 user_id, resource_id, 
+			 
+	</sql>
+	<select id='findById' resultMap='UserResource'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.user_resource 
+			 where user_id = #{value}
+	</select>
+	<select id='findById' resultMap='UserResource'  parameterType='java.lang.Long'>
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.user_resource 
+			 where resource_id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='UserResource' >
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.user_resource 
+			 where ${propName} = #{value}
+	</select>
+	<select id='findByParam' resultMap='UserResource' >
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.user_resource 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='UserResource' >
+		select
+			<include refid="Base_Column_List" />
+			 from docs.user_resource
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from docs.user_resource where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 user_id  resource_id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.UserResource'>
+		insert into docs.user_resource(
+		)
+		values()
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.UserResource'>
+		update docs.user_resource set
+
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from docs.user_resource where  user_id = #{value}
+	</delete>
+	<delete id='deleteById' parameterType='java.lang.Long'>
+		delete from docs.user_resource where  resource_id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from docs.user_resource where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 user_id  resource_id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.UserResource' id='UserResource'>
+			<result property='userId' column='user_id'/>
+			<result property='resourceId' column='resource_id'/>
+	</resultMap>
+</mapper>
+	

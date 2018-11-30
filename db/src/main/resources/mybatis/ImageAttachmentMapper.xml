@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.ImageAttachmentMapper">
+	<sql id="Base_Column_List">
+		 id, 
+			title,imageUrl,description,width,height,imagesize 
+	</sql>
+	<select id='findById' resultMap='ImageAttachment'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.image_attachment 
+			 where id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='ImageAttachment' >
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.image_attachment 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='ImageAttachment' >
+		select
+			<include refid="Base_Column_List" />
+			 from scan.image_attachment
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from scan.image_attachment where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.ImageAttachment'>
+		insert into scan.image_attachment(
+		 title,  imageUrl,  description,  width,  height,   imagesize)
+		values(#{title},
+		#{imageurl},
+		#{description},
+		#{width},
+		#{height},
+		#{imagesize}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.ImageAttachment'>
+		update scan.image_attachment set
+		 title=#{title},
+		 		 imageUrl=#{imageurl},
+		 		 description=#{description},
+		 		 width=#{width},
+		 		 height=#{height},
+		 		 
+		 imagesize=#{imagesize}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from scan.image_attachment where  id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from scan.image_attachment where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.ImageAttachment' id='ImageAttachment'>
+			<result property='id' column='id'/>
+			<result property='title' column='title'/>
+			<result property='imageurl' column='imageUrl'/>
+			<result property='description' column='description'/>
+			<result property='width' column='width'/>
+			<result property='height' column='height'/>
+			<result property='imagesize' column='imagesize'/>
+	</resultMap>
+</mapper>
+	

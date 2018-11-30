@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.UserDiaryMapper">
+	<sql id="Base_Column_List">
+		 diary_id, user_id, 
+			 
+	</sql>
+	<select id='findById' resultMap='UserDiary'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.user_diary 
+			 where diary_id = #{value}
+	</select>
+	<select id='findById' resultMap='UserDiary'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.user_diary 
+			 where user_id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='UserDiary' >
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.user_diary 
+			 where ${propName} = #{value}
+	</select>
+	<select id='findByParam' resultMap='UserDiary' >
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.user_diary 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='UserDiary' >
+		select
+			<include refid="Base_Column_List" />
+			 from scan.user_diary
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from scan.user_diary where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 diary_id  user_id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.UserDiary'>
+		insert into scan.user_diary(
+		)
+		values()
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.UserDiary'>
+		update scan.user_diary set
+
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from scan.user_diary where  diary_id = #{value}
+	</delete>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from scan.user_diary where  user_id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from scan.user_diary where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 diary_id  user_id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.UserDiary' id='UserDiary'>
+			<result property='diaryId' column='diary_id'/>
+			<result property='userId' column='user_id'/>
+	</resultMap>
+</mapper>
+	

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.FingerchatUserMapper">
+	<sql id="Base_Column_List">
+		 id, 
+			user_id,nick_name,real_name,employee_no,avatar_url,finger_token,create_time 
+	</sql>
+	<select id='findById' resultMap='FingerchatUser'  parameterType='java.lang.Long'>
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.fingerchat_user 
+			 where id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='FingerchatUser' >
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.fingerchat_user 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='FingerchatUser' >
+		select
+			<include refid="Base_Column_List" />
+			 from docs.fingerchat_user
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from docs.fingerchat_user where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.FingerchatUser'>
+		insert into docs.fingerchat_user(
+		 user_id,  nick_name,  real_name,  employee_no,  avatar_url,  finger_token,   create_time)
+		values(#{userId},
+		#{nickName},
+		#{realName},
+		#{employeeNo},
+		#{avatarUrl},
+		#{fingerToken},
+		#{createTime}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.FingerchatUser'>
+		update docs.fingerchat_user set
+		 user_id=#{userId},
+		 		 nick_name=#{nickName},
+		 		 real_name=#{realName},
+		 		 employee_no=#{employeeNo},
+		 		 avatar_url=#{avatarUrl},
+		 		 finger_token=#{fingerToken},
+		 		 
+		 create_time=#{createTime}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.Long'>
+		delete from docs.fingerchat_user where  id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from docs.fingerchat_user where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.FingerchatUser' id='FingerchatUser'>
+			<result property='id' column='id'/>
+			<result property='userId' column='user_id'/>
+			<result property='nickName' column='nick_name'/>
+			<result property='realName' column='real_name'/>
+			<result property='employeeNo' column='employee_no'/>
+			<result property='avatarUrl' column='avatar_url'/>
+			<result property='fingerToken' column='finger_token'/>
+			<result property='createTime' column='create_time'/>
+	</resultMap>
+</mapper>
+	

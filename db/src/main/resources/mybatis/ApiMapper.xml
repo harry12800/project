@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.ApiMapper">
+	<sql id="Base_Column_List">
+		 id, 
+			app_id,auto_api_markdown_id,path,type,host,base_path 
+	</sql>
+	<select id='findById' resultMap='Api'  parameterType='java.lang.Long'>
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.api 
+			 where id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='Api' >
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.api 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='Api' >
+		select
+			<include refid="Base_Column_List" />
+			 from docs.api
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from docs.api where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Api'>
+		insert into docs.api(
+		 app_id,  auto_api_markdown_id,  path,  type,  host,   base_path)
+		values(#{appId},
+		#{autoApiMarkdownId},
+		#{path},
+		#{type},
+		#{host},
+		#{basePath}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.Api'>
+		update docs.api set
+		 app_id=#{appId},
+		 		 auto_api_markdown_id=#{autoApiMarkdownId},
+		 		 path=#{path},
+		 		 type=#{type},
+		 		 host=#{host},
+		 		 
+		 base_path=#{basePath}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.Long'>
+		delete from docs.api where  id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from docs.api where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.Api' id='Api'>
+			<result property='id' column='id'/>
+			<result property='appId' column='app_id'/>
+			<result property='autoApiMarkdownId' column='auto_api_markdown_id'/>
+			<result property='path' column='path'/>
+			<result property='type' column='type'/>
+			<result property='host' column='host'/>
+			<result property='basePath' column='base_path'/>
+	</resultMap>
+</mapper>
+	

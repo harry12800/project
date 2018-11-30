@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.ApplicationMapper">
+	<sql id="Base_Column_List">
+		 id, 
+			app_name,doc_url,home_url,logo_url,app_type,app_state,create_time,update_time,create_user,update_user,host,base_path,port,remark 
+	</sql>
+	<select id='findById' resultMap='Application'  parameterType='java.lang.Long'>
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.application 
+			 where id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='Application' >
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.application 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='Application' >
+		select
+			<include refid="Base_Column_List" />
+			 from docs.application
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from docs.application where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Application'>
+		insert into docs.application(
+		 app_name,  doc_url,  home_url,  logo_url,  app_type,  app_state,  create_time,  update_time,  create_user,  update_user,  host,  base_path,  port,   remark)
+		values(#{appName},
+		#{docUrl},
+		#{homeUrl},
+		#{logoUrl},
+		#{appType},
+		#{appState},
+		#{createTime},
+		#{updateTime},
+		#{createUser},
+		#{updateUser},
+		#{host},
+		#{basePath},
+		#{port},
+		#{remark}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.Application'>
+		update docs.application set
+		 app_name=#{appName},
+		 		 doc_url=#{docUrl},
+		 		 home_url=#{homeUrl},
+		 		 logo_url=#{logoUrl},
+		 		 app_type=#{appType},
+		 		 app_state=#{appState},
+		 		 create_time=#{createTime},
+		 		 update_time=#{updateTime},
+		 		 create_user=#{createUser},
+		 		 update_user=#{updateUser},
+		 		 host=#{host},
+		 		 base_path=#{basePath},
+		 		 port=#{port},
+		 		 
+		 remark=#{remark}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.Long'>
+		delete from docs.application where  id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from docs.application where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.Application' id='Application'>
+			<result property='id' column='id'/>
+			<result property='appName' column='app_name'/>
+			<result property='docUrl' column='doc_url'/>
+			<result property='homeUrl' column='home_url'/>
+			<result property='logoUrl' column='logo_url'/>
+			<result property='appType' column='app_type'/>
+			<result property='appState' column='app_state'/>
+			<result property='createTime' column='create_time'/>
+			<result property='updateTime' column='update_time'/>
+			<result property='createUser' column='create_user'/>
+			<result property='updateUser' column='update_user'/>
+			<result property='host' column='host'/>
+			<result property='basePath' column='base_path'/>
+			<result property='port' column='port'/>
+			<result property='remark' column='remark'/>
+	</resultMap>
+</mapper>
+	

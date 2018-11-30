@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.ResourcesAttachmentMapper">
+	<sql id="Base_Column_List">
+		 id, 
+			file_name,upload_name,file_url 
+	</sql>
+	<select id='findById' resultMap='ResourcesAttachment'  parameterType='java.lang.Long'>
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.resources_attachment 
+			 where id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='ResourcesAttachment' >
+		select 
+			<include refid="Base_Column_List" />
+			 from docs.resources_attachment 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='ResourcesAttachment' >
+		select
+			<include refid="Base_Column_List" />
+			 from docs.resources_attachment
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from docs.resources_attachment where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.ResourcesAttachment'>
+		insert into docs.resources_attachment(
+		 file_name,  upload_name,   file_url)
+		values(#{fileName},
+		#{uploadName},
+		#{fileUrl}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.ResourcesAttachment'>
+		update docs.resources_attachment set
+		 file_name=#{fileName},
+		 		 upload_name=#{uploadName},
+		 		 
+		 file_url=#{fileUrl}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.Long'>
+		delete from docs.resources_attachment where  id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from docs.resources_attachment where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.ResourcesAttachment' id='ResourcesAttachment'>
+			<result property='id' column='id'/>
+			<result property='fileName' column='file_name'/>
+			<result property='uploadName' column='upload_name'/>
+			<result property='fileUrl' column='file_url'/>
+	</resultMap>
+</mapper>
+	

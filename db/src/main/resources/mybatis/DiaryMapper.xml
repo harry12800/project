@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.db.mapper.DiaryMapper">
+	<sql id="Base_Column_List">
+		 id, 
+			catalog_id,title,content,create_time,update_time,sort,html,cipher,hint 
+	</sql>
+	<select id='findById' resultMap='Diary'  parameterType='java.lang.String'>
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.diary 
+			 where id = #{value}
+	</select>
+	
+	<select id='findByParam' resultMap='Diary' >
+		select 
+			<include refid="Base_Column_List" />
+			 from scan.diary 
+			 where ${propName} = #{value}
+	</select>
+	
+	<select id='findAll' resultMap='Diary' >
+		select
+			<include refid="Base_Column_List" />
+			 from scan.diary
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		select
+			<include refid="Base_Column_List" />
+			 from scan.diary where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.db.entity.Diary'>
+		insert into scan.diary(
+		 catalog_id,  title,  content,  create_time,  update_time,  sort,  html,  cipher,   hint)
+		values(#{catalogId},
+		#{title},
+		#{content},
+		#{createTime},
+		#{updateTime},
+		#{sort},
+		#{html},
+		#{cipher},
+		#{hint}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.db.entity.Diary'>
+		update scan.diary set
+		 catalog_id=#{catalogId},
+		 		 title=#{title},
+		 		 content=#{content},
+		 		 create_time=#{createTime},
+		 		 update_time=#{updateTime},
+		 		 sort=#{sort},
+		 		 html=#{html},
+		 		 cipher=#{cipher},
+		 		 
+		 hint=#{hint}
+		 where id=#{id}
+	</update>
+	<delete id='deleteById' parameterType='java.lang.String'>
+		delete from scan.diary where  id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		delete from scan.diary where  
+		<choose>
+			<when test='set !=null and set.size()>0'>
+				 id  in 
+				<foreach item = 'id' index='index' collection='set' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.db.entity.Diary' id='Diary'>
+			<result property='id' column='id'/>
+			<result property='catalogId' column='catalog_id'/>
+			<result property='title' column='title'/>
+			<result property='content' column='content'/>
+			<result property='createTime' column='create_time'/>
+			<result property='updateTime' column='update_time'/>
+			<result property='sort' column='sort'/>
+			<result property='html' column='html'/>
+			<result property='cipher' column='cipher'/>
+			<result property='hint' column='hint'/>
+	</resultMap>
+</mapper>
+	
