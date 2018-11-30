@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import cn.harry12800.db.entity.UserInfo;
 
@@ -20,7 +21,7 @@ import cn.harry12800.db.entity.UserInfo;
  * <dt>Lenovo,,123
  * <dt>代码自动生成!数据库的资源文件.
  */
-@Mapper
+@Component
 public interface UserInfoMapper { //extends CrudDao<User> {
 	static final long serialVersionUID = 1L;
 

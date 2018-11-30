@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 import cn.harry12800.db.entity.Application;
 /**
  * 开发组开发的应用Mapper
@@ -17,7 +19,7 @@ import cn.harry12800.db.entity.Application;
  * <dt>Zhouguozhu@123
  * <dt>代码自动生成!数据库的资源文件.
  */
-
+@Component
 public interface ApplicationMapper { //extends CrudDao<Application> {
 	static final long serialVersionUID = 1L;
 	
