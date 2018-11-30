@@ -12,7 +12,7 @@ import cn.harry12800.common.module.chat.dto.SourceShareRequest;
 import cn.harry12800.common.module.user.dto.DownLoadResourceRequest;
 import cn.harry12800.common.module.user.dto.PullResouceResponse;
 import cn.harry12800.common.module.user.dto.PullResourceRequest;
-import cn.harry12800.vchat.server.module.service.FileResourceService;
+import cn.harry12800.db.service.FileResourceService;
 
 @Component
 public class ResouceShareHandlerImpl implements ResouceShareHandler {

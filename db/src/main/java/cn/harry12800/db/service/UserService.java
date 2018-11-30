@@ -1,48 +1,31 @@
-/**
- * Copyright &copy; 2015-2020 <a href="http://www.harry12800.xyz/">harry12800</a> All rights reserved.
- */
 package cn.harry12800.db.service;
 
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-//import org.springframework.transaction.annotation.Transactional;
- 
-import cn.harry12800.db.entity.User;
-import cn.harry12800.db.mapper.UserMapper;
+import cn.harry12800.common.core.session.Session;
+import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
+import cn.harry12800.common.module.user.dto.UserResponse;
+import cn.harry12800.db.entity.UserInfo;
 
 /**
- * Service
- * @author 周国柱
- * @version 1.0
+ * 用户基本接口
+ * @author harry12800
+ *
  */
-@Component
-//@Transactional(readOnly = true)
-public class UserService {// extends CrudService<UserMapper, User> {
+public interface UserService {
 
-	@Autowired
-	UserMapper mapper;
+	/**
+	 * 登录
+	 * @param userName
+	 * @param passward
+	 * @return
+	 */
+	public UserResponse login(Session session, String userName, String passward);
 	
-	 
-	public List<User> findAll() {
-		return mapper.findAll();
-	}
-	public List<User> findByIds(Set<?> set){
-		return mapper.findByIds(set);
-	}
-	
-	public int save(User t){
-		return mapper.save(t);
-	}
-	public int update(User t){
-		return mapper.update(t);
-	}
-	 
-	public int deleteByIds(Set<?> set){
-		return mapper.deleteByIds(set);
-	}
-	 
+	/**
+	 * 所有用户
+	 * @return
+	 */
+	public ShowAllUserResponse showAllUser(Session session);
+
+	public UserInfo findByUserId(String userId);
+
 }
-	

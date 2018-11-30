@@ -7,12 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 user_id, resource_id, 
 			 
 	</sql>
-	<select id='findById' resultMap='UserResource'  parameterType='java.lang.String'>
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.user_resource 
-			 where user_id = #{value}
-	</select>
+ 
 	<select id='findById' resultMap='UserResource'  parameterType='java.lang.Long'>
 		select 
 			<include refid="Base_Column_List" />
@@ -26,12 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 from docs.user_resource 
 			 where ${propName} = #{value}
 	</select>
-	<select id='findByParam' resultMap='UserResource' >
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.user_resource 
-			 where ${propName} = #{value}
-	</select>
+	 
 	
 	<select id='findAll' resultMap='UserResource' >
 		select
@@ -64,9 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		 where id=#{id}
 	</update>
-	<delete id='deleteById' parameterType='java.lang.String'>
-		delete from docs.user_resource where  user_id = #{value}
-	</delete>
+	 
 	<delete id='deleteById' parameterType='java.lang.Long'>
 		delete from docs.user_resource where  resource_id = #{value}
 	</delete>

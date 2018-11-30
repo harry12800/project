@@ -1,4 +1,4 @@
-package cn.harry12800.vchat.server.module.service;
+package cn.harry12800.db.service;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import cn.harry12800.common.core.session.Session;
 import cn.harry12800.common.core.session.SessionManager;
 import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
 import cn.harry12800.common.module.user.dto.UserResponse;
-import cn.harry12800.vchat.server.module.entity.UserInfo;
-import cn.harry12800.vchat.server.module.mapper.UserInfoMapper;
+import cn.harry12800.db.entity.UserInfo;
+import cn.harry12800.db.mapper.UserInfoMapper;
 
 /**
  * 用户服务

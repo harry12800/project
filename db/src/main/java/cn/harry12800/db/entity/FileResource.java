@@ -1,4 +1,4 @@
-package cn.harry12800.vchat.server.module.entity;
+package cn.harry12800.db.entity;
 
 import java.util.Arrays;
 import java.util.Date;

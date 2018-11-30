@@ -15,9 +15,9 @@ import cn.harry12800.common.module.chat.dto.FileChatResponse;
 import cn.harry12800.common.module.chat.dto.MsgResponse;
 import cn.harry12800.common.module.chat.dto.PrivateChatRequest;
 import cn.harry12800.common.module.chat.dto.PublicChatRequest;
-import cn.harry12800.vchat.server.module.entity.UserInfo;
-import cn.harry12800.vchat.server.module.service.ChatService;
-import cn.harry12800.vchat.server.module.service.UserService;
+import cn.harry12800.db.entity.UserInfo;
+import cn.harry12800.db.service.ChatService;
+import cn.harry12800.db.service.UserService;
 
 @Component
 public class ChatHandlerImpl implements ChatHandler {

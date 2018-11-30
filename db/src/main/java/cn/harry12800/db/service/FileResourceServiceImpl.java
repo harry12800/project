@@ -1,4 +1,4 @@
-package cn.harry12800.vchat.server.module.service;
+package cn.harry12800.db.service;
 
 import java.util.Date;
 import java.util.List;
@@ -12,8 +12,8 @@ import cn.harry12800.common.module.ResourceShareCmd;
 import cn.harry12800.common.module.chat.dto.ResourceDto;
 import cn.harry12800.common.module.chat.dto.SourceShareRequest;
 import cn.harry12800.common.module.user.dto.PullResouceResponse;
-import cn.harry12800.vchat.server.module.entity.FileResource;
-import cn.harry12800.vchat.server.module.mapper.FileResourceMapper;
+import cn.harry12800.db.entity.FileResource;
+import cn.harry12800.db.mapper.FileResourceMapper;
 
 /**
  * 文件接口

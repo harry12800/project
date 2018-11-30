@@ -1,10 +1,10 @@
-package cn.harry12800.vchat.server.module.mapper;
+package cn.harry12800.db.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import cn.harry12800.vchat.server.module.entity.FileResource;
+import cn.harry12800.db.entity.FileResource;
 
 /**
  * @author  harry12800

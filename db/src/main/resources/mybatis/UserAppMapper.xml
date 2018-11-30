@@ -13,19 +13,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 from docs.user_app 
 			 where app_id = #{value}
 	</select>
-	<select id='findById' resultMap='UserApp'  parameterType='java.lang.String'>
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.user_app 
-			 where user_id = #{value}
-	</select>
+ 
 	
-	<select id='findByParam' resultMap='UserApp' >
-		select 
-			<include refid="Base_Column_List" />
-			 from docs.user_app 
-			 where ${propName} = #{value}
-	</select>
 	<select id='findByParam' resultMap='UserApp' >
 		select 
 			<include refid="Base_Column_List" />
@@ -66,9 +55,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	<delete id='deleteById' parameterType='java.lang.Long'>
 		delete from docs.user_app where  app_id = #{value}
-	</delete>
-	<delete id='deleteById' parameterType='java.lang.String'>
-		delete from docs.user_app where  user_id = #{value}
 	</delete>
 	<!-- #{value} -->
 	<delete id='deleteByIds' parameterType='java.util.Set'>

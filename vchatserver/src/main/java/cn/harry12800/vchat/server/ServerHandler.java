@@ -15,7 +15,7 @@ import cn.harry12800.common.core.session.SessionManager;
 import cn.harry12800.common.module.ChatCmd;
 import cn.harry12800.common.module.ModuleId;
 import cn.harry12800.common.module.chat.dto.OfflineResponse;
-import cn.harry12800.vchat.server.module.entity.UserInfo;
+import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.vchat.server.scanner.Invoker;
 import cn.harry12800.vchat.server.scanner.InvokerHoler;
 import io.netty.channel.ChannelHandlerContext;

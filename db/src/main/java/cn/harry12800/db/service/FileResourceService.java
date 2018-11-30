@@ -1,4 +1,4 @@
-package cn.harry12800.vchat.server.module.service;
+package cn.harry12800.db.service;
 
 import cn.harry12800.common.module.chat.dto.ResourceDto;
 import cn.harry12800.common.module.chat.dto.SourceShareRequest;

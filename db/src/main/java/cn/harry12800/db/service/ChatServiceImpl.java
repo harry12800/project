@@ -1,4 +1,4 @@
-package cn.harry12800.vchat.server.module.service;
+package cn.harry12800.db.service;
 
 import java.util.Date;
 import java.util.List;
@@ -13,10 +13,10 @@ import cn.harry12800.common.module.ChatCmd;
 import cn.harry12800.common.module.ModuleId;
 import cn.harry12800.common.module.chat.dto.MsgResponse;
 import cn.harry12800.common.module.user.dto.PullMsgResponse;
-import cn.harry12800.vchat.server.module.entity.ChatMsg;
-import cn.harry12800.vchat.server.module.entity.UserInfo;
-import cn.harry12800.vchat.server.module.mapper.ChatMsgMapper;
-import cn.harry12800.vchat.server.module.mapper.UserInfoMapper;
+import cn.harry12800.db.entity.ChatMsg;
+import cn.harry12800.db.entity.UserInfo;
+import cn.harry12800.db.mapper.ChatMsgMapper;
+import cn.harry12800.db.mapper.UserInfoMapper;
 
 /**
  * 聊天服务
