@@ -35,7 +35,7 @@ public class Swagger2 {
 				.apiInfo(apiInfo())
 				//				.groupName("business-api")
 				.select()// 选择那些路径和api会生成document
-				.apis(RequestHandlerSelectors.basePackage("cn.harry12800.scan"))
+				.apis(RequestHandlerSelectors.basePackage("cn.harry12800"))
 				//				.apis(RequestHandlerSelectors.any()) // 对所有api进行监控
 				//				.paths(PathSelectors.any()) // 对所有路径进行监控
 				.build()

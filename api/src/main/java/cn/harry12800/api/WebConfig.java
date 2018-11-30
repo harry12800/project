@@ -74,26 +74,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		//拦截规则：除了login，其他都拦截判断
-		registry.addInterceptor(new MyInterceptor())
-		.addPathPatterns("/**")
-		.excludePathPatterns(
-				"/",
-				"/md5",
-				"/upload",
-				"/dirmd5",
-				"/v1/websocket/**",
-				"/remote.html",
-				"/doc/**",
-				"/images/**",
-				"/fonts/**",
-				"/js/**",
-				"/css/**",
-				"/download",
-				"/index.html",
-				"/405.html", "/v1/doc/viewById/*",
-				"/v1/doc/user/login","/v1/doc/user/reg", "/login-callback",
-				"/login.html", "/markdown.html", "/v1/doc/app/*");
+		 
 	}
 
 }

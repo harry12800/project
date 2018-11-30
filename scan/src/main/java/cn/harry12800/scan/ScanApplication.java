@@ -6,13 +6,15 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import cn.harry12800.api.listener.ApplicationReadyEventListenerImpl;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan({"cn.harry12800.scan.mapper","cn.harry12800.scan.doc.mapper"})
+@ComponentScan({"cn.harry12800"})
+@MapperScan("cn.harry12800.db.mapper")
 @EnableAutoConfiguration
 public class ScanApplication extends SpringBootServletInitializer {
 	@Override

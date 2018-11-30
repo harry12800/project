@@ -66,4 +66,6 @@ public interface UserInfoMapper { //extends CrudDao<User> {
 	List<UserInfo> findByIds(Set<?> set);
 
 	List<UserInfo> getAllUserExcept(Long id);
+
+	UserInfo findUserByDiaryId(String id);
 }

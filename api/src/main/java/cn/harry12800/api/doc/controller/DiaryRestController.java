@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.harry12800.api.doc.http.MyResponse;
 import cn.harry12800.api.doc.http.MyResponse.EResponseCode;
 import cn.harry12800.db.entity.Diary;
-import cn.harry12800.db.entity.User;
+import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.service.DiaryService;
 import cn.harry12800.tools.StringUtils;
 
@@ -212,12 +212,12 @@ public class DiaryRestController {
 		System.out.println(userName);
 		System.out.println(pwd);
 		try {
-			User user = service.findUserByDiaryId(id);
+			UserInfo user = service.findUserByDiaryId(id);
 			if (user == null) {
 				r.setContent(new Object() {
 					public String result = "error";
 				});
-			} else if (user.getUserName().equals(userName) && user.getPassward().equals(pwd)) {
+			} else if (user.getNickName().equals(userName) && user.getPassword().equals(pwd)) {
 				if (1 == type)
 					r.setContent(service.encipher(id));
 				else {

@@ -34,13 +34,13 @@ import cn.harry12800.db.entity.Diary;
 import cn.harry12800.db.entity.DiaryCatalog;
 import cn.harry12800.db.entity.Markdown;
 import cn.harry12800.db.entity.Resource;
-import cn.harry12800.db.entity.User;
+import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.mapper.MarkdownMapper;
 import cn.harry12800.db.mapper.ResourceMapper;
-import cn.harry12800.db.mapper.UserMapper;
-import cn.harry12800.scan.service.AppService;
-import cn.harry12800.scan.service.DiaryCatalogService;
-import cn.harry12800.scan.service.DiaryService;
+import cn.harry12800.db.mapper.UserInfoMapper;
+import cn.harry12800.db.service.AppService;
+import cn.harry12800.db.service.DiaryCatalogService;
+import cn.harry12800.db.service.DiaryService;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.Lists;
 import cn.harry12800.tools.Maps;
@@ -58,7 +58,7 @@ public class IndexController {
 	@Autowired
 	ResourceMapper resourceMapper;
 	@Autowired
-	UserMapper userMapper;
+	UserInfoMapper userInfoMapper;
 	@Autowired
 	MarkdownMapper markdownMapper;
 
@@ -75,9 +75,9 @@ public class IndexController {
 		} catch (Exception e) {
 
 		}
-		User user = userMapper.getUserById(valueOf);
+		UserInfo user = userInfoMapper.findById(valueOf);
 		if (user == null) {
-			user = userMapper.getUserById(2L);
+			user = userInfoMapper.findByUserId("harry12800");
 		}
 		List<DiaryCatalog> diaryCatalogs = diaryCatalogservice.findAllByUserId(userId);
 		List<Diary> top10s = diarySerivce.findTop10();

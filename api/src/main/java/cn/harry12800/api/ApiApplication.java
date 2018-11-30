@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import cn.harry12800.api.listener.ApplicationReadyEventListenerImpl;
@@ -13,6 +14,7 @@ import cn.harry12800.api.listener.ApplicationReadyEventListenerImpl;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableAutoConfiguration
+@ComponentScan({"cn.harry12800"})
 @MapperScan("cn.harry12800.db.mapper")
 public class ApiApplication extends SpringBootServletInitializer {
 	@Override

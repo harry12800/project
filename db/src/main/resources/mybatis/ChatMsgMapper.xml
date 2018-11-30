@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 		 arrive=1
 		 where go=#{userid}
 	</update>
-	<insert id='save' parameterMap='ChatMsg'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.ChatMsg'>
 		insert into chat_msg(
 		 id,  arrive,  come,  go,  data,  dataType,   sendTime)
 		values(#{id},
@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{sendTime}
 		)
 	</insert>
-	<update id='update' parameterMap='ChatMsg'>
+	<update id='update' parameterType='cn.harry12800.db.entity.ChatMsg'>
 		update chat_msg set
 		 id=#{id},
 		 		 arrive=#{arrive},

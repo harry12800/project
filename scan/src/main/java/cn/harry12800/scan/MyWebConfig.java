@@ -15,11 +15,10 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import cn.harry12800.api.MyInterceptor;
 
 @Configuration
 @EnableWebMvc
-public class WebConfig implements WebMvcConfigurer {
+public class MyWebConfig implements WebMvcConfigurer {
 	// 配置跨域访问(CORS)
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {

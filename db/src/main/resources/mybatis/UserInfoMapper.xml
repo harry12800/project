@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		nick_name, real_name, employee_no, avatar_url,password,salt,
 		create_time,phone,mail,sex from docs.user_info where user_id in (select user_id from docs.user_resource where resource_id=#{resourceId})
 	</select>
-	<insert id='save' parameterMap='UserInfo'>
+	<insert id='save' parameterType='cn.harry12800.db.entity.UserInfo'>
 		insert into docs.user_info(
 		id, user_id, nick_name, real_name, employee_no, avatar_url,password,salt,
 		create_time,phone,mail,sex)
@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{sex}
 		)
 	</insert>
-	<update id='update' parameterMap='UserInfo'>
+	<update id='update' parameterType='cn.harry12800.db.entity.UserInfo'>
 		update docs.user_info set
 		user_id=#{userId},
 		nick_name=#{nickName},

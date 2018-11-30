@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.harry12800.db.entity.Diary;
-import cn.harry12800.db.entity.User;
+import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.mapper.DiaryCatalogMapper;
 import cn.harry12800.db.mapper.DiaryMapper;
-import cn.harry12800.db.mapper.UserMapper;
+import cn.harry12800.db.mapper.UserInfoMapper;
 
 /**
  * Service
@@ -32,7 +32,7 @@ public class DiaryService {// extends CrudService<DiaryMapper, Diary> {
 	@Autowired
 	DiaryCatalogMapper diaryCatalogMapper;
 	@Autowired
-	UserMapper userMapper;
+	UserInfoMapper userMapper;
 	
 	 
 	public List<Diary> findByIds(Set<?> set){
@@ -107,7 +107,7 @@ public class DiaryService {// extends CrudService<DiaryMapper, Diary> {
 		diaryMapper.saveUserDiary(diary.getId(), userId);
 	}
 
-	public User findUserByDiaryId(String id) {
+	public UserInfo findUserByDiaryId(String id) {
 		return userMapper.findUserByDiaryId(id);
 	}
 

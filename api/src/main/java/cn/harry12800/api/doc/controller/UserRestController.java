@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import cn.harry12800.api.doc.http.MyResponse;
 import cn.harry12800.api.doc.http.MyResponse.EResponseCode;
 import cn.harry12800.db.entity.DiaryCatalog;
-import cn.harry12800.db.entity.User;
+import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.service.AppService;
 import cn.harry12800.db.service.DiaryCatalogService;
 import cn.harry12800.db.service.DiaryService;
@@ -58,23 +58,21 @@ public class UserRestController {
 		return r;
 	}
 
-	@RequestMapping(value = "/validate", headers = "content-type=application/x-www-form-urlencoded", method = RequestMethod.POST, consumes = {}, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/validate", headers = "content-type=application/x-www-form-urlencoded", method = RequestMethod.POST, consumes = {}, produces = {
+			MediaType.APPLICATION_JSON_VALUE })
 	@ResponseBody
-	public MyResponse validate(
-			@RequestParam String id,
-			@RequestParam String userName,
-			@RequestParam String pwd,
+	public MyResponse validate(@RequestParam String id, @RequestParam String userName, @RequestParam String pwd,
 			HttpServletResponse res) {
 		MyResponse r = MyResponse.newOk();
 		System.out.println(userName);
 		System.out.println(pwd);
 		try {
-			User user = diaryService.findUserByDiaryId(id);
+			UserInfo user = diaryService.findUserByDiaryId(id);
 			if (user == null) {
 				r.setContent(new Object() {
 					public String result = "error";
 				});
-			} else if (user.getUserName().equals(userName) && user.getPassward().equals(pwd)) {
+			} else if (user.getNickName().equals(userName) && user.getPassword().equals(pwd)) {
 				r.setContent(diaryService.findById(id));
 			} else {
 				r.setContent(new Object() {
@@ -171,10 +169,10 @@ public class UserRestController {
 		// 获取上传文件的路径
 		MyResponse r = MyResponse.newOk();
 		String uploadFilePath = multiReq.getFile("file").getOriginalFilename();
-		//		System.out.println(appService.getAvatarPath());
+		// System.out.println(appService.getAvatarPath());
 		File file = new File(appService.getAvatarPath() + uploadFilePath);
-		//		System.out.println("path:"+file.getAbsolutePath());
-		//		System.out.println("uploadFlePath:" + uploadFilePath);
+		// System.out.println("path:"+file.getAbsolutePath());
+		// System.out.println("uploadFlePath:" + uploadFilePath);
 		// 截取上传文件的文件名
 		String uploadFileName = uploadFilePath.substring(uploadFilePath.lastIndexOf('\\') + 1,
 				uploadFilePath.indexOf('.'));

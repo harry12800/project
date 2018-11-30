@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import cn.harry12800.db.entity.Diary;
 import cn.harry12800.db.entity.DiaryCatalog;
-import cn.harry12800.scan.service.DiaryCatalogService;
-import cn.harry12800.scan.service.DiaryService;
+import cn.harry12800.db.service.DiaryCatalogService;
+import cn.harry12800.db.service.DiaryService;
 
 @Controller
 @RequestMapping(value = "/diary")
