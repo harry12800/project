@@ -1,5 +1,7 @@
 package cn.harry12800.api.doc.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -13,7 +15,7 @@ import cn.harry12800.api.doc.http.MyResponse;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/monitor")
 public class HelloController {
 	private static final Logger LOG = LoggerFactory.getLogger(HelloController.class);
 	private static final String API_Tags = "服务存活检测接口 /HelloController";
@@ -35,6 +37,32 @@ public class HelloController {
 	public MyResponse version(HttpServletRequest request) {
 		MyResponse r = MyResponse.newOk();
 		r.setContent("hello, 你好！");
+		return r;
+	}
+	@ApiOperation(value = "重新启动", tags = { API_Tags }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = { "/restartScan" }, method = RequestMethod.GET)
+	public MyResponse restartScan(HttpServletRequest request) {
+		MyResponse r = MyResponse.newOk();
+		try {
+			Runtime.getRuntime().exec("java -jar /root/scan/scan.jar");
+		} catch (IOException e) {
+			MyResponse setMsg = MyResponse.newServerError().setMsg(e.getMessage());
+			e.printStackTrace();
+			return setMsg;
+		}
+		return r;
+	}
+	@ApiOperation(value = "重新启动", tags = { API_Tags }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = { "/restartVchatServer" }, method = RequestMethod.GET)
+	public MyResponse restartVchatServer(HttpServletRequest request) {
+		MyResponse r = MyResponse.newOk();
+		try {
+			Runtime.getRuntime().exec("java -jar /root/vchat/server/vchat-server-1.0.jar");
+		} catch (IOException e) {
+			MyResponse setMsg = MyResponse.newServerError().setMsg(e.getMessage());
+			e.printStackTrace();
+			return setMsg;
+		}
 		return r;
 	}
 }

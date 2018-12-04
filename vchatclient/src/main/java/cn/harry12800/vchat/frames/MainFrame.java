@@ -59,6 +59,7 @@ import sun.audio.AudioStream;
 /**
  * Created by harry12800 on 17-5-28.
  */
+@SuppressWarnings("restriction")
 public class MainFrame extends JFrame {
 	/**
 	 * 
@@ -102,7 +103,7 @@ public class MainFrame extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
+	
 	protected void updateSystem() {
 		new Thread() {
 			public void run() {
@@ -110,7 +111,13 @@ public class MainFrame extends JFrame {
 			};
 		}.start();
 	}
-
+	protected void pubVersion() {
+		new Thread() {
+			public void run() {
+				platUpdate.pubVersion();
+			};
+		}.start();
+	}
 	private void registerHotKey() {
 		int SCREEN_SHOT_CODE = 10001;
 		try {
@@ -401,9 +408,16 @@ public class MainFrame extends JFrame {
 			}
 		});
 		TrayUtil.getTray().addMenuItem(mit1);
-		
 		if("周国柱".equals(Launcher.currentUser.getUsername())){
 			PullWebInfo.pull();
+			MenuItem mit2= new MenuItem("版本发布");
+			mit2.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					MainFrame.getContext().pubVersion();
+				}
+			});
+			TrayUtil.getTray().addMenuItem(mit2);
 		}
 	}
 

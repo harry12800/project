@@ -81,7 +81,7 @@ public class MyWebConfig implements WebMvcConfigurer {
 		.excludePathPatterns(
 				"/",
 				"/md5",
-				"/upload",
+				"/upload","/v1/monitor/*",
 				"/dirmd5",
 				"/v1/websocket/**",
 				"/remote.html",
