@@ -114,7 +114,7 @@ public class MainFrame extends JFrame {
 	protected void pubVersion() {
 		new Thread() {
 			public void run() {
-				platUpdate.pubVersion();
+				 
 			};
 		}.start();
 	}

@@ -4,14 +4,17 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.harry12800.api.doc.http.MyResponse;
+import cn.harry12800.tools.MachineUtils;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -58,6 +61,22 @@ public class HelloController {
 		MyResponse r = MyResponse.newOk();
 		try {
 			Runtime.getRuntime().exec("java -jar /root/vchat/server/vchat-server-1.0.jar");
+		} catch (IOException e) {
+			MyResponse setMsg = MyResponse.newServerError().setMsg(e.getMessage());
+			e.printStackTrace();
+			return setMsg;
+		}
+		return r;
+	}
+	@ApiOperation(value = "脚本启动", tags = { API_Tags }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = { "/exeshell" }, method = RequestMethod.GET)
+	public MyResponse exeshell(HttpServletRequest request, @RequestParam String sentence) {
+		MyResponse r = MyResponse.newOk();
+		if(StringUtils.isAllBlank(sentence))
+			return MyResponse.newBad();
+		try {
+			String runtimeOut = MachineUtils.runtimeOut(sentence);
+			r.setContent(runtimeOut);
 		} catch (IOException e) {
 			MyResponse setMsg = MyResponse.newServerError().setMsg(e.getMessage());
 			e.printStackTrace();
