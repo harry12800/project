@@ -1,4 +1,4 @@
-package cn.harry12800.scan.controller.rest;
+package cn.harry12800.scan.controller;
 
 import java.util.List;
 
