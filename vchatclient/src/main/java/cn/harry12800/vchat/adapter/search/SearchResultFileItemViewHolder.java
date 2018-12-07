@@ -8,14 +8,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import cn.harry12800.j2se.component.rc.RCBorder;
+import cn.harry12800.j2se.component.rc.RCProgressBar;
 import cn.harry12800.j2se.style.layout.VerticalFlowLayout;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.style.ui.GradientProgressBarUI;
 import cn.harry12800.j2se.utils.FontUtil;
 import cn.harry12800.vchat.components.GBC;
 import cn.harry12800.vchat.components.HighLightLabel;
-import cn.harry12800.vchat.components.RCBorder;
-import cn.harry12800.vchat.components.RCProgressBar;
 
 /**
  * 搜索结果中的每一个文件项目 Created by harry12800 on 17-6-22.

@@ -6,10 +6,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cn.harry12800.j2se.component.rc.RCProgressBar;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.style.ui.GradientProgressBarUI;
 import cn.harry12800.j2se.utils.FontUtil;
-import cn.harry12800.vchat.components.RCProgressBar;
 import cn.harry12800.vchat.components.SizeAutoAdjustTextArea;
 import cn.harry12800.vchat.components.message.AttachmentPanel;
 import cn.harry12800.vchat.components.message.RCAttachmentMessageBubble;

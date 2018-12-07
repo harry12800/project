@@ -33,6 +33,7 @@ import cn.harry12800.common.module.UserCmd;
 import cn.harry12800.common.module.user.dto.LoginRequest;
 import cn.harry12800.common.module.user.dto.PullMsgRequest;
 import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
+import cn.harry12800.j2se.component.rc.RCProgressBar;
 import cn.harry12800.j2se.component.utils.ImageUtils;
 import cn.harry12800.j2se.dialog.MessageDialog;
 import cn.harry12800.j2se.module.tray.TrayUtil;
@@ -48,7 +49,6 @@ import cn.harry12800.upgrade.PlatUpdate;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.websocket.PullWebInfo;
 import cn.harry12800.vchat.components.GBC;
-import cn.harry12800.vchat.components.RCProgressBar;
 import cn.harry12800.vchat.panels.LeftPanel;
 import cn.harry12800.vchat.panels.RightPanel;
 import cn.harry12800.vchat.panels.RoomsPanel;
@@ -103,7 +103,7 @@ public class MainFrame extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void updateSystem() {
 		new Thread() {
 			public void run() {
@@ -111,13 +111,7 @@ public class MainFrame extends JFrame {
 			};
 		}.start();
 	}
-	protected void pubVersion() {
-		new Thread() {
-			public void run() {
-				 
-			};
-		}.start();
-	}
+
 	private void registerHotKey() {
 		int SCREEN_SHOT_CODE = 10001;
 		try {
@@ -408,13 +402,14 @@ public class MainFrame extends JFrame {
 			}
 		});
 		TrayUtil.getTray().addMenuItem(mit1);
+		
 		if("周国柱".equals(Launcher.currentUser.getUsername())){
 			PullWebInfo.pull();
-			MenuItem mit2= new MenuItem("版本发布");
+			MenuItem mit2= new MenuItem("系统管理");
 			mit2.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					MainFrame.getContext().pubVersion();
+					platUpdate.pubVersion();
 				}
 			});
 			TrayUtil.getTray().addMenuItem(mit2);

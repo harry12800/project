@@ -9,8 +9,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 
+import cn.harry12800.j2se.component.rc.RCMenuItemUI;
 import cn.harry12800.j2se.style.ui.Colors;
-import cn.harry12800.vchat.components.RCMenuItemUI;
 import cn.harry12800.vchat.components.RCTextEditor;
 import cn.harry12800.vchat.utils.ClipboardUtil;
 

@@ -8,10 +8,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import cn.harry12800.j2se.component.rc.RCBorder;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.IconUtil;
 import cn.harry12800.vchat.components.GBC;
-import cn.harry12800.vchat.components.RCBorder;
 import cn.harry12800.vchat.listener.ExpressionListener;
 
 /**

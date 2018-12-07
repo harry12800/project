@@ -84,4 +84,24 @@ public class HelloController {
 		}
 		return r;
 	}
+	@ApiOperation(value = "获取服务器地址", tags = { API_Tags }, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = { "/getServerIP" }, method = RequestMethod.GET)
+	public MyResponse getServerIP(HttpServletRequest request, @RequestParam String userId) {
+		MyResponse r = MyResponse.newOk();
+		if(StringUtils.isAllBlank(userId))
+			return MyResponse.newBad();
+		try {
+			if(userId.equalsIgnoreCase("harry12800")){
+				r.setContent("120.78.177.24");
+			}
+			else {
+				r.setContent("wshua.cc");
+			}
+		} catch (Exception e) {
+			MyResponse setMsg = MyResponse.newServerError().setMsg(e.getMessage());
+			e.printStackTrace();
+			return setMsg;
+		}
+		return r;
+	}
 }

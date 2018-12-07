@@ -10,12 +10,12 @@ import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import cn.harry12800.j2se.component.rc.RCSearchTextField;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.FontUtil;
 import cn.harry12800.vchat.adapter.search.SearchResultItemsAdapter;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.components.GBC;
-import cn.harry12800.vchat.components.RCSearchTextField;
 import cn.harry12800.vchat.db.model.ContactsUser;
 import cn.harry12800.vchat.db.model.FileAttachment;
 import cn.harry12800.vchat.db.model.Message;

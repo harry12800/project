@@ -32,6 +32,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import cn.harry12800.j2se.component.rc.RCMenuItemUI;
 import cn.harry12800.j2se.dialog.InputMessageDialog;
 import cn.harry12800.j2se.dialog.InputMessageDialog.Callback;
 import cn.harry12800.j2se.dialog.YesNoDialog;
@@ -44,7 +45,6 @@ import cn.harry12800.tools.StringUtils;
 import cn.harry12800.vchat.app.App;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.config.Contants;
-import cn.harry12800.vchat.components.RCMenuItemUI;
 import cn.harry12800.vchat.entity.Diary;
 import cn.harry12800.vchat.entity.DiaryCatalog;
 import cn.harry12800.vchat.frames.MainFrame;

@@ -15,8 +15,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import cn.harry12800.j2se.action.AbstractMouseListener;
+import cn.harry12800.j2se.component.rc.RCBorder;
 import cn.harry12800.j2se.style.ui.Colors;
-import cn.harry12800.vchat.components.RCBorder;
 import cn.harry12800.vchat.entity.ContactsItem;
 import cn.harry12800.vchat.panels.RightPanel;
 import cn.harry12800.vchat.utils.AvatarUtil;

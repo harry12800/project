@@ -10,11 +10,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.border.LineBorder;
 
+import cn.harry12800.j2se.component.rc.RCMainOperationMenuItemUI;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.tools.MachineUtils;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.config.Contants;
-import cn.harry12800.vchat.components.RCMainOperationMenuItemUI;
 import cn.harry12800.vchat.frames.CreateGroupDialog;
 import cn.harry12800.vchat.frames.MainFrame;
 import cn.harry12800.vchat.frames.SystemConfigDialog;

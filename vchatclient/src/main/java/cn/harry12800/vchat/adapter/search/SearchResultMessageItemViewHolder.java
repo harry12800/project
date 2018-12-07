@@ -7,11 +7,11 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cn.harry12800.j2se.component.rc.RCBorder;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.FontUtil;
 import cn.harry12800.vchat.components.GBC;
 import cn.harry12800.vchat.components.HighLightLabel;
-import cn.harry12800.vchat.components.RCBorder;
 
 /**
  * 搜索结果中的每一个消息项目 Created by harry12800 on 17-6-22.
