@@ -255,7 +255,8 @@ public class IndexController {
 			e1.printStackTrace();
 			return "upload fail， your path is invalid！";
 		} 
-		 
+		
+		FileUtils.createFile(file);
 		System.out.println("uploadFlePath:" + uploadFilePath);
 		// 截取上传文件的文件名
 		String uploadFileName = uploadFilePath.substring(uploadFilePath.lastIndexOf('\\') + 1,
