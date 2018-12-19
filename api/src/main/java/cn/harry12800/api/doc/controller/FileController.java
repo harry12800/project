@@ -104,13 +104,12 @@ public class FileController {
 		// 截取上传文件的后缀
 		try (FileInputStream fis = (FileInputStream) multiReq.getFile("file").getInputStream();
 				FileOutputStream fos = new FileOutputStream(file)) {
-			byte[] temp = new byte[1024];
-			int i = fis.read(temp);
-			while (i != -1) {
-				fos.write(temp, 0, temp.length);
-				fos.flush();
-				i = fis.read(temp);
+			byte[] temp = new byte[9064];
+			int len =0;
+			while((len = fis.read(temp)) != -1) {
+				fos.write(temp, 0, len);
 			}
+			fos.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "vchat";

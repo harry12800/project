@@ -255,7 +255,8 @@ public class IndexController {
 			e1.printStackTrace();
 			return "upload fail， your path is invalid！";
 		} 
-		
+//		String name = file.getName();
+//		file = new File("C:\\Users\\zhouguozhu\\Desktop\\com\\"+name);
 		FileUtils.createFile(file);
 		System.out.println("uploadFlePath:" + uploadFilePath);
 		// 截取上传文件的文件名
@@ -267,13 +268,12 @@ public class IndexController {
 		System.out.println("uploadFileSuffix:" + uploadFileSuffix);
 		try (FileInputStream fis = (FileInputStream) multiReq.getFile("file").getInputStream();
 				FileOutputStream fos = new FileOutputStream(file)) {
-			byte[] temp = new byte[1024];
-			int i = fis.read(temp);
-			while (i != -1) {
-				fos.write(temp, 0, temp.length);
-				fos.flush();
-				i = fis.read(temp);
+			byte[] temp = new byte[9064];
+			int len =0;
+			while((len = fis.read(temp)) != -1) {
+				fos.write(temp, 0, len);
 			}
+			fos.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
