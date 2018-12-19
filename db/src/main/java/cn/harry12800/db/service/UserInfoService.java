@@ -26,9 +26,9 @@ import cn.harry12800.db.entity.FingerChatUser;
 import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.mapper.FingerChatUserMapper;
 import cn.harry12800.db.mapper.UserInfoMapper;
+import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.Maps;
 import cn.harry12800.vchat.frames.components.HttpUtil;
-import cn.harry12800.vchat.frames.components.JsonUtil;
 
 /**
  * 用户表Service
@@ -189,7 +189,7 @@ public class UserInfoService {// extends CrudService<UserInfoMapper, UserInfo> {
 		try {
 			String string = HttpUtil.get(url, headers, params);
 			System.err.println(string);
-			HashMap<?, ?> json = JsonUtil.string2Json(string, HashMap.class);
+			HashMap<?, ?> json = JsonUtils.string2Json(string, HashMap.class);
 			Double rcode = (Double) json.get("code");
 			if (rcode - 10 < 0.0001) {
 				LinkedTreeMap<?, ?> content = (LinkedTreeMap<?, ?>) json.get("content");

@@ -6,7 +6,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.io.IOException;
 
 import javax.swing.JEditorPane;
 import javax.swing.JLayeredPane;
@@ -91,16 +90,16 @@ public class DiaryItemScanPanel extends JLayeredPane implements HyperlinkListene
 			}
 		});
 		String html;
-		try {
-			html = new Markdown4jProcessor().process(aritcle.getContent());
-			System.out.println(html);
-			html = "<head><style type=\"text/css\">body {font-size:14px !important;font-family: \"微软雅黑\";color:#FFFFFF;}</style></head><body>"
-					+ html + "</body>";
-			// System.out.println(html);
-			textPane.setText(html);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			html = new Markdown4jProcessor().process(aritcle.getContent());
+//			System.out.println(html);
+//			html = "<head><style type=\"text/css\">body {font-size:14px !important;font-family: \"微软雅黑\";color:#FFFFFF;}</style></head><body>"
+//					+ html + "</body>";
+//			// System.out.println(html);
+//			textPane.setText(html);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		// for (String string : rowByFile) {
 		// if (string.startsWith("##")) {
 		// textPane.setText("<p>aaaaaaaaaaaaaaaaa</p>");
@@ -110,15 +109,6 @@ public class DiaryItemScanPanel extends JLayeredPane implements HyperlinkListene
 		// System.out.println(string);
 		// }
 		// }
-	}
-
-	public static void main(String[] args) {
-		try {
-			String html = new Markdown4jProcessor().process("This is a **bold** text");
-			System.out.println(html);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@SuppressWarnings("unused")

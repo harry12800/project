@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.harry12800.vchat.db.dao.MucInfoMapper">
+	<sql id="Base_Column_List">
+		 muc_id, 
+		muc_name,muc_topic,muc_status,enter_flag,max_members,mtime,ctime,creator,muc_type,muc_img 
+	</sql>
+	<select id='findAll' resultMap='MucInfo' >
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM im.muc_info
+	</select>
+	<select id='findByMucId' resultMap='MucInfo'  parameterType='java.lang.Long'>
+		SELECT 
+		<include refid="Base_Column_List" />
+		FROM im.muc_info 
+		WHERE muc_id = #{value}
+	</select>
+	<select id='findByIds' parameterType='java.util.Set'>
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM im.muc_info WHERE  
+		<choose>
+			<when test='ids !=null and ids.size()>0'>
+				 muc_id  IN 
+				<foreach item = 'id' index='index' collection='ids' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</select>
+	<insert id='save' parameterType='cn.harry12800.vchat.db.model.MucInfo'>
+		INSERT INTO im.muc_info(
+		 muc_id,  muc_name,  muc_topic,  muc_status,  enter_flag,  max_members,  mtime,  ctime,  creator,  muc_type,   muc_img)
+		VALUES(#{mucId},
+		#{mucName},
+		#{mucTopic},
+		#{mucStatus},
+		#{enterFlag},
+		#{maxMembers},
+		#{mtime},
+		#{ctime},
+		#{creator},
+		#{mucType},
+		#{mucImg}
+		)
+	</insert>
+	<update id='update' parameterType='cn.harry12800.vchat.db.model.MucInfo'>
+		UPDATE im.muc_info SET
+		 muc_name=#{mucName},
+		 		 muc_topic=#{mucTopic},
+		 		 muc_status=#{mucStatus},
+		 		 enter_flag=#{enterFlag},
+		 		 max_members=#{maxMembers},
+		 		 mtime=#{mtime},
+		 		 ctime=#{ctime},
+		 		 creator=#{creator},
+		 		 muc_type=#{mucType},
+		 		 
+		 muc_img=#{mucImg}
+		 WHERE id=#{id}
+	</update>
+	<update id='updateNotNull' parameterType='cn.harry12800.vchat.db.model.MucInfo'>
+		UPDATE im.muc_info 
+		<trim prefix="SET" suffixOverrides=",">
+		 	<if test='null != mucName'>
+		 		muc_name=#{mucName},
+		 	</if>
+		 	<if test='null != mucTopic'>
+		 		muc_topic=#{mucTopic},
+		 	</if>
+		 	<if test='null != mucStatus'>
+		 		muc_status=#{mucStatus},
+		 	</if>
+		 	<if test='null != enterFlag'>
+		 		enter_flag=#{enterFlag},
+		 	</if>
+		 	<if test='null != maxMembers'>
+		 		max_members=#{maxMembers},
+		 	</if>
+		 	<if test='null != mtime'>
+		 		mtime=#{mtime},
+		 	</if>
+		 	<if test='null != ctime'>
+		 		ctime=#{ctime},
+		 	</if>
+		 	<if test='null != creator'>
+		 		creator=#{creator},
+		 	</if>
+		 	<if test='null != mucType'>
+		 		muc_type=#{mucType},
+		 	</if>
+		 	<if test='null != mucImg'>
+		 		muc_img=#{mucImg},
+		 	</if>
+		 </trim>
+		 WHERE 
+		<trim prefix="" suffixOverrides=" AND ">
+			<if test='1 == 1'>
+				muc_id=#{mucId}
+			</if>
+		</trim>
+	</update>
+	<delete id='deleteByMucId' parameterType='java.lang.Long'>
+		DELETE FROM im.muc_info WHERE  muc_id = #{value}
+	</delete>
+	<!-- #{value} -->
+	<delete id='deleteByIds' parameterType='java.util.Set'>
+		DELETE FROM im.muc_info WHERE  
+		<choose>
+			<when test='ids !=null and ids.size()>0'>
+				 muc_id  IN 
+				<foreach item = 'id' index='index' collection='ids' open='(' separator=',' close=')'>
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			 0 = 1
+			</otherwise>
+		</choose>
+	</delete>
+	
+	
+	<resultMap type='cn.harry12800.vchat.db.model.MucInfo' id='MucInfo'>
+			<result property='mucId' column='muc_id'/>
+			<result property='mucName' column='muc_name'/>
+			<result property='mucTopic' column='muc_topic'/>
+			<result property='mucStatus' column='muc_status'/>
+			<result property='enterFlag' column='enter_flag'/>
+			<result property='maxMembers' column='max_members'/>
+			<result property='mtime' column='mtime'/>
+			<result property='ctime' column='ctime'/>
+			<result property='creator' column='creator'/>
+			<result property='mucType' column='muc_type'/>
+			<result property='mucImg' column='muc_img'/>
+	</resultMap>
+</mapper>
+	

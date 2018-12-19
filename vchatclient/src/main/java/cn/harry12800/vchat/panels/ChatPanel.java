@@ -57,6 +57,7 @@ import cn.harry12800.j2se.module.tray.TrayListener;
 import cn.harry12800.j2se.module.tray.TrayUtil;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.Clip;
+import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.StringUtils;
 import cn.harry12800.vchat.adapter.message.BaseMessageViewHolder;
@@ -84,7 +85,6 @@ import cn.harry12800.vchat.entity.FileAttachmentItem;
 import cn.harry12800.vchat.entity.ImageAttachmentItem;
 import cn.harry12800.vchat.entity.MessageItem;
 import cn.harry12800.vchat.frames.MainFrame;
-import cn.harry12800.vchat.frames.components.JsonUtil;
 import cn.harry12800.vchat.helper.MessageViewHolderCacheHelper;
 import cn.harry12800.vchat.listener.ExpressionListener;
 import cn.harry12800.vchat.tasks.DownloadTask;
@@ -755,7 +755,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		letter.data = content;
 		Map<String, String> headers = new HashMap<>(0);
 		try {
-			String post = HttpUtil.postJson(path2, headers, JsonUtil.object2String(letter));
+			String post = HttpUtil.postJson(path2, headers, JsonUtils.object2String(letter));
 			System.out.println(post);
 		} catch (IOException e) {
 			e.printStackTrace();

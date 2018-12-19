@@ -34,7 +34,22 @@
 			<artifactId>filters</artifactId>
 			<version>2.0.235-1</version>
 		</dependency>
-
+<dependency>
+			<groupId>com.hynnet</groupId>
+			<artifactId>DJNativeSwing-SWT</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.hynnet/DJNativeSwing -->
+		<dependency>
+			<groupId>com.hynnet</groupId>
+			<artifactId>DJNativeSwing</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.commonjava.googlecode.markdown4j</groupId>
+			<artifactId>markdown4j</artifactId>
+			<version>2.2-cj-1.1</version>
+		</dependency>
 		<dependency>
 			<groupId>com.vdurmont</groupId>
 			<artifactId>emoji-java</artifactId>

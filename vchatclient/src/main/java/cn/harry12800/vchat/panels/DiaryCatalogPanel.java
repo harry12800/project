@@ -39,6 +39,7 @@ import cn.harry12800.j2se.dialog.YesNoDialog;
 import cn.harry12800.j2se.style.UI;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.Clip;
+import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.Lists;
 import cn.harry12800.tools.StringUtils;
@@ -48,7 +49,6 @@ import cn.harry12800.vchat.app.config.Contants;
 import cn.harry12800.vchat.entity.Diary;
 import cn.harry12800.vchat.entity.DiaryCatalog;
 import cn.harry12800.vchat.frames.MainFrame;
-import cn.harry12800.vchat.frames.components.JsonUtil;
 import cn.harry12800.vchat.model.diary.AricleNode;
 import cn.harry12800.vchat.model.diary.CategoryNode;
 import cn.harry12800.vchat.model.diary.MyJTreeTransferHandler;
@@ -94,7 +94,7 @@ public class DiaryCatalogPanel extends JScrollPane {
 		if (f.isFile()) {
 			Diary a;
 			try {
-				a = JsonUtil.string2Json(f, Diary.class);
+				a = JsonUtils.string2Json(f, Diary.class);
 				DiaryPanel.getContext().areaTextPanel.setText(a.getContent());
 				DiaryPanel.getContext().searchInputText.setText(a.getTitle());
 			} catch (Exception e) {
@@ -240,7 +240,7 @@ public class DiaryCatalogPanel extends JScrollPane {
 									File f = createAricle(node.getFile());
 									Diary diary = new Diary();
 									diary.setSort(node.getFile().listFiles().length);
-									JsonUtil.saveObj(diary, f.getAbsolutePath());
+									JsonUtils.saveObj(diary, f.getAbsolutePath());
 									AricleNode newChild = new AricleNode(f, diary);
 
 									((CategoryNode) (object)).insert(newChild, 0);
@@ -472,7 +472,7 @@ public class DiaryCatalogPanel extends JScrollPane {
 				});
 				if (listFiles != null && listFiles.length == 1) {
 					try {
-						DiaryCatalog dc = JsonUtil.string2Json(listFiles[0], DiaryCatalog.class);
+						DiaryCatalog dc = JsonUtils.string2Json(listFiles[0], DiaryCatalog.class);
 						String path = Contants.getPath(Contants.diaryCatalogDelUrl);
 						String string = HttpUtil.get(path + "?id=" + dc.getId());
 						System.out.println(string);
@@ -544,7 +544,7 @@ public class DiaryCatalogPanel extends JScrollPane {
 
 	private void deleteFromServer(File file) {
 		try {
-			Diary d = JsonUtil.string2Json(file, Diary.class);
+			Diary d = JsonUtils.string2Json(file, Diary.class);
 			String path = Contants.getPath(Contants.diaryDelUrl);
 			String string = HttpUtil.get(path + "?id=" + d.getId());
 			System.out.println(string);

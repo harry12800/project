@@ -42,6 +42,7 @@ import cn.harry12800.j2se.dialog.InputMessageDialog;
 import cn.harry12800.j2se.dialog.InputMessageDialog.Callback;
 import cn.harry12800.j2se.style.UI;
 import cn.harry12800.j2se.utils.Config;
+import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.DateUtils;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.Lists;
@@ -52,7 +53,6 @@ import cn.harry12800.vchat.app.config.Contants;
 import cn.harry12800.vchat.entity.Diary;
 import cn.harry12800.vchat.entity.DiaryCatalog;
 import cn.harry12800.vchat.frames.MainFrame;
-import cn.harry12800.vchat.frames.components.JsonUtil;
 import cn.harry12800.vchat.model.diary.AreaTextPanel;
 import cn.harry12800.vchat.model.diary.AricleNode;
 import cn.harry12800.vchat.model.diary.BaiduReader;
@@ -122,7 +122,7 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 				for (final File file : searchResult) {
 					Diary a = null;
 					try {
-						a = JsonUtil.string2Json(file, Diary.class);
+						a = JsonUtils.string2Json(file, Diary.class);
 					} catch (Exception e2) {
 						continue;
 					}
@@ -134,7 +134,7 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 							DiaryCatalogPanel.getContext().currPath = file.getAbsolutePath();
 							Diary a;
 							try {
-								a = JsonUtil.string2Json(new File(DiaryCatalogPanel.getContext().currPath),
+								a = JsonUtils.string2Json(new File(DiaryCatalogPanel.getContext().currPath),
 										Diary.class);
 								areaTextPanel.setText(a.getContent());
 								searchInputText.setText(a.getTitle());
@@ -214,7 +214,7 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 		a.setContent(text);
 		a.setUpdateTime(new Date());
 		String currPath = DiaryCatalogPanel.getContext().currPath;
-		JsonUtil.saveObj(a, currPath);
+		JsonUtils.saveObj(a, currPath);
 		if (DiaryCatalogPanel.getContext().getCatalogTree() != null) {
 			((AricleNode) DiaryCatalogPanel.getContext().getCurrNode()).plainButton.text.setText(title);
 			((AricleNode) DiaryCatalogPanel.getContext().getCurrNode()).plainButton.updatedateL
@@ -245,7 +245,7 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 		try {
 			String path2 = Contants.getPath(Contants.userDiaryCatalogUrl + "?userId=" + Launcher.currentUser.getUserId());
 			String catalogString2Json = HttpUtil.get(path2);
-			ResultCatalogAll catalogObj = JsonUtil.string2Json(catalogString2Json,
+			ResultCatalogAll catalogObj = JsonUtils.string2Json(catalogString2Json,
 					ResultCatalogAll.class);
 			List<DiaryCatalog> catalogList = catalogObj.content;
 			Map<String, DiaryCatalog> catalogMaps = new HashMap<>();
@@ -258,11 +258,11 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 			if (diaryCatalog != null) {
 				a.setCatalogId(diaryCatalog.getId());
 				String path3 = Contants.getPath(Contants.userDiarySaveUrl + "?userId=" + Launcher.currentUser.getUserId());
-				String post = HttpUtil.postJson(path3, headers, JsonUtil.object2String(a));
+				String post = HttpUtil.postJson(path3, headers, JsonUtils.object2String(a));
 				System.out.println(post);
-				Result diary = JsonUtil.string2Json(post, Result.class);
+				Result diary = JsonUtils.string2Json(post, Result.class);
 				a.setId(diary.content.getId());
-				JsonUtil.saveObj(a, path);
+				JsonUtils.saveObj(a, path);
 			} else {
 				diaryCatalog = new DiaryCatalog();
 				diaryCatalog.setName(name2);
@@ -270,12 +270,12 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 				addCatalogServer(diaryCatalog);
 				a.setCatalogId(diaryCatalog.getId());
 				String path3 = Contants.getPath(Contants.userDiarySaveUrl + "?userId=" + Launcher.currentUser.getUserId());
-				String post = HttpUtil.postJson(path3, headers, JsonUtil.object2String(a));
+				String post = HttpUtil.postJson(path3, headers, JsonUtils.object2String(a));
 				System.out.println(post);
-				Result diary = JsonUtil.string2Json(post, Result.class);
+				Result diary = JsonUtils.string2Json(post, Result.class);
 				a.setId(diary.content.getId());
-				JsonUtil.saveObj(a, path);
-				System.out.println("ads:" + JsonUtil.object2String(diaryCatalog));
+				JsonUtils.saveObj(a, path);
+				System.out.println("ads:" + JsonUtils.object2String(diaryCatalog));
 			}
 			synchronizedDiary2Could();
 			TitlePanel.getContext().showStatusLabel("yes！");
@@ -301,7 +301,7 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 		try {
 			String path2 = Contants.getPath(Contants.userDiaryCatalogUrl + "?userId=" + Launcher.currentUser.getUserId());
 			String catalogString2Json = HttpUtil.get(path2);
-			ResultCatalogAll catalogObj = JsonUtil.string2Json(catalogString2Json,
+			ResultCatalogAll catalogObj = JsonUtils.string2Json(catalogString2Json,
 					ResultCatalogAll.class);
 			List<DiaryCatalog> catalogList = catalogObj.content;
 			Map<String, DiaryCatalog> catalogMaps = new HashMap<>();
@@ -315,10 +315,10 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 				System.out.println("目录中保存");
 				a.setCatalogId(diaryCatalog.getId());
 				String path3 = Contants.getPath(Contants.userDiarySaveUrl + "?userId=" + Launcher.currentUser.getUserId());
-				String post = HttpUtil.postJson(path3, headers, JsonUtil.object2String(a));
-				Result diary = JsonUtil.string2Json(post, Result.class);
+				String post = HttpUtil.postJson(path3, headers, JsonUtils.object2String(a));
+				Result diary = JsonUtils.string2Json(post, Result.class);
 				a.setId(diary.content.getId());
-				JsonUtil.saveObj(a, path);
+				JsonUtils.saveObj(a, path);
 			} else {
 				System.out.println("创建目录中保存");
 				diaryCatalog = new DiaryCatalog();
@@ -327,12 +327,12 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 				addCatalogServer(diaryCatalog);
 				a.setCatalogId(diaryCatalog.getId());
 				String path3 = Contants.getPath(Contants.userDiarySaveUrl + "?userId=" + Launcher.currentUser.getUserId());
-				String post = HttpUtil.postJson(path3, headers, JsonUtil.object2String(a));
+				String post = HttpUtil.postJson(path3, headers, JsonUtils.object2String(a));
 				System.out.println(post);
-				Result diary = JsonUtil.string2Json(post, Result.class);
+				Result diary = JsonUtils.string2Json(post, Result.class);
 				a.setId(diary.content.getId());
-				JsonUtil.saveObj(a, path);
-				System.out.println("ads:" + JsonUtil.object2String(diaryCatalog));
+				JsonUtils.saveObj(a, path);
+				System.out.println("ads:" + JsonUtils.object2String(diaryCatalog));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -385,7 +385,7 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 				for (File file2 : listFile) {
 					Diary a;
 					try {
-						a = JsonUtil.string2Json(file2, Diary.class);
+						a = JsonUtils.string2Json(file2, Diary.class);
 						boolean quietSaveToServer = quietSaveToServer(a, file2.getAbsolutePath(), lastTime);
 						if (!quietSaveToServer)
 							return;
@@ -461,7 +461,7 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 							String dirPath = DiaryCatalogPanel.getContext().dirPath;
 							String path = Contants.getPath(Contants.userDiaryCatalogUrl + "?userId=" + Launcher.currentUser.getUserId());
 							String catalogString2Json = HttpUtil.get(path);
-							ResultCatalogAll catalogObj = JsonUtil.string2Json(catalogString2Json,
+							ResultCatalogAll catalogObj = JsonUtils.string2Json(catalogString2Json,
 									ResultCatalogAll.class);
 							List<DiaryCatalog> catalogList = catalogObj.content;
 							Map<String, DiaryCatalog> catalogMaps = new HashMap<>();
@@ -471,18 +471,18 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 								String tempPath = dirPath + File.separator + catalogName;
 								if (!new File(tempPath).exists()) {
 									new File(tempPath).mkdir();
-									JsonUtil.saveObj(diaryCatalog, dirPath + File.separator + catalogName + File.separator + diaryCatalog.getId() + ".dir");
+									JsonUtils.saveObj(diaryCatalog, dirPath + File.separator + catalogName + File.separator + diaryCatalog.getId() + ".dir");
 								}
 							}
 							String path2 = Contants.getPath(Contants.userDiaryUrl + "?userId=" + Launcher.currentUser.getUserId());
 							String diaryString2Json = HttpUtil.get(path2);
-							ResultAll string2Json = JsonUtil.string2Json(diaryString2Json, ResultAll.class);
+							ResultAll string2Json = JsonUtils.string2Json(diaryString2Json, ResultAll.class);
 							List<Diary> diaryList = string2Json.content;
 							for (Diary diary : diaryList) {
 								DiaryCatalog diaryCatalog = catalogMaps.get(diary.getCatalogId());
 								String catalogName = diaryCatalog.getName();
 								String tempPath = dirPath + File.separator + catalogName;
-								JsonUtil.saveObj(diary, tempPath + File.separator + diary.getId() + ".properties");
+								JsonUtils.saveObj(diary, tempPath + File.separator + diary.getId() + ".properties");
 							}
 							MainFrame.getContext().alert("同步完成！");
 							DiaryCatalogPanel.getContext().reload();
@@ -652,16 +652,16 @@ public class DiaryPanel extends JPanel implements DropTargetListener {
 	}
 
 	private synchronized void addCatalogServer(DiaryCatalog diaryCatalog) {
-		System.out.println("ads:" + JsonUtil.object2String(diaryCatalog));
+		System.out.println("ads:" + JsonUtils.object2String(diaryCatalog));
 		Map<String, String> headers = new HashMap<>(0);
 		try {
 			String path2 = Contants.getPath(Contants.diaryCatalogAddUrl);
-			String post = HttpUtil.postJson(path2, headers, JsonUtil.object2String(diaryCatalog));
+			String post = HttpUtil.postJson(path2, headers, JsonUtils.object2String(diaryCatalog));
 			System.out.println(post);
-			CatalogResult diary = JsonUtil.string2Json(post, CatalogResult.class);
+			CatalogResult diary = JsonUtils.string2Json(post, CatalogResult.class);
 			diaryCatalog.setId(diary.content.getId());
 			String path = DiaryCatalogPanel.getContext().dirPath + File.separator + diaryCatalog.getName() + File.separator + diaryCatalog.getId() + ".dir";
-			JsonUtil.saveObj(diaryCatalog, path);
+			JsonUtils.saveObj(diaryCatalog, path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

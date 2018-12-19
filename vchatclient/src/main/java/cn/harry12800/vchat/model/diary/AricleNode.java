@@ -9,8 +9,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import cn.harry12800.j2se.component.utils.ImageUtils;
 import cn.harry12800.j2se.style.UI;
+import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.vchat.entity.Diary;
-import cn.harry12800.vchat.frames.components.JsonUtil;
 import cn.harry12800.vchat.model.diary.AricleItemPanel.Builder;
 import cn.harry12800.vchat.panels.DiaryPanel;
 
@@ -70,7 +70,7 @@ public class AricleNode extends DefaultMutableTreeNode {
 		this.file = file;
 		// System.out.println(file);
 		try {
-			this.aritcle = JsonUtil.string2Json(file, Diary.class);
+			this.aritcle = JsonUtils.string2Json(file, Diary.class);
 			if (this.aritcle == null)
 				this.aritcle = new Diary();
 			aritcle.setSort(aritcle2.getSort());

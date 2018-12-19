@@ -20,7 +20,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import cn.harry12800.vchat.frames.components.JsonUtil;
+import cn.harry12800.j2se.utils.JsonUtils;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -109,7 +109,7 @@ public class HttpUtil {
 		Request request = reqBuilder.build();
 		Response response = client.newCall(request).execute();
 		if (response.isSuccessful()) {
-			return  JsonUtil.string2Json(response.body().string(), clazz);
+			return  JsonUtils.string2Json(response.body().string(), clazz);
 		} else {
 			throw new IOException("Unexpected code " + response);
 		}
@@ -175,7 +175,7 @@ public class HttpUtil {
 	}
 	@SuppressWarnings("unchecked")
 	public static <T> T postJson(String url, Map<String, String> headers, Object json,Class<T> returnClazz) throws IOException {
-		RequestBody body = FormBody.create(MediaType.parse("application/json; charset=utf-8"), JsonUtil.object2String(json));
+		RequestBody body = FormBody.create(MediaType.parse("application/json; charset=utf-8"), JsonUtils.object2String(json));
 		Request.Builder reqBuilder = new Request.Builder().url(url);
 		if (headers != null && headers.size() > 0) {
 			for (String key : headers.keySet()) {
@@ -187,7 +187,7 @@ public class HttpUtil {
 		if(returnClazz == String.class) {
 			return (T) response.body().string();
 		}
-		return JsonUtil.string2Json(response.body().string(), returnClazz);
+		return JsonUtils.string2Json(response.body().string(), returnClazz);
 	}
 	public static byte[] download(String url) throws IOException {
 		return download(url, null, null, null);
