@@ -133,12 +133,11 @@ public class FileController {
 		try (FileInputStream fis = (FileInputStream) multiReq.getFile("file").getInputStream();
 				FileOutputStream fos = new FileOutputStream(file)) {
 			byte[] temp = new byte[1024];
-			int i = fis.read(temp);
-			while (i != -1) {
-				fos.write(temp, 0, temp.length);
-				fos.flush();
-				i = fis.read(temp);
+			int i = 0;
+			while ((i  = fis.read(temp)) != -1) {
+				fos.write(temp, 0, i);
 			}
+			fos.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
