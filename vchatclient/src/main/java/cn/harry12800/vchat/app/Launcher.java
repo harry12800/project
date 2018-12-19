@@ -9,9 +9,9 @@ import org.apache.ibatis.session.SqlSession;
 
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.component.utils.ImageUtils;
-import cn.harry12800.lnk.client.Client;
-import cn.harry12800.lnk.client.OfflineListenter;
 import cn.harry12800.tools.Maps;
+import cn.harry12800.vchat.client.Client;
+import cn.harry12800.vchat.client.OfflineListenter;
 import cn.harry12800.vchat.db.model.CurrentUser;
 import cn.harry12800.vchat.db.service.ContactsUserService;
 import cn.harry12800.vchat.db.service.CurrentUserService;

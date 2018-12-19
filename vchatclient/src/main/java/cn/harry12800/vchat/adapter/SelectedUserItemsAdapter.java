@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import cn.harry12800.j2se.action.AbstractMouseListener;
+import cn.harry12800.j2se.component.rc.adapter.BaseAdapter;
 import cn.harry12800.vchat.entity.SelectUserData;
 import cn.harry12800.vchat.utils.AvatarUtil;
 import cn.harry12800.vchat.utils.CharacterParser;

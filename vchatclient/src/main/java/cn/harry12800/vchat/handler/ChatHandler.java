@@ -8,7 +8,7 @@ import cn.harry12800.common.module.ModuleId;
 import cn.harry12800.common.module.chat.dto.FileChatRequest;
 import cn.harry12800.common.module.chat.dto.FileChatResponse;
 import cn.harry12800.common.module.chat.dto.MsgResponse;
-import cn.harry12800.lnk.client.ResultCodeMap;
+import cn.harry12800.vchat.client.ResultCodeMap;
 import cn.harry12800.vchat.panels.ChatPanel;
 
 @SocketModule(module = ModuleId.CHAT)

@@ -17,17 +17,22 @@ public class RoomService extends BasicService<RoomDao, Room> {
 	}
 
 	public int insertOrUpdate(Room room) {
-		if (exist(room.getRoomId())) {
+		if (exist(room)) {
 			return update(room);
 		} else {
 			return insert(room);
 		}
 	}
-
-	public Room findRelativeRoomIdByUserId(String userId) {
-		return dao.findRelativeRoomIdByUserId(userId);
+	boolean exist(Room room){
+		return dao.exist(room);
+	}
+	public Room findRelativeRoomIdByUserId(String userId,String creatorId) {
+		return dao.findRelativeRoomIdByUserId(userId,creatorId);
 	}
 
+	public List<Room> findRelativeRoomIdByCreatorId(String userId) {
+		return dao.findRelativeRoomIdByCreatorId(userId);
+	}
 	public Room findByName(String name) {
 		List list = dao.find("name", name);
 		if (list.size() > 0) {

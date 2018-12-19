@@ -49,9 +49,9 @@ import cn.harry12800.upgrade.PlatUpdate;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.websocket.PullWebInfo;
 import cn.harry12800.vchat.components.GBC;
+import cn.harry12800.vchat.panels.ContactsPanel;
 import cn.harry12800.vchat.panels.LeftPanel;
 import cn.harry12800.vchat.panels.RightPanel;
-import cn.harry12800.vchat.panels.RoomsPanel;
 import cn.harry12800.vchat.utils.ClipboardUtil;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
@@ -496,7 +496,8 @@ public class MainFrame extends JFrame {
 	}
 
 	public void showAllUser(ShowAllUserResponse userResponse) {
-		RoomsPanel.getContext().initData(userResponse);
+//		RoomsPanel.getContext().initData(userResponse);
+		ContactsPanel.getContext().initData(userResponse);
 	}
 
 	public void alert(String info) {
@@ -504,14 +505,13 @@ public class MainFrame extends JFrame {
 	}
 
 	public void showProssbar(boolean visible) {
-		southPanel
-				.setVisible(visible);
+		southPanel.setVisible(visible);
 	}
 
 	public void reLogin() {
 		try {
 			LoginRequest loginRequest = new LoginRequest();
-			loginRequest.setUserName(Launcher.currentUser.getUsername());
+			loginRequest.setUserName(Launcher.currentUser.getUserId());
 			loginRequest.setPassward(Launcher.currentUser.getPassword());
 			Request request = Request.valueOf(ModuleId.USER, UserCmd.LOGIN, loginRequest.getBytes());
 			Launcher.client.sendRequest(request);

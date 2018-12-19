@@ -10,7 +10,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.harry12800.vchat.app.config.Contants;
-import cn.harry12800.vchat.frames.components.JsonUtil;
 import cn.harry12800.vchat.panels.ChatPanel;
 import cn.harry12800.vchat.panels.RoomsPanel;
 import cn.harry12800.vchat.utils.HttpUtil;
@@ -31,11 +30,11 @@ public class PullWebInfo {
 						//e.printStackTrace();
 					}
 //					System.out.println(string);
-					MyResponse string2Json = JsonUtil.string2Json(string, MyResponse.class);
+					MyResponse string2Json = JsonUtils.string2Json(string, MyResponse.class);
 					List<String> content = string2Json.content;
 					Map<String,List<Letter>> maps = new LinkedHashMap<>();
 					for (String letterStr : content) {
-						Letter letter = JsonUtil.string2Json(letterStr, Letter.class);
+						Letter letter = JsonUtils.string2Json(letterStr, Letter.class);
 						if(letter.from.equals("harry12800")) {
 							if(maps.get(letter.to)==null) {
 								maps.put(letter.to, new ArrayList<Letter>());

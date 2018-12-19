@@ -209,4 +209,5 @@ public class Room extends BasicModel implements Comparable<Room> {
 	public void setTotalReadCount(int totalReadCount) {
 		this.totalReadCount = totalReadCount;
 	}
+	
 }

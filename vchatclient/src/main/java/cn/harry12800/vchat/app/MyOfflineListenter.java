@@ -1,7 +1,7 @@
 package cn.harry12800.vchat.app;
 
 import cn.harry12800.j2se.dialog.MessageDialog;
-import cn.harry12800.lnk.client.OfflineListenter;
+import cn.harry12800.vchat.client.OfflineListenter;
 import cn.harry12800.vchat.frames.LoginFrame;
 import cn.harry12800.vchat.frames.MainFrame;
 

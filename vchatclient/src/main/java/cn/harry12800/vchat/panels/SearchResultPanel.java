@@ -9,11 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import cn.harry12800.j2se.component.rc.RCListView;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.vchat.adapter.RoomItemViewHolder;
 import cn.harry12800.vchat.adapter.search.SearchResultItemsAdapter;
 import cn.harry12800.vchat.components.GBC;
-import cn.harry12800.vchat.components.RCListView;
 import cn.harry12800.vchat.entity.SearchResultItem;
 
 /**

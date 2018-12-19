@@ -11,7 +11,6 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.harry12800.j2se.component.rc.RCButton;
@@ -24,7 +23,6 @@ import cn.harry12800.vchat.db.model.ContactsUser;
 import cn.harry12800.vchat.db.model.Room;
 import cn.harry12800.vchat.db.service.ContactsUserService;
 import cn.harry12800.vchat.db.service.RoomService;
-import cn.harry12800.vchat.frames.MainFrame;
 import cn.harry12800.vchat.utils.AvatarUtil;
 import cn.harry12800.vchat.utils.HttpUtil;
 
@@ -109,24 +107,39 @@ public class UserInfoPanel extends ParentAvailablePanel {
 
 	private void openOrCreateDirectChat() {
 		ContactsUser user = contactsUserService.find("username", username).get(0);
-		String userId = user.getUserId();
-		Room room = roomService.findRelativeRoomIdByUserId(userId);
+		String userId = user.getFriendId();
+		System.out.println(userId);
+		String creatorId = Launcher.currentUser.getUserId();
+		System.out.println(creatorId);
+		Room room = roomService.findRelativeRoomIdByUserId(userId,creatorId);
 
+		System.out.println(room);
 		// 房间已存在，直接打开，否则发送请求创建房间
 		if (room != null) {
+			TabOperationPanel.getContext().showChatPanel();
 			ChatPanel.getContext().enterRoom(room.getRoomId());
 		} else {
-			createDirectChat(user.getName());
+			createDirectChat(user);
 		}
 	}
 
 	/**
 	 * 创建直接聊天
 	 *
-	 * @param username
+	 * @param user
 	 */
-	private void createDirectChat(String username) {
-		JOptionPane.showMessageDialog(MainFrame.getContext(), "发起聊天", "发起聊天", JOptionPane.INFORMATION_MESSAGE);
+	private void createDirectChat(ContactsUser user) {
+		Room room = new Room();
+		room.setCreatorId(Launcher.currentUser.getUserId());
+		room.setRoomId(user.getFriendId());
+		room.setName(user.getUsername());
+		room.setTopic(user.getUsername());
+		room.setType("d");
+		roomService.insertOrUpdate(room);
+		RoomsPanel.getContext().addNewRoomItemToTop(room);
+		TabOperationPanel.getContext().showChatPanel();
+//		RoomsPanel.getContext().activeItem(0);
+		ChatPanel.getContext().enterRoom(user.getFriendId());
 	}
 
 	public static void main(String[] args) throws IOException {

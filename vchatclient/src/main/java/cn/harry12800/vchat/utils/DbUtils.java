@@ -63,6 +63,10 @@ public class DbUtils {
 				System.out.println("创建表 contacts_user");
 				tableService.createContactsUserTable();
 			}
+			if (!tableService.exist("muc_info")) {
+				System.out.println("创建表 muc_info");
+				tableService.createMucInfoTable();
+			}
 		}
 	}
 }

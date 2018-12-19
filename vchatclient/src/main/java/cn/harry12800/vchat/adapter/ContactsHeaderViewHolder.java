@@ -2,6 +2,8 @@ package cn.harry12800.vchat.adapter;
 
 import javax.swing.JLabel;
 
+import cn.harry12800.j2se.component.rc.adapter.HeaderViewHolder;
+
 /**
  * Created by harry12800 on 17-5-30.
  */
@@ -10,7 +12,7 @@ public class ContactsHeaderViewHolder extends HeaderViewHolder {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String letter;
+	private String letter; 
 	public JLabel letterLabel;
 
 	public ContactsHeaderViewHolder(String ch) {

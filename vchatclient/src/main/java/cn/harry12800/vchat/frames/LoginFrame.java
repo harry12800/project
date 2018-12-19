@@ -93,7 +93,13 @@ public class LoginFrame extends JFrame {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				autoLogin();
+				synchronized (LoginFrame.class) {
+					if (!isDoLogining) {
+						isDoLogining = true;
+						autoLogin();
+					}
+				}
+
 			}
 		}).start();
 	}
@@ -127,8 +133,7 @@ public class LoginFrame extends JFrame {
 	}
 
 	private void autoLogin() {
-		if ("true".equals(Config.getProp("autoLogin")) ||
-				Config.getProp("autoLogin") == null) {
+		if ("true".equals(Config.getProp("autoLogin")) || Config.getProp("autoLogin") == null) {
 			doLogin();
 		}
 	}
@@ -180,7 +185,8 @@ public class LoginFrame extends JFrame {
 		passwordField = new RCPasswordField();
 		passwordField.setPreferredSize(textFieldDimension);
 		passwordField.setPlaceholder("密码");
-		// passwordField.setBorder(new RCBorder(RCBorder.BOTTOM, Colors.LIGHT_GRAY));
+		// passwordField.setBorder(new RCBorder(RCBorder.BOTTOM,
+		// Colors.LIGHT_GRAY));
 		passwordField.setFont(FontUtil.getDefaultFont(14));
 		passwordField.setForeground(Colors.FONT_BLACK);
 		passwordField.setMargin(new Insets(0, 15, 0, 0));
@@ -194,6 +200,8 @@ public class LoginFrame extends JFrame {
 		statusLabel.setText("密码不正确");
 		statusLabel.setVisible(false);
 	}
+
+	public boolean isDoLogining = false;
 
 	private void initView() {
 		JPanel contentPanel = new JPanel();
@@ -277,7 +285,10 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (loginButton.isEnabled()) {
-					doLogin();
+					synchronized (LoginFrame.class) {
+						isDoLogining = true;
+						doLogin();
+					}
 				}
 
 				super.mouseClicked(e);

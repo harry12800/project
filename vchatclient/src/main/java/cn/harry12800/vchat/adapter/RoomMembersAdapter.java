@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import cn.harry12800.j2se.action.AbstractMouseListener;
+import cn.harry12800.j2se.component.rc.adapter.BaseAdapter;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.components.UserInfoPopup;

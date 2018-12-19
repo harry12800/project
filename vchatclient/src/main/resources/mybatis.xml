@@ -12,6 +12,7 @@
         <typeAlias type="cn.harry12800.vchat.db.model.FileAttachment" alias="FileAttachment"/>
         <typeAlias type="cn.harry12800.vchat.db.model.ImageAttachment" alias="ImageAttachment"/>
         <typeAlias type="cn.harry12800.vchat.db.model.ContactsUser" alias="ContactsUser"/>
+        <typeAlias type="cn.harry12800.vchat.db.model.MucInfo" alias="MucInfo"/>
     </typeAliases>
 
     <!-- development : 开发模式 work : 工作模式 -->
@@ -32,7 +33,7 @@
 
     <mappers>
         <mapper resource="cn/harry12800/vchat/db/mapping/TableMapper.xml"/>
-
+        <mapper resource="cn/harry12800/vchat/db/mapping/MucInfoMapper.xml"/>
         <mapper resource="cn/harry12800/vchat/db/mapping/CurrentUserMapper.xml"/>
         <mapper resource="cn/harry12800/vchat/db/mapping/RoomMapper.xml"/>
         <mapper resource="cn/harry12800/vchat/db/mapping/MessageMapper.xml"/>
@@ -40,6 +41,4 @@
         <mapper resource="cn/harry12800/vchat/db/mapping/ImageAttachmentMapper.xml"/>
         <mapper resource="cn/harry12800/vchat/db/mapping/ContactsUserMapper.xml"/>
     </mappers>
-
-
 </configuration>

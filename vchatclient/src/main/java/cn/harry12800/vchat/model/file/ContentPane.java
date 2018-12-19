@@ -62,12 +62,12 @@ public class ContentPane extends JLayeredPane implements DropTargetListener {
 
 				@Override
 				public void rightClick(MouseEvent e) {
-					new InputMessageDialog(openFilePanel.getContext().getFrame(), "重命名", of.getName(), new Callback() {
+//					new InputMessageDialog(openFilePanel.getContext().getFrame(), "重命名", of.getName(), new Callback() {
 						public void callback(String string) {
 							of.setName(string);
 							fileBtn.setName(string);
 							fileBtn.repaint();
-							openFilePanel.saveConfigObject();
+//							openFilePanel.saveConfigObject();
 						}
 					});
 				}

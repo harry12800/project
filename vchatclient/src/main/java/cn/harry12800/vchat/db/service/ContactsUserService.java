@@ -17,11 +17,15 @@ public class ContactsUserService extends BasicService<ContactsUserDao, ContactsU
 	}
 
 	public int insertOrUpdate(ContactsUser contactsUser) {
-		if (exist(contactsUser.getUserId())) {
+		if (exist(contactsUser)) {
 			return update(contactsUser);
 		} else {
 			return insert(contactsUser);
 		}
+	}
+
+	boolean exist(ContactsUser contactsUser) {
+		return dao.exist(contactsUser);
 	}
 
 	public int deleteByUsername(String name) {
@@ -35,6 +39,11 @@ public class ContactsUserService extends BasicService<ContactsUserDao, ContactsU
 		}
 
 		return null;
+	}
+
+	public List<ContactsUser> findFirendByUserId(String userId) {
+		List list = dao.find("userid", userId);
+		return list;
 	}
 
 	public List<ContactsUser> searchByUsernameOrName(String username, String name) {

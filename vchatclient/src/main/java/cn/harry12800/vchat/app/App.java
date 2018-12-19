@@ -2,9 +2,9 @@ package cn.harry12800.vchat.app;
 
 import java.io.File;
 
-import cn.harry12800.lnk.core.scanner.Scaner;
 import cn.harry12800.tools.MachineUtils;
 import cn.harry12800.vchat.panels.DiaryCatalogPanel;
+import cn.harry12800.vchat.scaner.Scaner;
 
 /**
  * Created by harry12800 on 17-5-28.

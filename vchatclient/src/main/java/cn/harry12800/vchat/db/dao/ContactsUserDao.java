@@ -26,4 +26,7 @@ public class ContactsUserDao extends BasicDao {
 		map.put("nameCondition", "'%" + name + "%'");
 		return session.selectList("searchByUsernameOrName", map);
 	}
+	public boolean exist(ContactsUser id) {
+		return ((int) (session.selectOne(getClass().getName()+".exist", id))) > 0;
+	}
 }

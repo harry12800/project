@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 
 import cn.harry12800.j2se.component.rc.RCBorder;
+import cn.harry12800.j2se.component.rc.adapter.ViewHolder;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.FontUtil;
 import cn.harry12800.j2se.utils.IconUtil;

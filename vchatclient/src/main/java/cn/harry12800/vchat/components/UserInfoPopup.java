@@ -21,6 +21,7 @@ import cn.harry12800.j2se.component.imageview.ImageViewerFrame;
 import cn.harry12800.j2se.component.rc.RCButton;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.FontUtil;
+import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.db.model.ContactsUser;
 import cn.harry12800.vchat.db.model.Room;
 import cn.harry12800.vchat.frames.MainFrame;
@@ -126,8 +127,10 @@ public class UserInfoPopup extends JPopupMenu {
 
 	private void openOrCreateDirectChat() {
 		ContactsUser user = contactsUserService.find("username", username).get(0);
-		String userId = user.getUserId();
-		Room room = roomService.findRelativeRoomIdByUserId(userId);
+		String userId = user.getFriendId();
+		String creatorId = Launcher.currentUser.getUserId();
+		Room room = roomService.findRelativeRoomIdByUserId(userId,creatorId);
+
 
 		// 房间已存在，直接打开，否则发送请求创建房间
 		if (room != null) {

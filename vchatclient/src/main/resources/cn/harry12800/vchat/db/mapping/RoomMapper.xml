@@ -19,9 +19,11 @@
 	</select>
 
     <select id="findRelativeRoomIdByUserId" resultType="Room" statementType="STATEMENT" parameterType="map">
-        SELECT * FROM room where roomId like ${condition}
+        SELECT * FROM room where roomId = ${userId} and creatorId = ${creatorId}
     </select>
-
+     <select id="findSelfRoomIdByCreatorId" resultType="Room" statementType="STATEMENT" parameterType="map">
+        SELECT * FROM room where creatorId = ${condition}
+    </select>
     <select id="searchByName" resultType="Room" statementType="STATEMENT" parameterType="map">
         SELECT * FROM room where name like ${condition} and type != 'd'
     </select>
@@ -39,7 +41,7 @@
 	</select>
 
     <select id="exist" resultType="java.lang.Integer">
-		SELECT count(1) FROM room where roomId = #{id}
+		SELECT count(1) FROM room where roomId = #{roomId} and creatorId =#{creatorId}
 	</select>
 
     <delete id="delete">

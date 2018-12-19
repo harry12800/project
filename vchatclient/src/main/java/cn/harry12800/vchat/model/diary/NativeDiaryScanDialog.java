@@ -17,15 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import org.markdown4j.Markdown4jProcessor;
-
-import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
-import chrriis.dj.nativeswing.swtimpl.components.WebBrowserCommandEvent;
-import chrriis.dj.nativeswing.swtimpl.components.WebBrowserEvent;
-import chrriis.dj.nativeswing.swtimpl.components.WebBrowserListener;
-import chrriis.dj.nativeswing.swtimpl.components.WebBrowserNavigationEvent;
-import chrriis.dj.nativeswing.swtimpl.components.WebBrowserWindowOpeningEvent;
-import chrriis.dj.nativeswing.swtimpl.components.WebBrowserWindowWillOpenEvent;
 import cn.harry12800.j2se.action.DragListener;
 import cn.harry12800.j2se.tab.Tab;
 import cn.harry12800.j2se.tab.TabRootPane;

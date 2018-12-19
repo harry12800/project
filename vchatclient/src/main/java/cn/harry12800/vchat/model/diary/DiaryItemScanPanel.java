@@ -21,8 +21,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
-import org.markdown4j.Markdown4jProcessor;
-
 import cn.harry12800.j2se.style.UI;
 import cn.harry12800.vchat.entity.Diary;
 

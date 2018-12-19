@@ -39,4 +39,7 @@ public class TableDao {
 	public void createContactsUserTable() {
 		session.update("createContactsUserTable");
 	}
+	public void createMucInfoTable() {
+		session.update("createMucInfoTable");
+	}
 }

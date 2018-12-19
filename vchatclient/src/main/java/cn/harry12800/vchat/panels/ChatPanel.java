@@ -50,6 +50,7 @@ import cn.harry12800.common.module.chat.dto.FileChatRequest;
 import cn.harry12800.common.module.chat.dto.MsgResponse;
 import cn.harry12800.common.module.chat.dto.PrivateChatRequest;
 import cn.harry12800.j2se.component.rc.RCBorder;
+import cn.harry12800.j2se.component.rc.RCListView;
 import cn.harry12800.j2se.module.tray.ETrayType;
 import cn.harry12800.j2se.module.tray.TrayInfo;
 import cn.harry12800.j2se.module.tray.TrayListener;
@@ -68,7 +69,6 @@ import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.config.Contants;
 import cn.harry12800.vchat.app.websocket.PullWebInfo.Letter;
 import cn.harry12800.vchat.components.GBC;
-import cn.harry12800.vchat.components.RCListView;
 import cn.harry12800.vchat.components.message.FileEditorThumbnail;
 import cn.harry12800.vchat.components.message.RemindUserPopup;
 import cn.harry12800.vchat.db.model.CurrentUser;
@@ -449,14 +449,15 @@ public class ChatPanel extends ParentAvailablePanel {
 		this.firstMessageTimestamp = firstMessageTimestamp;
 		this.roomId = roomId;
 		CHAT_ROOM_OPEN_ID = roomId;
-		this.room = roomService.findById(roomId);
-
+		String creatorId = Launcher.currentUser.getUserId();
+		this.room = roomService.findRelativeRoomIdByUserId(roomId, creatorId);
 		// 更新消息列表
 		this.notifyDataSetChanged();
 		// 更新房间标题，尤其是成员数
 		updateRoomTitle();
 		//		RoomMembersPanel.getContext().setRoomId(roomId);
 
+		
 		messageEditorPanel.getEditor().setText("");
 		updateUnreadCount(0);
 
@@ -623,6 +624,17 @@ public class ChatPanel extends ParentAvailablePanel {
 		this.messageItems.add(item);
 		messagePanel.getMessageListView().notifyItemInserted(messageItems.size() - 1, true);
 		messagePanel.getMessageListView().setAutoScrollToBottom();
+
+	}
+	/**
+	 * 添加一条消息到消息列表最后
+	 *
+	 * @param item
+	 */
+	public void addMessageItemToTop(MessageItem item) {
+		this.messageItems.add(0,item);
+		messagePanel.getMessageListView().notifyItemInserted(0, true);
+		messagePanel.getMessageListView().setAutoScrollToTop();
 
 	}
 
@@ -1310,7 +1322,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		message.setTimestamp(new Date().getTime());
 		message.setSenderUsername(senderUserName);
 		messageService.insertOrUpdate(message);
-		Room friendRoom = roomService.findById(letter.from);
+		Room friendRoom = roomService.findRelativeRoomIdByUserId(letter.from, Launcher.currentUser.getUserId());
 		friendRoom.setLastMessage(message.getMessageContent());
 		friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
 		roomService.insertOrUpdate(friendRoom);
@@ -1325,9 +1337,6 @@ public class ChatPanel extends ParentAvailablePanel {
 	
 	public void showReceiveMsg(MsgResponse msg) {
 		String userId = Launcher.getUserIdById(msg.getFromId());
-
-		System.err.println(userId);
-		System.err.println(currentUser.getUserId());
 		if (currentUser.getUserId().equals(userId))
 			return;
 		System.out.println("收到消息");
@@ -1362,9 +1371,18 @@ public class ChatPanel extends ParentAvailablePanel {
 		message.setTimestamp(new Date().getTime());
 		message.setSenderUsername(senderUserName);
 		messageService.insertOrUpdate(message);
-		Room friendRoom = roomService.findById(userId);
+		Room friendRoom = roomService.findRelativeRoomIdByUserId(userId, Launcher.currentUser.getUserId());
+		if(friendRoom == null){
+			friendRoom = new Room();
+			friendRoom.setCreatorId(Launcher.currentUser.getUserId());
+			friendRoom.setRoomId(userId);
+			friendRoom.setName(userId);
+			friendRoom.setTopic(userId);
+			friendRoom.setType("d");
+			friendRoom.setLastChatAt(new Date().getTime());
+		}
+		friendRoom.setUnreadCount(friendRoom.getUnreadCount()+1);
 		friendRoom.setLastMessage(message.getMessageContent());
-		friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
 		roomService.insertOrUpdate(friendRoom);
 		MessageItem item = new MessageItem(message, friendRoom.getRoomId());
 		item.setMessageType(MessageItem.LEFT_TEXT);

@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import cn.harry12800.vchat.adapter.ViewHolder;
+import cn.harry12800.j2se.component.rc.adapter.ViewHolder;
 import cn.harry12800.vchat.utils.AvatarUtil;
 
 /**

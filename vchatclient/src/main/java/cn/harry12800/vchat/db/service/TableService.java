@@ -41,4 +41,7 @@ public class TableService {
 	public void createContactsUserTable() {
 		dao.createContactsUserTable();
 	}
+	public void createMucInfoTable() {
+		dao.createMucInfoTable();
+	}
 }

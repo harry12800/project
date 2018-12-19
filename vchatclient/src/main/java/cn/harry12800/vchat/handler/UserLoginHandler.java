@@ -14,8 +14,8 @@ import cn.harry12800.common.module.chat.dto.PrivateChatResponse;
 import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.dialog.MessageDialog;
-import cn.harry12800.lnk.client.ResultCodeMap;
 import cn.harry12800.vchat.app.Launcher;
+import cn.harry12800.vchat.client.ResultCodeMap;
 import cn.harry12800.vchat.frames.LoginFrame;
 import cn.harry12800.vchat.frames.MainFrame;
 import cn.harry12800.vchat.panels.ChatPanel;
@@ -80,7 +80,7 @@ public class UserLoginHandler {
 	 *            {@link null}
 	 */
 	@SocketCommand(cmd = UserCmd.SHOW_ALL_USER, desc = "登录帐号")
-	public void login1(int resultCode, byte[] data) {
+	public void showAllUser(int resultCode, byte[] data) {
 		if (resultCode == ResultCode.SUCCESS) {
 			ShowAllUserResponse userResponse = new ShowAllUserResponse();
 			userResponse.readFromBytes(data);

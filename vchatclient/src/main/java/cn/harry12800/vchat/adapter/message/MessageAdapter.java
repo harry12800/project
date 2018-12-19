@@ -15,18 +15,17 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import cn.harry12800.j2se.component.imageview.ImageViewerFrame;
+import cn.harry12800.j2se.component.rc.RCListView;
+import cn.harry12800.j2se.component.rc.adapter.BaseAdapter;
+import cn.harry12800.j2se.component.rc.adapter.ViewHolder;
 import cn.harry12800.j2se.utils.IconUtil;
-import cn.harry12800.vchat.adapter.BaseAdapter;
-import cn.harry12800.vchat.adapter.ViewHolder;
+import cn.harry12800.j2se.utils.TimeUtil;
 import cn.harry12800.vchat.app.Launcher;
-import cn.harry12800.vchat.components.RCListView;
 import cn.harry12800.vchat.components.UserInfoPopup;
 import cn.harry12800.vchat.components.message.MessageImageLabel;
 import cn.harry12800.vchat.components.message.MessagePopupMenu;
 import cn.harry12800.vchat.components.message.RCMessageBubble;
-import cn.harry12800.vchat.db.model.CurrentUser;
 import cn.harry12800.vchat.db.model.Message;
-import cn.harry12800.vchat.db.service.CurrentUserService;
 import cn.harry12800.vchat.db.service.MessageService;
 import cn.harry12800.vchat.entity.FileAttachmentItem;
 import cn.harry12800.vchat.entity.MessageItem;
@@ -38,7 +37,6 @@ import cn.harry12800.vchat.panels.ChatPanel;
 import cn.harry12800.vchat.utils.AvatarUtil;
 import cn.harry12800.vchat.utils.FileCache;
 import cn.harry12800.vchat.utils.ImageCache;
-import cn.harry12800.vchat.utils.TimeUtil;
 
 /**
  * Created by harry12800 on 17-6-2.
@@ -47,9 +45,6 @@ public class MessageAdapter extends BaseAdapter<BaseMessageViewHolder> {
 	private List<MessageItem> messageItems;
 	private RCListView listView;
 	private AttachmentIconHelper attachmentIconHelper = new AttachmentIconHelper();
-	private CurrentUserService currentUserService = Launcher.currentUserService;
-	@SuppressWarnings("unused")
-	private CurrentUser currentUser;
 	private ImageCache imageCache;
 	private MessageService messageService = Launcher.messageService;
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -62,8 +57,6 @@ public class MessageAdapter extends BaseAdapter<BaseMessageViewHolder> {
 			MessageViewHolderCacheHelper messageViewHolderCacheHelper) {
 		this.messageItems = messageItems;
 		this.listView = listView;
-
-		currentUser = currentUserService.findAll().get(0);
 		imageCache = new ImageCache();
 		fileCache = new FileCache();
 		this.messageViewHolderCacheHelper = messageViewHolderCacheHelper;

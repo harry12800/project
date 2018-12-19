@@ -10,20 +10,16 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import cn.harry12800.common.core.model.Request;
-import cn.harry12800.common.module.ModuleId;
-import cn.harry12800.common.module.UserCmd;
-import cn.harry12800.common.module.user.dto.ShowAllUserRequest;
 import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
 import cn.harry12800.common.module.user.dto.UserResponse;
+import cn.harry12800.j2se.component.rc.RCListView;
 import cn.harry12800.j2se.style.ui.Colors;
-import cn.harry12800.lnk.core.FileUtils;
+import cn.harry12800.tools.FileUtils;
 import cn.harry12800.vchat.adapter.RoomItemViewHolder;
 import cn.harry12800.vchat.adapter.RoomItemsAdapter;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.config.Contants;
 import cn.harry12800.vchat.components.GBC;
-import cn.harry12800.vchat.components.RCListView;
 import cn.harry12800.vchat.db.model.Room;
 import cn.harry12800.vchat.db.service.RoomService;
 import cn.harry12800.vchat.entity.RoomItem;
@@ -75,7 +71,7 @@ public class RoomsPanel extends ParentAvailablePanel {
 			if (room == null) {
 				room = new Room();
 			}
-			room.setCreatorId(user.getUserId());
+			room.setCreatorId(Launcher.currentUser.getUserId());
 			room.setRoomId(user.getUserId());
 			room.setName(user.getNickName());
 			room.setTopic(user.getNickName());
@@ -89,19 +85,20 @@ public class RoomsPanel extends ParentAvailablePanel {
 		downloadAvatar(users);
 		roomItemsListView.notifyDataSetChanged(true);
 	}
-	public void addWebSocketRoom(String  userId){
+
+	public void addWebSocketRoom(String userId) {
 		RoomItem item = new RoomItem();
 		item.setRoomId(userId);
 		item.setTimestamp(Instant.now().getEpochSecond());
 		item.setTitle(userId);
 		item.setType("d");
 		boolean contains = roomItemList.contains(item);
-		if(!contains) {
+		if (!contains) {
 			Room room = roomService.findById(userId);
 			if (room == null) {
 				room = new Room();
 			}
-			room.setCreatorId(userId);
+			room.setCreatorId(Launcher.currentUser.getUserId());
 			room.setRoomId(userId);
 			room.setName(userId);
 			room.setTopic(userId);
@@ -112,7 +109,19 @@ public class RoomsPanel extends ParentAvailablePanel {
 			roomService.insertOrUpdate(room);
 			roomItemsListView.notifyDataSetChanged(true);
 		}
-		
+
+	}
+
+	public void addNewRoomItemToTop(Room room){
+		RoomItem item = new RoomItem();
+		item.setRoomId(room.getRoomId());
+		item.setTimestamp(room.getLastChatAt());
+		item.setTitle(room.getName());
+		item.setType(room.getType());
+		item.setLastMessage(room.getLastMessage());
+		item.setUnreadCount(room.getUnreadCount());
+		roomItemList.add(0,item);
+		notifyDataSetChanged(false);
 	}
 	private void downloadAvatar(List<UserResponse> users) {
 
@@ -129,7 +138,7 @@ public class RoomsPanel extends ParentAvailablePanel {
 							FileUtils.writeBytes2File(download, file);
 						}
 					} catch (IOException e) {
-//						e.printStackTrace();
+						// e.printStackTrace();
 					}
 				}
 			}
@@ -138,41 +147,32 @@ public class RoomsPanel extends ParentAvailablePanel {
 
 	private void initData() {
 		roomItemList.clear();
-		try {
-			ShowAllUserRequest request = new ShowAllUserRequest();
-			Request req = Request.valueOf(ModuleId.USER, UserCmd.SHOW_ALL_USER, request.getBytes());
-			Launcher.client.sendRequest(req);
-		} catch (Exception e) {
-			e.printStackTrace();
-			// MainFrame.("无法连接服务器");
-		}
-
 		// TODO: 从数据库中加载房间列表
-		// Room harry12800 = roomService.findRelativeRoomIdByUserId("song");
-		// List<Room> rooms = roomService.findAll();
-		// for (Room room : rooms) {
-		// RoomItem item = new RoomItem();
-		// item.setRoomId(room.getRoomId());
-		// item.setTimestamp(room.getLastChatAt());
-		// item.setTitle(room.getName());
-		// item.setType(room.getType());
-		// item.setLastMessage(room.getLastMessage());
-		// item.setUnreadCount(room.getUnreadCount());
-		//
-		// roomItemList.add(item);
-		// }
+//		Room harry12800 = roomService.findRelativeRoomIdByUserId(Launcher.currentUser.getUserId());
+		List<Room> rooms = roomService.findRelativeRoomIdByCreatorId(Launcher.currentUser.getUserId());
+		for (Room room : rooms) {
+			RoomItem item = new RoomItem();
+			item.setRoomId(room.getRoomId());
+			item.setTimestamp(room.getLastChatAt());
+			item.setTitle(room.getName());
+			item.setType(room.getType());
+			item.setLastMessage(room.getLastMessage());
+			item.setUnreadCount(room.getUnreadCount());
+			roomItemList.add(item);
+		}
 	}
 
 	/**
 	 * 重绘整个列表
 	 */
 	public void notifyDataSetChanged(boolean keepSize) {
-		initData();
+//		initData();
 		roomItemsListView.notifyDataSetChanged(keepSize);
 	}
 
 	/**
-	 * 更新房间列表 当这条消息所在的房间在当前房间列表中排在第一位时，此时房间列表项目顺序不变，无需重新排列 因此无需更新整个房间列表，只需更新第一个项目即可
+	 * 更新房间列表 当这条消息所在的房间在当前房间列表中排在第一位时，此时房间列表项目顺序不变，无需重新排列
+	 * 因此无需更新整个房间列表，只需更新第一个项目即可
 	 *
 	 * @param msgRoomId
 	 */
@@ -205,19 +205,30 @@ public class RoomsPanel extends ParentAvailablePanel {
 			notifyDataSetChanged(true);
 			return;
 		}
-
+		boolean s =false;
 		for (int i = 0; i < roomItemList.size(); i++) {
 			RoomItem item = roomItemList.get(i);
 			if (item.getRoomId().equals(roomId)) {
+				s = true;
 				Room room = roomService.findById(item.getRoomId());
 				if (room != null) {
 					item.setLastMessage(room.getLastMessage());
 					item.setTimestamp(room.getLastChatAt());
 					item.setUnreadCount(room.getUnreadCount());
-					roomItemsListView.notifyItemChanged(i);
+					if(room.getUnreadCount()==1){
+						RoomItem remove = roomItemList.remove(i);
+						roomItemList.add(0, remove);
+						notifyDataSetChanged(true);
+					}else{
+						roomItemsListView.notifyItemChanged(i);
+					}
 				}
 				break;
 			}
+		}
+		if(!s){
+			Room room = roomService.findById(roomId);
+			addNewRoomItemToTop(room);
 		}
 	}
 
