@@ -2,10 +2,12 @@ package cn.harry12800.scan.controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Comparator;
@@ -178,8 +180,7 @@ public class IndexController {
 		}
 		System.out.println("success");
 	}
-	
-	
+
 	@RequestMapping(value = "/download-vchat", method = RequestMethod.GET)
 	public void download_vchat(HttpServletResponse res) {
 		String value = "";
@@ -243,39 +244,56 @@ public class IndexController {
 	@ResponseBody
 	public Object upload(HttpServletRequest req, MultipartHttpServletRequest multiReq, String path) {
 		// 获取上传文件的路径
-		String uploadFilePath = multiReq.getFile("file").getOriginalFilename();
+		// String uploadFilePath =
+		// multiReq.getFile("file").getOriginalFilename();
 		File file = new File(path);
 		try {
 			boolean startsWith = file.getCanonicalPath().startsWith("/root/scan");
 			boolean startsWith1 = file.getCanonicalPath().startsWith("/root/vchat");
-			if(!(startsWith||startsWith1)){
+			if (!(startsWith || startsWith1)) {
 				return "upload fail， your path is invalid！";
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			return "upload fail， your path is invalid！";
-		} 
-//		String name = file.getName();
-//		file = new File("C:\\Users\\zhouguozhu\\Desktop\\com\\"+name);
+		}
 		FileUtils.createFile(file);
-		System.out.println("uploadFlePath:" + uploadFilePath);
 		// 截取上传文件的文件名
-		String uploadFileName = uploadFilePath.substring(uploadFilePath.lastIndexOf('\\') + 1,
-				uploadFilePath.indexOf('.'));
-		System.out.println("multiReq.getFile()" + uploadFileName);
 		// 截取上传文件的后缀
-		String uploadFileSuffix = uploadFilePath.substring(uploadFilePath.indexOf('.') + 1, uploadFilePath.length());
-		System.out.println("uploadFileSuffix:" + uploadFileSuffix);
-		try (FileInputStream fis = (FileInputStream) multiReq.getFile("file").getInputStream();
-				FileOutputStream fos = new FileOutputStream(file)) {
-			byte[] temp = new byte[9064];
-			int len =0;
-			while((len = fis.read(temp)) != -1) {
-				fos.write(temp, 0, len);
+		System.out.println("uploadFile:" + path);
+		InputStream inputStream = null;
+		try {
+			inputStream = multiReq.getFile("file").getInputStream();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return "未获取的文件流，file属性";
+		}
+		if (inputStream instanceof FileInputStream) {
+			try (FileInputStream fis = (FileInputStream) inputStream;
+					FileOutputStream fos = new FileOutputStream(file)) {
+				byte[] temp = new byte[9064];
+				int len = 0;
+				while ((len = fis.read(temp)) != -1) {
+					fos.write(temp, 0, len);
+				}
+				fos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			fos.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
+		}else if(inputStream instanceof ByteArrayInputStream) {
+			try (ByteArrayInputStream fis = (ByteArrayInputStream) inputStream;
+					FileOutputStream fos = new FileOutputStream(file)) {
+				byte[] temp = new byte[9064];
+				int len = 0;
+				while ((len = fis.read(temp)) != -1) {
+					fos.write(temp, 0, len);
+				}
+				fos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			return "未知的文件流类型，file属性"+inputStream.getClass();
 		}
 		return "upload is successful！";
 	}
@@ -328,33 +346,36 @@ public class IndexController {
 		};
 		return o;
 	}
+
 	@RequestMapping(value = "md5", method = RequestMethod.GET)
 	@ResponseBody
 	public Object md5(@RequestParam String path) throws Exception {
 		System.out.println(path);
 		File file = new File(path);
-		if(file.exists()&&file.isFile()){
+		if (file.exists() && file.isFile()) {
 			String md5 = FileUtils.getMD5(file);
 			return md5;
-		}else {
+		} else {
 			return "error";
 		}
 	}
-	public static class DirMd5{
+
+	public static class DirMd5 {
 		public String name;
 		public String md5;
 		public long size;
 	}
+
 	@RequestMapping(value = "dirmd5", method = RequestMethod.GET)
 	@ResponseBody
 	public Object dirmd5(@RequestParam String path) throws Exception {
 		System.out.println(path);
 		File file = new File(path);
 		List<DirMd5> lists = Lists.newArrayList();
-		if(file.exists()&&file.isDirectory()){
+		if (file.exists() && file.isDirectory()) {
 			File[] listFiles = file.listFiles();
 			for (File file2 : listFiles) {
-				if(file2.isFile()) {
+				if (file2.isFile()) {
 					String md5 = FileUtils.getMD5(file2);
 					DirMd5 e = new DirMd5();
 					e.md5 = md5;
@@ -364,10 +385,11 @@ public class IndexController {
 				}
 			}
 			return lists;
-		}else {
+		} else {
 			return "error";
 		}
 	}
+
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "ll", method = RequestMethod.GET)
 	@ResponseBody
