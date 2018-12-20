@@ -5,7 +5,6 @@ import java.util.List;
 
 import cn.harry12800.common.core.codc.HeaderBodyMap;
 import cn.harry12800.common.core.config.ProtocolConstant;
-import cn.harry12800.common.core.config.SysConstant;
 import cn.harry12800.common.core.packet.base.DefaultHeader;
 import cn.harry12800.common.core.packet.base.GoBackPacket;
 import cn.harry12800.common.core.packet.base.ReqBody;
@@ -32,7 +31,6 @@ public class AckUnreadMsgPacket extends GoBackPacket  {
 		requestPacket.body.setNeedMonitor(true);
 		requestPacket.header = new DefaultHeader(ProtocolConstant.SID_MSG,
 				ProtocolConstant.CID_MSG_READ_ACK);
-		requestPacket.header .setLength(SysConstant.PROTOCOL_HEADER_LENGTH + (4));
 
 	}
 

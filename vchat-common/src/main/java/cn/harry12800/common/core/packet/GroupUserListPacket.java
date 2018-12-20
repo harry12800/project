@@ -1,7 +1,6 @@
 package cn.harry12800.common.core.packet;
 
 import cn.harry12800.common.core.config.ProtocolConstant;
-import cn.harry12800.common.core.config.SysConstant;
 import cn.harry12800.common.core.packet.base.DefaultHeader;
 import cn.harry12800.common.core.packet.base.GoBackPacket;
 import cn.harry12800.common.core.packet.base.ReqBody;
@@ -22,9 +21,6 @@ public class GroupUserListPacket extends GoBackPacket {
 		requestPacket.body.setNeedMonitor(true);
 		requestPacket. header = new DefaultHeader(ProtocolConstant.SID_GROUP,
 				ProtocolConstant.CID_GROUP_USER_LIST_REQUEST);
-
-		requestPacket.header.setLength(SysConstant.PROTOCOL_HEADER_LENGTH + 0);
-
 	}
 
 

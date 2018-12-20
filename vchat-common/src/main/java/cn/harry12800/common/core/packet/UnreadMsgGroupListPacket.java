@@ -5,7 +5,6 @@ import java.util.List;
 
 import cn.harry12800.common.core.codc.HeaderBodyMap;
 import cn.harry12800.common.core.config.ProtocolConstant;
-import cn.harry12800.common.core.config.SysConstant;
 import cn.harry12800.common.core.packet.base.DefaultHeader;
 import cn.harry12800.common.core.packet.base.GoBackPacket;
 import cn.harry12800.common.core.packet.base.Header;
@@ -26,8 +25,6 @@ public class UnreadMsgGroupListPacket extends GoBackPacket{
 	static{
 		header = new DefaultHeader(ProtocolConstant.SID_GROUP,
 				ProtocolConstant.CID_GROUP_UNREAD_CNT_REQUEST);
-		int contentLength = 0;
-		header.setLength(SysConstant.PROTOCOL_HEADER_LENGTH + contentLength);
 		HeaderBodyMap.register(ProtocolConstant.SID_GROUP,
 				ProtocolConstant.CID_GROUP_UNREAD_CNT_REQUEST+1,PacketResponse.class);
 	}

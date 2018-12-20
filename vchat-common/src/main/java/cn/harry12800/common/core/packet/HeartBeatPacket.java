@@ -23,18 +23,11 @@ public class HeartBeatPacket extends GoBackPacket{
         requestPacket.body = new HeartBeatRequest();
         requestPacket.body.setNeedMonitor(false);
         Header recentcontactHeader = new Header();
-        recentcontactHeader
-                .setVersion((short) SysConstant.PROTOCOL_VERSION);
-        //recentcontactHeader.setFlag((short) SysConstant.PROTOCOL_FLAG);
-        recentcontactHeader.setServiceId(ProtocolConstant.SID_DEFAULT);
-        recentcontactHeader
-                .setCommandId(ProtocolConstant.CID_HEART_BEAT);
-        // recentcontactHeader.setError((short) SysConstant.PROTOCOL_ERROR);
+        recentcontactHeader.version =((short) SysConstant.PROTOCOL_VERSION);
+        recentcontactHeader.serviceId = ProtocolConstant.SID_DEFAULT;
+        recentcontactHeader.commandId =ProtocolConstant.CID_HEART_BEAT;
         short seqNo = SequenceNumberMaker.getInstance().make();
-        recentcontactHeader.setReserved(seqNo);
-        int contentLength = 0;
-        recentcontactHeader.setLength(SysConstant.PROTOCOL_HEADER_LENGTH
-                + contentLength);
+        recentcontactHeader.reserved = seqNo;
         requestPacket.header = recentcontactHeader;
     }
 

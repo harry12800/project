@@ -24,19 +24,16 @@ public class MsgServerPacket extends GoBackPacket {
         HeaderBodyMap.register(ProtocolConstant.SID_LOGIN,ProtocolConstant.CID_LOGIN_REQ_MSGSERVER,MsgServerResponse.class);
         HeaderBodyMap.register(ProtocolConstant.SID_LOGIN,ProtocolConstant.CID_LOGIN_REQ_MSGSERVER+1,MsgServerResponse.class);
             msrHeader = new Header();
-            msrHeader.setVersion((short) SysConstant.PROTOCOL_VERSION);
-    //msrHeader.setFlag((short) SysConstant.PROTOCOL_FLAG);
-            msrHeader.setServiceId(ProtocolConstant.SID_LOGIN);
-            msrHeader.setCommandId(ProtocolConstant.CID_LOGIN_REQ_MSGSERVER);
-    //msrHeader.setError((short) SysConstant.PROTOCOL_ERROR);
-            msrHeader.setLength(SysConstant.PROTOCOL_HEADER_LENGTH);
+            msrHeader.version = ((short) SysConstant.PROTOCOL_VERSION);
+            msrHeader.serviceId =(ProtocolConstant.SID_LOGIN);
+            msrHeader.commandId =(ProtocolConstant.CID_LOGIN_REQ_MSGSERVER);
     }
     public MsgServerPacket() {
         requestPacket= new RequestPacket();
         requestPacket.header = msrHeader;
         requestPacket.body = new MsgServerRequest();
         short seqNo = SequenceNumberMaker.getInstance().make();
-        requestPacket.header.setReserved(seqNo);
+        requestPacket.header.reserved = (seqNo);
         requestPacket.body.setNeedMonitor(true);
     }
 

@@ -2,7 +2,6 @@ package cn.harry12800.common.core.packet;
 
 import cn.harry12800.common.core.codc.HeaderBodyMap;
 import cn.harry12800.common.core.config.ProtocolConstant;
-import cn.harry12800.common.core.config.SysConstant;
 import cn.harry12800.common.core.packet.base.DefaultHeader;
 import cn.harry12800.common.core.packet.base.GoBackPacket;
 import cn.harry12800.common.core.packet.base.ReqBody;
@@ -32,9 +31,6 @@ public class MessageNotifyPacket extends GoBackPacket {
         requestPacket.body.mNeedMonitor = true;
 		requestPacket.header = new DefaultHeader(ProtocolConstant.SID_MSG,
 				ProtocolConstant.CID_MSG_DATA_ACK);
-		int contentLength = 4 + (4 + msg.fromId.length());
-		requestPacket.header.setLength(SysConstant.PROTOCOL_HEADER_LENGTH + contentLength);
-
 	}
 
 	public static class PacketAck extends ReqBody {

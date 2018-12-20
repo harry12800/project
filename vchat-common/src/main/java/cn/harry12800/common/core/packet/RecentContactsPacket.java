@@ -5,7 +5,6 @@ import java.util.List;
 
 import cn.harry12800.common.core.codc.HeaderBodyMap;
 import cn.harry12800.common.core.config.ProtocolConstant;
-import cn.harry12800.common.core.config.SysConstant;
 import cn.harry12800.common.core.packet.base.DefaultHeader;
 import cn.harry12800.common.core.packet.base.GoBackPacket;
 import cn.harry12800.common.core.packet.base.ReqBody;
@@ -33,10 +32,6 @@ static{
 		requestPacket.body.setNeedMonitor(true);
 		requestPacket.header = new DefaultHeader(ProtocolConstant.SID_BUDDY_LIST,
 				ProtocolConstant.CID_BUDDY_LIST_REQUEST);
-
-		int contentLength = 0;
-		requestPacket.header.setLength(SysConstant.PROTOCOL_HEADER_LENGTH + contentLength);
-
 	}
 
 

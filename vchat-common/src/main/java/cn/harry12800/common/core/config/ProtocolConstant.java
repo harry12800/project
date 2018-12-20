@@ -103,9 +103,9 @@ public class ProtocolConstant {
 		}
 
 		public static void dump(boolean toSend, Header header) {
-			int serviceId = header.getServiceId();
-			int commandId = header.getCommandId();
-			int seqNo = header.getReserved();
+			int serviceId = header.serviceId;
+			int commandId = header.commandId;
+			int seqNo = header.reserved;
 
 			String serviceString = "";
 			String commandString = "";

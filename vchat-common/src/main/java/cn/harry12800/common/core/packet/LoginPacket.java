@@ -23,12 +23,9 @@ public class LoginPacket extends GoBackPacket {
     static {
         HeaderBodyMap.register(ProtocolConstant.SID_LOGIN,ProtocolConstant.CID_LOGIN_REQ_USERLOGIN+1,LoginPacket.LoginResponse.class);
         loginHeader = new Header();
-        //loginHeader.setFlag((short) SysConstant.PROTOCOL_FLAG);
-        loginHeader.setServiceId(ProtocolConstant.SID_LOGIN);
-        loginHeader.setCommandId(ProtocolConstant.CID_LOGIN_REQ_USERLOGIN);
-        loginHeader.setVersion((short) SysConstant.PROTOCOL_VERSION);
-        //loginHeader.setError((short) SysConstant.PROTOCOL_ERROR);
-        loginHeader.setLength(SysConstant.PROTOCOL_HEADER_LENGTH );
+        loginHeader.serviceId = (ProtocolConstant.SID_LOGIN);
+        loginHeader.commandId =(ProtocolConstant.CID_LOGIN_REQ_USERLOGIN);
+        loginHeader.version =((short) SysConstant.PROTOCOL_VERSION);
 
     }
     public LoginPacket() {
@@ -42,7 +39,7 @@ public class LoginPacket extends GoBackPacket {
         requestPacket.body = new LoginRequest(_user_id_url, _user_token, _online_status, _client_type,
                 _client_version);
         short seqNo = SequenceNumberMaker.getInstance().make();
-        requestPacket.header.setReserved(seqNo);
+        requestPacket.header.reserved =seqNo;
         requestPacket.body.setNeedMonitor(true);
     }
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.harry12800.common.core.config.ProtocolConstant;
-import cn.harry12800.common.core.config.SysConstant;
 import cn.harry12800.common.core.packet.base.DefaultHeader;
 import cn.harry12800.common.core.packet.base.GoBackPacket;
 import cn.harry12800.common.core.packet.base.ReqBody;
@@ -25,8 +24,6 @@ public class UnreadMsgPacket extends GoBackPacket {
         requestPacket.body.setNeedMonitor(true);
         requestPacket.header = new DefaultHeader(ProtocolConstant.SID_MSG,
                 ProtocolConstant.CID_MSG_UNREAD_MSG_REUQEST);
-
-        requestPacket.header.setLength(SysConstant.PROTOCOL_HEADER_LENGTH + (4 + 0));
 
     }
 

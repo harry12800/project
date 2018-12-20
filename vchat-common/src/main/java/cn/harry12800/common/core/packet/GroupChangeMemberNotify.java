@@ -3,7 +3,6 @@ package cn.harry12800.common.core.packet;
 import java.util.List;
 
 import cn.harry12800.common.core.config.ProtocolConstant;
-import cn.harry12800.common.core.config.SysConstant;
 import cn.harry12800.common.core.packet.base.DefaultHeader;
 import cn.harry12800.common.core.packet.base.GoBackPacket;
 import cn.harry12800.common.core.packet.base.ReqBody;
@@ -31,7 +30,6 @@ public class GroupChangeMemberNotify extends GoBackPacket {
                 ProtocolConstant.CID_GROUP_CHANGE_MEMBER_REQUEST);
         requestPacket.body.mNeedMonitor = true;
         int contentLength = 9;
-        requestPacket.header.setLength(SysConstant.PROTOCOL_HEADER_LENGTH + contentLength);
     }
 
     public static class PacketRequest extends ReqBody {

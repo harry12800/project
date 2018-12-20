@@ -4,7 +4,7 @@ import cn.harry12800.common.core.serial.Serializer;
 
 /**
  * 广播消息
- * @author -harry12800-
+ * @author harry12800
  *
  */
 public class PublicChatRequest extends Serializer {

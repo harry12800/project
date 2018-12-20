@@ -72,8 +72,8 @@ public class CustomProtobufDecoder extends ByteToMessageDecoder {
 		}
 		System.out.println();
 		Header header = PbUtil.decode(array, offset, headlength, Header.class);
-		int serviceId = header.getServiceId();
-		int commandId = header.getCommandId();
+		int serviceId = header.serviceId;
+		int commandId = header.commandId;
 		int ip = serviceId << 8 | commandId;
 		System.out.println(header);
 		Class<? extends BaseBody> class1 = HeaderBodyMap.get(ip);
