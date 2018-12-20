@@ -7,7 +7,7 @@ package cn.harry12800.common.core.exception;
  */
 public class ErrorCodeException extends RuntimeException {
 
-	/**
+	/** 
 	 * 
 	 */
 	private static final long serialVersionUID = 4143519479094905222L;
