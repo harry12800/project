@@ -22,7 +22,7 @@ import io.netty.handler.timeout.IdleStateHandler;
  * 
  */
 @Component
-public class Server {
+public class OldServer {
 
 	/**
 	 * 启动

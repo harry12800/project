@@ -15,7 +15,7 @@ import cn.harry12800.common.core.annotion.SocketModule;
  *
  */
 @Component
-public class HandlerScaner implements BeanPostProcessor {
+public class HandlerOldScaner implements BeanPostProcessor {
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
