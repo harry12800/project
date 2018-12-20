@@ -34,11 +34,9 @@ import cn.harry12800.vchat.helper.AttachmentIconHelper;
 import cn.harry12800.vchat.panels.ChatPanel;
 import cn.harry12800.vchat.panels.ListPanel;
 import cn.harry12800.vchat.panels.SearchPanel;
-import cn.harry12800.vchat.tasks.DownloadTask;
 import cn.harry12800.vchat.tasks.HttpResponseListener;
 import cn.harry12800.vchat.utils.AvatarUtil;
 import cn.harry12800.vchat.utils.FileCache;
-import cn.harry12800.vchat.utils.HttpUtil;
 
 /**
  * 搜索结果适配器 Created by harry12800 on 17-5-30.
@@ -416,76 +414,75 @@ public class SearchResultItemsAdapter extends BaseAdapter<SearchResultItemViewHo
 		downloadingFiles.add(fileAttachment.getId());
 		// holder.fileId = fileAttachment.getId();
 
-		final DownloadTask task = new DownloadTask(new HttpUtil.ProgressListener() {
-			@Override
-			public void onProgress(int progress) {
-				SearchResultFileItemViewHolder holder = fileItemViewHolders.get(fileAttachment.getId());
-				if (progress >= 0 && progress < 100) {
-
-					if (holder.size.isVisible()) {
-						holder.size.setVisible(false);
-					}
-					if (!holder.progressBar.isVisible()) {
-						holder.progressBar.setVisible(true);
-					}
-
-					holder.progressBar.setValue(progress);
-				} else if (progress >= 100) {
-					holder.progressBar.setVisible(false);
-					holder.size.setVisible(true);
-				}
-			}
-		});
-
-		task.setListener(new HttpResponseListener<byte[]>() {
-			@Override
-			public void onSuccess(byte[] data) {
-				SearchResultFileItemViewHolder holder = fileItemViewHolders.get(fileAttachment.getId());
-
-				String path = fileCache.cacheFile(fileAttachment.getId(), fileAttachment.getTitle(), data);
-
-				if (path == null) {
-					holder.size.setVisible(true);
-					holder.size.setText("文件获取失败");
-					holder.progressBar.setVisible(false);
-				} else {
-					holder.size.setVisible(true);
-					System.out.println("文件已缓存在 " + path);
-					holder.size.setText(fileCache.fileSizeString(path));
-					downloadingFiles.remove(fileAttachment.getId());
-
-					/*
-					 * for (SearchResultFileItemViewHolder h : fileItemViewHolders) { if
-					 * (h.fileId.equals(fileAttachment.getId())) { h.progressBar.setVisible(false);
-					 * h.size.setVisible(true);
-					 * h.size.setText(fileCache.fileSizeString(fileCache.tryGetFileCache(
-					 * fileAttachment.getId(), fileAttachment.getTitle()))); //break;
-					 * //fileItemViewHolders.remove(h); } }
-					 */
-
-					/*
-					 * SearchResultFileItemViewHolder h =
-					 * fileItemViewHolders.get(fileAttachment.getId());
-					 * h.progressBar.setVisible(false); h.size.setVisible(true);
-					 * h.size.setText(fileCache.fileSizeString(fileCache.tryGetFileCache(
-					 * fileAttachment.getId(), fileAttachment.getTitle())));
-					 */
-				}
-			}
-
-			@Override
-			public void onFailed() {
-				SearchResultFileItemViewHolder holder = fileItemViewHolders.get(fileAttachment.getId());
-				holder.size.setVisible(true);
-				holder.size.setText("文件获取失败");
-				holder.progressBar.setVisible(false);
-			}
-		});
-
-		currentUser = currentUserService.findAll().get(0);
-		String url = Launcher.HOSTNAME + fileAttachment.getLink() + "?rc_uid=" + currentUser.getUserId() + "&rc_token="
-				+ currentUser.getAuthToken();
-		task.execute(url);
+//		final DownloadTask task = new DownloadTask(new HttpUtil.ProgressListener() {
+//			public void onProgress(int progress) {
+//				SearchResultFileItemViewHolder holder = fileItemViewHolders.get(fileAttachment.getId());
+//				if (progress >= 0 && progress < 100) {
+//
+//					if (holder.size.isVisible()) {
+//						holder.size.setVisible(false);
+//					}
+//					if (!holder.progressBar.isVisible()) {
+//						holder.progressBar.setVisible(true);
+//					}
+//
+//					holder.progressBar.setValue(progress);
+//				} else if (progress >= 100) {
+//					holder.progressBar.setVisible(false);
+//					holder.size.setVisible(true);
+//				}
+//			}
+//		});
+//
+//		task.setListener(new HttpResponseListener<byte[]>() {
+//			@Override
+//			public void onSuccess(byte[] data) {
+//				SearchResultFileItemViewHolder holder = fileItemViewHolders.get(fileAttachment.getId());
+//
+//				String path = fileCache.cacheFile(fileAttachment.getId(), fileAttachment.getTitle(), data);
+//
+//				if (path == null) {
+//					holder.size.setVisible(true);
+//					holder.size.setText("文件获取失败");
+//					holder.progressBar.setVisible(false);
+//				} else {
+//					holder.size.setVisible(true);
+//					System.out.println("文件已缓存在 " + path);
+//					holder.size.setText(fileCache.fileSizeString(path));
+//					downloadingFiles.remove(fileAttachment.getId());
+//
+//					/*
+//					 * for (SearchResultFileItemViewHolder h : fileItemViewHolders) { if
+//					 * (h.fileId.equals(fileAttachment.getId())) { h.progressBar.setVisible(false);
+//					 * h.size.setVisible(true);
+//					 * h.size.setText(fileCache.fileSizeString(fileCache.tryGetFileCache(
+//					 * fileAttachment.getId(), fileAttachment.getTitle()))); //break;
+//					 * //fileItemViewHolders.remove(h); } }
+//					 */
+//
+//					/*
+//					 * SearchResultFileItemViewHolder h =
+//					 * fileItemViewHolders.get(fileAttachment.getId());
+//					 * h.progressBar.setVisible(false); h.size.setVisible(true);
+//					 * h.size.setText(fileCache.fileSizeString(fileCache.tryGetFileCache(
+//					 * fileAttachment.getId(), fileAttachment.getTitle())));
+//					 */
+//				}
+//			}
+//
+//			@Override
+//			public void onFailed() {
+//				SearchResultFileItemViewHolder holder = fileItemViewHolders.get(fileAttachment.getId());
+//				holder.size.setVisible(true);
+//				holder.size.setText("文件获取失败");
+//				holder.progressBar.setVisible(false);
+//			}
+//		});
+//
+//		currentUser = currentUserService.findAll().get(0);
+//		String url = Launcher.HOSTNAME + fileAttachment.getLink() + "?rc_uid=" + currentUser.getUserId() + "&rc_token="
+//				+ currentUser.getAuthToken();
+//		task.execute(url);
 	}
 
 	/**

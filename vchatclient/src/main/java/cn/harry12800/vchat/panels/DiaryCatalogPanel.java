@@ -39,6 +39,7 @@ import cn.harry12800.j2se.dialog.YesNoDialog;
 import cn.harry12800.j2se.style.UI;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.Clip;
+import cn.harry12800.j2se.utils.HttpUtil;
 import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.Lists;
@@ -54,7 +55,6 @@ import cn.harry12800.vchat.model.diary.CategoryNode;
 import cn.harry12800.vchat.model.diary.MyJTreeTransferHandler;
 import cn.harry12800.vchat.model.diary.MyTreeUI;
 import cn.harry12800.vchat.model.diary.TreeNodeRenderer;
-import cn.harry12800.vchat.utils.HttpUtil;
 
 /**
  * 日志的目录面板

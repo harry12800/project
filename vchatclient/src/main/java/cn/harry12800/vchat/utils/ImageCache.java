@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
+import cn.harry12800.j2se.utils.HttpUtil;
 import cn.harry12800.vchat.app.App;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.db.model.CurrentUser;

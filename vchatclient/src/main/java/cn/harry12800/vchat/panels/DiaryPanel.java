@@ -42,6 +42,7 @@ import cn.harry12800.j2se.dialog.InputMessageDialog;
 import cn.harry12800.j2se.dialog.InputMessageDialog.Callback;
 import cn.harry12800.j2se.style.UI;
 import cn.harry12800.j2se.utils.Config;
+import cn.harry12800.j2se.utils.HttpUtil;
 import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.DateUtils;
 import cn.harry12800.tools.FileUtils;
@@ -58,7 +59,6 @@ import cn.harry12800.vchat.model.diary.AricleNode;
 import cn.harry12800.vchat.model.diary.BaiduReader;
 import cn.harry12800.vchat.model.diary.RelativeDateFormat;
 import cn.harry12800.vchat.model.diary.SearchInputText;
-import cn.harry12800.vchat.utils.HttpUtil;
 
 public class DiaryPanel extends JPanel implements DropTargetListener {
 	/**

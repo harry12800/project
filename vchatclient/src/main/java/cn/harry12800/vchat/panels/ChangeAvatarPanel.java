@@ -30,13 +30,13 @@ import org.apache.commons.codec.binary.Base64;
 import cn.harry12800.j2se.component.rc.RCButton;
 import cn.harry12800.j2se.style.layout.VerticalFlowLayout;
 import cn.harry12800.j2se.style.ui.Colors;
+import cn.harry12800.j2se.utils.HttpUtil;
 import cn.harry12800.j2se.utils.IconUtil;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.config.Contants;
 import cn.harry12800.vchat.db.model.CurrentUser;
 import cn.harry12800.vchat.frames.MainFrame;
 import cn.harry12800.vchat.utils.AvatarUtil;
-import cn.harry12800.vchat.utils.HttpUtil;
 
 /**
  * 修改头像面板

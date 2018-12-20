@@ -26,9 +26,9 @@ import cn.harry12800.db.entity.FingerChatUser;
 import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.mapper.FingerChatUserMapper;
 import cn.harry12800.db.mapper.UserInfoMapper;
+import cn.harry12800.j2se.utils.HttpUtil;
 import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.Maps;
-import cn.harry12800.vchat.frames.components.HttpUtil;
 
 /**
  * 用户表Service

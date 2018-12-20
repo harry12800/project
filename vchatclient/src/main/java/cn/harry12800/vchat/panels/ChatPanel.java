@@ -57,6 +57,7 @@ import cn.harry12800.j2se.module.tray.TrayListener;
 import cn.harry12800.j2se.module.tray.TrayUtil;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.Clip;
+import cn.harry12800.j2se.utils.HttpUtil;
 import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.StringUtils;
@@ -87,13 +88,11 @@ import cn.harry12800.vchat.entity.MessageItem;
 import cn.harry12800.vchat.frames.MainFrame;
 import cn.harry12800.vchat.helper.MessageViewHolderCacheHelper;
 import cn.harry12800.vchat.listener.ExpressionListener;
-import cn.harry12800.vchat.tasks.DownloadTask;
 import cn.harry12800.vchat.tasks.HttpResponseListener;
 import cn.harry12800.vchat.tasks.UploadTaskCallback;
 import cn.harry12800.vchat.utils.AvatarUtil;
 import cn.harry12800.vchat.utils.ClipboardUtil;
 import cn.harry12800.vchat.utils.FileCache;
-import cn.harry12800.vchat.utils.HttpUtil;
 import cn.harry12800.vchat.utils.MimeTypeUtil;
 
 /**
@@ -1163,69 +1162,69 @@ public class ChatPanel extends ParentAvailablePanel {
 	 * @param messageId
 	 */
 	private void downloadFile(FileAttachment fileAttachment, String messageId) {
-		final DownloadTask task = new DownloadTask(new HttpUtil.ProgressListener() {
-			@Override
-			public void onProgress(int progress) {
-				int pos = findMessageItemPositionInViewReverse(messageId);
-				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
-
-				logger.debug("文件下载进度：" + progress);
-				if (pos < 0 || holder == null) {
-					return;
-				}
-
-				if (progress >= 0 && progress < 100) {
-					if (holder.sizeLabel.isVisible()) {
-						holder.sizeLabel.setVisible(false);
-					}
-					if (!holder.progressBar.isVisible()) {
-						holder.progressBar.setVisible(true);
-					}
-
-					holder.progressBar.setValue(progress);
-				} else if (progress >= 100) {
-					holder.progressBar.setVisible(false);
-					holder.sizeLabel.setVisible(true);
-				}
-			}
-		});
-
-		task.setListener(new HttpResponseListener<byte[]>() {
-			@Override
-			public void onSuccess(byte[] data) {
-				// System.out.println(data);
-				String path = fileCache.cacheFile(fileAttachment.getId(), fileAttachment.getTitle(), data);
-
-				int pos = findMessageItemPositionInViewReverse(messageId);
-				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
-
-				if (pos < 0 || holder == null) {
-					return;
-				}
-				if (path == null) {
-					holder.sizeLabel.setVisible(true);
-					holder.sizeLabel.setText("文件获取失败");
-					holder.progressBar.setVisible(false);
-				} else {
-					holder.sizeLabel.setVisible(true);
-					System.out.println("文件已缓存在 " + path);
-					holder.sizeLabel.setText(fileCache.fileSizeString(path));
-				}
-			}
-
-			@Override
-			public void onFailed() {
-				int pos = findMessageItemPositionInViewReverse(messageId);
-				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
-				holder.sizeLabel.setVisible(true);
-				holder.sizeLabel.setText("文件获取失败");
-				holder.progressBar.setVisible(false);
-			}
-		});
-
-		String url = Launcher.HOSTNAME + fileAttachment.getLink() + "?rc_uid=" + currentUser.getUserId() + "&rc_token="
-				+ currentUser.getAuthToken();
-		task.execute(url);
+//		final DownloadTask task = new DownloadTask(new HttpUtil.ProgressListener() {
+//			@Override
+//			public void onProgress(int progress) {
+//				int pos = findMessageItemPositionInViewReverse(messageId);
+//				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
+//
+//				logger.debug("文件下载进度：" + progress);
+//				if (pos < 0 || holder == null) {
+//					return;
+//				}
+//
+//				if (progress >= 0 && progress < 100) {
+//					if (holder.sizeLabel.isVisible()) {
+//						holder.sizeLabel.setVisible(false);
+//					}
+//					if (!holder.progressBar.isVisible()) {
+//						holder.progressBar.setVisible(true);
+//					}
+//
+//					holder.progressBar.setValue(progress);
+//				} else if (progress >= 100) {
+//					holder.progressBar.setVisible(false);
+//					holder.sizeLabel.setVisible(true);
+//				}
+//			}
+//		});
+//
+//		task.setListener(new HttpResponseListener<byte[]>() {
+//			@Override
+//			public void onSuccess(byte[] data) {
+//				// System.out.println(data);
+//				String path = fileCache.cacheFile(fileAttachment.getId(), fileAttachment.getTitle(), data);
+//
+//				int pos = findMessageItemPositionInViewReverse(messageId);
+//				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
+//
+//				if (pos < 0 || holder == null) {
+//					return;
+//				}
+//				if (path == null) {
+//					holder.sizeLabel.setVisible(true);
+//					holder.sizeLabel.setText("文件获取失败");
+//					holder.progressBar.setVisible(false);
+//				} else {
+//					holder.sizeLabel.setVisible(true);
+//					System.out.println("文件已缓存在 " + path);
+//					holder.sizeLabel.setText(fileCache.fileSizeString(path));
+//				}
+//			}
+//
+//			@Override
+//			public void onFailed() {
+//				int pos = findMessageItemPositionInViewReverse(messageId);
+//				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
+//				holder.sizeLabel.setVisible(true);
+//				holder.sizeLabel.setText("文件获取失败");
+//				holder.progressBar.setVisible(false);
+//			}
+//		});
+//
+//		String url = Launcher.HOSTNAME + fileAttachment.getLink() + "?rc_uid=" + currentUser.getUserId() + "&rc_token="
+//				+ currentUser.getAuthToken();
+//		task.execute(url);
 	}
 
 	/**

@@ -14,6 +14,7 @@ import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.component.rc.RCListView;
 import cn.harry12800.j2se.style.ui.Colors;
+import cn.harry12800.j2se.utils.HttpUtil;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.vchat.adapter.RoomItemViewHolder;
 import cn.harry12800.vchat.adapter.RoomItemsAdapter;
@@ -24,7 +25,6 @@ import cn.harry12800.vchat.db.model.Room;
 import cn.harry12800.vchat.db.service.RoomService;
 import cn.harry12800.vchat.entity.RoomItem;
 import cn.harry12800.vchat.utils.AvatarUtil;
-import cn.harry12800.vchat.utils.HttpUtil;
 
 /**
  * 左侧聊天列表 Created by harry12800 on 17-5-30.

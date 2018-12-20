@@ -24,7 +24,6 @@ import cn.harry12800.vchat.db.model.Room;
 import cn.harry12800.vchat.db.service.ContactsUserService;
 import cn.harry12800.vchat.db.service.RoomService;
 import cn.harry12800.vchat.utils.AvatarUtil;
-import cn.harry12800.vchat.utils.HttpUtil;
 
 /**
  * Created by harry12800 on 2017/6/15.
@@ -141,9 +140,5 @@ public class UserInfoPanel extends ParentAvailablePanel {
 //		RoomsPanel.getContext().activeItem(0);
 		ChatPanel.getContext().enterRoom(user.getFriendId());
 	}
-
-	public static void main(String[] args) throws IOException {
-		String string = HttpUtil.get("http://10.3.10.110/net-auth/v2/hello");
-		System.out.println(string);
-	}
+	 
 }
