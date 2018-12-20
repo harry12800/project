@@ -77,7 +77,7 @@ public class HelloController {
 		try {
 			String runtimeOut = MachineUtils.runtimeOut(sentence);
 			r.setContent(runtimeOut);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			MyResponse setMsg = MyResponse.newServerError().setMsg(e.getMessage());
 			e.printStackTrace();
 			return setMsg;
