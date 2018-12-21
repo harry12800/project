@@ -374,6 +374,25 @@ public class LoginFrame extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
+	public void loginSuccess(LoginPacket.Response userResponse) {
+		this.dispose();
+		context = null;
+		System.out.println(userResponse);
+		CurrentUser currentUser = new CurrentUser();
+		currentUser.setId(userResponse.id);
+		currentUser.setUserId(userResponse.getUserId());
+		currentUser.setUsername(userResponse.getNickName());
+		currentUser.setPassword(new String(passwordField.getPassword()));
+		currentUserService.insertOrUpdate(currentUser);
+		Launcher.currentUser = currentUser;
+		Launcher.iduserIdMaps.put(userResponse.getId(), userResponse.getUserId());
+		Config.setProp("username", userResponse.getUserId());
+		MainFrame frame = MainFrame.getContext();
+		TrayUtil.getTray().setFrame(frame);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+
 
 	public void loginFail(String tipContent) {
 		showMessage(tipContent);

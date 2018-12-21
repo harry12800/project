@@ -84,7 +84,7 @@ public class UserLoginHandler {
 		if (resultCode == ResultCode.SUCCESS) {
 			ShowAllUserResponse userResponse = new ShowAllUserResponse();
 			userResponse.readFromBytes(data);
-			MainFrame.getContext().showAllUser(userResponse);
+//			MainFrame.getContext().showAllUser(userResponse);
 		} else {
 			LoginFrame.getContext().loginFail(resultCodeTip.getTipContent(resultCode));
 		}

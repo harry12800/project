@@ -229,12 +229,13 @@ public class SearchResultItemsAdapter extends BaseAdapter<SearchResultItemViewHo
 				if (e.getButton() == MouseEvent.BUTTON1) {
 
 					if (item.getType().equals("d")) {
-						String creatorId = Launcher.currentUser.getUserId();
-						String roomId = roomService.findRelativeRoomIdByUserId(item.getId(),creatorId).getRoomId();
-						enterRoom(roomId, 0L);
+						long creatorId = Launcher.currentUser.getId();
+						// TODO
+//						String roomId = roomService.findRelativeRoomIdByUserId(item.getId(),creatorId).getRoomId();
+//						enterRoom(roomId, 0L);
 						clearSearchText();
 					} else if (item.getType().equals("c") || item.getType().equals("p")) {
-						enterRoom(item.getId(), 0L);
+						enterRoom(Long.valueOf(item.getId()), 0L);
 						clearSearchText();
 					} else if (item.getType().equals("searchMessage")) {
 						if (searchMessageOrFileListener != null) {
@@ -362,7 +363,7 @@ public class SearchResultItemsAdapter extends BaseAdapter<SearchResultItemViewHo
 		this.keyWord = keyWord;
 	}
 
-	private void enterRoom(String roomId, long firstMessageTimestamp) {
+	private void enterRoom(long roomId, long firstMessageTimestamp) {
 		ChatPanel.getContext().enterRoom(roomId, firstMessageTimestamp);
 	}
 

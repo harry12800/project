@@ -16,10 +16,10 @@ public class RoomDao extends BasicDao {
 		super(session, RoomDao.class);
 	}
 
-	public Room findRelativeRoomIdByUserId(String userId, String creatorId) {
+	public Room findRelativeRoomIdByUserId(long userId, long creatorId) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", "'" + userId + "'");
-		map.put("creatorId", "'" + creatorId + "'");
+		map.put("userId", "" + userId + "");
+		map.put("creatorId", "" + creatorId + "");
 		return (Room) session.selectOne("findRelativeRoomIdByUserId", map);
 	}
 
@@ -29,7 +29,7 @@ public class RoomDao extends BasicDao {
 		return session.selectList("searchByName", map);
 	}
 
-	public List<Room> findRelativeRoomIdByCreatorId(String userId) {
+	public List<Room> findRelativeRoomIdByCreatorId(long userId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("condition", "'" + userId + "'");
 		return  session.selectList("findSelfRoomIdByCreatorId", map);

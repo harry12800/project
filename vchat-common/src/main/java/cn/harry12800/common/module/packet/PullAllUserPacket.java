@@ -53,6 +53,11 @@ public class PullAllUserPacket extends GoBackPacket {
 		public List<UserEnity> users = new ArrayList<UserEnity>();
 
 		public Response() { }
+
+		@Override
+		public String toString() {
+			return "Response [users=" + users + "]";
+		}
 	 
 	}
 }

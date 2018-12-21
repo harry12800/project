@@ -24,27 +24,27 @@ public class MessageService extends BasicService<MessageDao, Message> {
 		}
 	}
 
-	public Message findLastMessage(String roomId) {
+	public Message findLastMessage(Long roomId) {
 		return dao.findLastMessage(roomId);
 	}
 
-	public int deleteByRoomId(String roomId) {
+	public int deleteByRoomId(Long roomId) {
 		return dao.deleteByRoomId(roomId);
 	}
 
-	public int countByRoom(String roomId) {
+	public int countByRoom(Long roomId) {
 		return dao.countByRoom(roomId);
 	}
 
-	public List<Message> findByPage(String roomId, int page, int pageLength) {
+	public List<Message> findByPage(Long roomId, int page, int pageLength) {
 		return dao.findByPage(roomId, page, pageLength);
 	}
 
-	public List<Message> findOffset(String roomId, int offset, int pageLength) {
+	public List<Message> findOffset(long roomId, int offset, int pageLength) {
 		return dao.findOffset(roomId, offset, pageLength);
 	}
 
-	public long findLastMessageTime(String roomId) {
+	public long findLastMessageTime(Long roomId) {
 		return dao.findLastMessageTime(roomId);
 	}
 
@@ -52,7 +52,7 @@ public class MessageService extends BasicService<MessageDao, Message> {
 		return dao.insertAll(list);
 	}
 
-	public List<Message> findBetween(String roomId, long start, long end) {
+	public List<Message> findBetween(long roomId, long start, long end) {
 		return dao.findBetween(roomId, start, end);
 	}
 

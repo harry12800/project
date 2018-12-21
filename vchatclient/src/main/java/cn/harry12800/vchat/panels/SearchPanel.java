@@ -255,7 +255,7 @@ public class SearchPanel extends ParentAvailablePanel {
 
 		SearchResultItem item;
 		for (Room room : rooms) {
-			item = new SearchResultItem(room.getRoomId(), room.getName(), room.getType());
+			item = new SearchResultItem(room.getRoomId()+"", room.getName(), room.getType());
 			retList.add(item);
 		}
 		return retList;
@@ -272,7 +272,7 @@ public class SearchPanel extends ParentAvailablePanel {
 		List<SearchResultItem> retList = new ArrayList<>();
 		SearchResultItem item;
 		for (ContactsUser user : contactsUsers) {
-			item = new SearchResultItem(user.getUserId(), user.getUsername(), "d");
+			item = new SearchResultItem(user.getUserId()+"", user.getUsername(), "d");
 			retList.add(item);
 		}
 		return retList;

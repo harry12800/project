@@ -80,7 +80,7 @@ public class ChatHandlerImpl implements ChatHandler {
 			FileChatRequest request = new FileChatRequest();
 			request.readFromBytes(data);
 			//参数校验
-			UserInfo user = userService.findByUserId(request.getTargetUserId());
+			UserInfo user = userService.findById(request.getTargetUserId());
 			if (user == null) {
 				return Result.ERROR(ResultCode.AGRUMENT_ERROR);
 			}

@@ -20,7 +20,7 @@ import cn.harry12800.vchat.utils.AvatarUtil;
 @SuppressWarnings("serial")
 public class RemindUserPopup extends JPopupMenu {
 	private List<String> users;
-	private String roomId = "";
+	private long roomId = 0;
 	private UserSelectedCallBack selectedCallBack;
 
 	public RemindUserPopup() {
@@ -30,8 +30,8 @@ public class RemindUserPopup extends JPopupMenu {
 		this.users = users;
 	}
 
-	public void show(Component invoker, int x, int y, String roomId) {
-		if (!roomId.equals(this.roomId)) {
+	public void show(Component invoker, int x, int y, long roomId) {
+		if (roomId!= this.roomId) {
 			this.removeAll();
 			this.initComponents();
 			this.revalidate();
@@ -42,7 +42,7 @@ public class RemindUserPopup extends JPopupMenu {
 	}
 
 	public void reset() {
-		this.roomId = "";
+		this.roomId = 0;
 	}
 
 	public void setUsers(List<String> users) {

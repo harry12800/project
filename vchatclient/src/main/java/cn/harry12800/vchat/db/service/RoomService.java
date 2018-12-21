@@ -26,15 +26,22 @@ public class RoomService extends BasicService<RoomDao, Room> {
 	boolean exist(Room room){
 		return dao.exist(room);
 	}
-	public Room findRelativeRoomIdByUserId(String userId,String creatorId) {
+	public Room findRelativeRoomIdByUserId(long userId,long creatorId) {
 		return dao.findRelativeRoomIdByUserId(userId,creatorId);
 	}
 
-	public List<Room> findRelativeRoomIdByCreatorId(String userId) {
+	public List<Room> findRelativeRoomIdByCreatorId(long userId) {
 		return dao.findRelativeRoomIdByCreatorId(userId);
 	}
 	public Room findByName(String name) {
 		List list = dao.find("name", name);
+		if (list.size() > 0) {
+			return (Room) list.get(0);
+		}
+		return null;
+	}
+	public Room findById(long id) {
+		List list = dao.find("roomId", id);
 		if (list.size() > 0) {
 			return (Room) list.get(0);
 		}

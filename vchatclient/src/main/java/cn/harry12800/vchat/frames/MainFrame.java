@@ -451,7 +451,7 @@ public class MainFrame extends JFrame {
 	private void startPullMsg() {
 		try {
 			// 构建请求
-			PullMsgPacket p = new PullMsgPacket(Long.valueOf(Launcher.currentUser.getUserId()));
+			PullMsgPacket p = new PullMsgPacket(Launcher.currentUser.getId());
 			Launcher.client.sendRequest(p.requestPacket);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -490,11 +490,9 @@ public class MainFrame extends JFrame {
 		super.dispose();
 	}
 
-	public void showAllUser(ShowAllUserResponse userResponse) {
-//		RoomsPanel.getContext().initData(userResponse);
-		ContactsPanel.getContext().initData(userResponse);
+	public void showAllUser(cn.harry12800.common.module.packet.PullAllUserPacket.Response body) {
+		ContactsPanel.getContext().initData(body);
 	}
-
 	public void alert(String info) {
 		new MessageDialog(MainFrame.getContext(), "温馨提示", info);
 	}

@@ -62,66 +62,66 @@ public class RoomsPanel extends ParentAvailablePanel {
 	public void initData(ShowAllUserResponse userResponse) {
 		List<UserResponse> users = userResponse.getUsers();
 		for (UserResponse user : users) {
-			RoomItem item = new RoomItem();
-			item.setRoomId(user.getUserId());
-			item.setTimestamp(Instant.now().getEpochSecond());
-			item.setTitle(user.getNickName());
-			item.setType("d");
-			Room room = roomService.findById(user.getUserId());
-			if (room == null) {
-				room = new Room();
-			}
-			room.setCreatorId(Launcher.currentUser.getUserId());
-			room.setRoomId(user.getUserId());
-			room.setName(user.getNickName());
-			room.setTopic(user.getNickName());
-			room.setType("d");
-			item.setUnreadCount(room.getUnreadCount());
-			item.setLastMessage(room.getLastMessage());
-			roomService.insertOrUpdate(room);
-			roomItemList.add(item);
+//			RoomItem item = new RoomItem();
+//			item.setRoomId(user.getUserId());
+//			item.setTimestamp(Instant.now().getEpochSecond());
+//			item.setTitle(user.getNickName());
+//			item.setType("d");
+//			Room room = roomService.findById(user.getUserId());
+//			if (room == null) {
+//				room = new Room();
+//			}
+//			room.setCreatorId(Launcher.currentUser.getUserId());
+//			room.setRoomId(user.getUserId());
+//			room.setName(user.getNickName());
+//			room.setTopic(user.getNickName());
+//			room.setType("d");
+//			item.setUnreadCount(room.getUnreadCount());
+//			item.setLastMessage(room.getLastMessage());
+//			roomService.insertOrUpdate(room);
+//			roomItemList.add(item);
 		}
-		Launcher.loadUsers(users);
+//		Launcher.loadUsers(users);
 		downloadAvatar(users);
 		roomItemsListView.notifyDataSetChanged(true);
 	}
 
 	public void addWebSocketRoom(String userId) {
-		RoomItem item = new RoomItem();
-		item.setRoomId(userId);
-		item.setTimestamp(Instant.now().getEpochSecond());
-		item.setTitle(userId);
-		item.setType("d");
-		boolean contains = roomItemList.contains(item);
-		if (!contains) {
-			Room room = roomService.findById(userId);
-			if (room == null) {
-				room = new Room();
-			}
-			room.setCreatorId(Launcher.currentUser.getUserId());
-			room.setRoomId(userId);
-			room.setName(userId);
-			room.setTopic(userId);
-			room.setType("d");
-			item.setUnreadCount(room.getUnreadCount());
-			item.setLastMessage(room.getLastMessage());
-			roomItemList.add(item);
-			roomService.insertOrUpdate(room);
-			roomItemsListView.notifyDataSetChanged(true);
-		}
+//		RoomItem item = new RoomItem();
+//		item.setRoomId(userId);
+//		item.setTimestamp(Instant.now().getEpochSecond());
+//		item.setTitle(userId);
+//		item.setType("d");
+//		boolean contains = roomItemList.contains(item);
+//		if (!contains) {
+//			Room room = roomService.findById(userId);
+//			if (room == null) {
+//				room = new Room();
+//			}
+//			room.setCreatorId(Launcher.currentUser.getUserId());
+//			room.setRoomId(userId);
+//			room.setName(userId);
+//			room.setTopic(userId);
+//			room.setType("d");
+//			item.setUnreadCount(room.getUnreadCount());
+//			item.setLastMessage(room.getLastMessage());
+//			roomItemList.add(item);
+//			roomService.insertOrUpdate(room);
+//			roomItemsListView.notifyDataSetChanged(true);
+//		}
 
 	}
 
 	public void addNewRoomItemToTop(Room room){
-		RoomItem item = new RoomItem();
-		item.setRoomId(room.getRoomId());
-		item.setTimestamp(room.getLastChatAt());
-		item.setTitle(room.getName());
-		item.setType(room.getType());
-		item.setLastMessage(room.getLastMessage());
-		item.setUnreadCount(room.getUnreadCount());
-		roomItemList.add(0,item);
-		notifyDataSetChanged(false);
+//		RoomItem item = new RoomItem();
+//		item.setRoomId(room.getRoomId());
+//		item.setTimestamp(room.getLastChatAt());
+//		item.setTitle(room.getName());
+//		item.setType(room.getType());
+//		item.setLastMessage(room.getLastMessage());
+//		item.setUnreadCount(room.getUnreadCount());
+//		roomItemList.add(0,item);
+//		notifyDataSetChanged(false);
 	}
 	private void downloadAvatar(List<UserResponse> users) {
 
@@ -149,7 +149,7 @@ public class RoomsPanel extends ParentAvailablePanel {
 		roomItemList.clear();
 		// TODO: 从数据库中加载房间列表
 //		Room harry12800 = roomService.findRelativeRoomIdByUserId(Launcher.currentUser.getUserId());
-		List<Room> rooms = roomService.findRelativeRoomIdByCreatorId(Launcher.currentUser.getUserId());
+		List<Room> rooms = roomService.findRelativeRoomIdByCreatorId(Launcher.currentUser.getId());
 		for (Room room : rooms) {
 			RoomItem item = new RoomItem();
 			item.setRoomId(room.getRoomId());
@@ -176,12 +176,12 @@ public class RoomsPanel extends ParentAvailablePanel {
 	 *
 	 * @param msgRoomId
 	 */
-	public void updateRoomsList(String msgRoomId) {
-		String roomId = (String) ((RoomItemViewHolder) (roomItemsListView.getItem(0))).getTag();
-		if (roomId.equals(msgRoomId)) {
+	public void updateRoomsList(long msgRoomId) {
+		long roomId = (long) ((RoomItemViewHolder) (roomItemsListView.getItem(0))).getTag();
+		if (roomId == msgRoomId ) {
 			Room room = roomService.findById(roomId);
 			for (RoomItem roomItem : roomItemList) {
-				if (roomItem.getRoomId().equals(roomId)) {
+				if (roomItem.getRoomId() == (roomId)) {
 					roomItem.setUnreadCount(room.getUnreadCount());
 					roomItem.setTimestamp(room.getLastChatAt());
 					roomItem.setLastMessage(room.getLastMessage());
@@ -200,15 +200,15 @@ public class RoomsPanel extends ParentAvailablePanel {
 	 * 
 	 * @param roomId
 	 */
-	public void updateRoomItem(String roomId) {
-		if (roomId == null || roomId.isEmpty()) {
+	public void updateRoomItem(long roomId) {
+		if (roomId == 0 ) {
 			notifyDataSetChanged(true);
 			return;
 		}
 		boolean s =false;
 		for (int i = 0; i < roomItemList.size(); i++) {
 			RoomItem item = roomItemList.get(i);
-			if (item.getRoomId().equals(roomId)) {
+			if (item.getRoomId() == (roomId)) {
 				s = true;
 				Room room = roomService.findById(item.getRoomId());
 				if (room != null) {

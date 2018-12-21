@@ -7,13 +7,13 @@
 	<cache/>
 
 	<insert id="insert">
-		INSERT INTO current_user(userId,username,authToken,password,rawPassword,expireDate, realName, bcrypt, avatarOrigin)
-		VALUES (#{userId},#{username},#{authToken},#{password},#{rawPassword},#{expireDate},#{realName},#{bcrypt},#{avatarOrigin})
+		INSERT INTO current_user(id,userId,username,authToken,password,rawPassword,expireDate, realName, bcrypt, avatarOrigin)
+		VALUES (#{id},#{userId},#{username},#{authToken},#{password},#{rawPassword},#{expireDate},#{realName},#{bcrypt},#{avatarOrigin})
 	</insert>
 
 
 	<select id="findById" resultType="CurrentUser">
-		SELECT * FROM current_user where userId = #{id}
+		SELECT * FROM current_user where Id = #{id}
 	</select>
 
 	<select id="findAll" resultType="CurrentUser">
@@ -29,7 +29,7 @@
 	</select>
 
 	<select id="exist" resultType="java.lang.Integer">
-		SELECT count(1) FROM current_user where userId = #{id}
+		SELECT count(1) FROM current_user where id = #{id}
 	</select>
 
 	<delete id="deleteAll">
@@ -49,7 +49,7 @@
 			bcrypt=#{bcrypt},
 			avatarOrigin=#{avatarOrigin},
 		</set>
-		WHERE userId=#{userId}
+		WHERE id=#{id}
 	</update>
 
 	<update id="updateIgnoreNull">
@@ -65,7 +65,7 @@
 			<if test="bcrypt!= null">bcrypt=#{bcrypt},</if>
 			<if test="avatarOrigin!= null">avatarOrigin=#{avatarOrigin},</if>
 		</set>
-		WHERE userId=#{userId}
+		WHERE id=#{id}
 	</update>
 </mapper>
 

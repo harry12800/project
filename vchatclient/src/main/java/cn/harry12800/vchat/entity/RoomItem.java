@@ -5,7 +5,7 @@ package cn.harry12800.vchat.entity;
  */
 
 public class RoomItem implements Comparable<RoomItem> {
-	private String roomId;
+	private long roomId;
 	private String title;
 	private String lastMessage;
 	private int unreadCount;
@@ -15,7 +15,7 @@ public class RoomItem implements Comparable<RoomItem> {
 	public RoomItem() {
 	}
 
-	public RoomItem(String roomId, String title, String lastMessage, int unreadCount, long timestamp, String type) {
+	public RoomItem(long roomId, String title, String lastMessage, int unreadCount, long timestamp, String type) {
 		this.roomId = roomId;
 		this.title = title;
 		this.lastMessage = lastMessage;
@@ -24,11 +24,11 @@ public class RoomItem implements Comparable<RoomItem> {
 		this.type = type;
 	}
 
-	public String getRoomId() {
+	public long getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(String roomId) {
+	public void setRoomId(long roomId) {
 		this.roomId = roomId;
 	}
 
@@ -90,7 +90,7 @@ public class RoomItem implements Comparable<RoomItem> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((roomId == null) ? 0 : roomId.hashCode());
+		result = prime * result + (int) (roomId ^ (roomId >>> 32));
 		return result;
 	}
 
@@ -103,12 +103,10 @@ public class RoomItem implements Comparable<RoomItem> {
 		if (getClass() != obj.getClass())
 			return false;
 		RoomItem other = (RoomItem) obj;
-		if (roomId == null) {
-			if (other.roomId != null)
-				return false;
-		} else if (!roomId.equals(other.roomId))
+		if (roomId != other.roomId)
 			return false;
 		return true;
 	}
-	
+
+	 
 }

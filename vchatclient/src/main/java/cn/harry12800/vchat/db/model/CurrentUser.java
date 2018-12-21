@@ -4,6 +4,9 @@ package cn.harry12800.vchat.db.model;
  * Created by harry12800 on 08/06/2017.
  */
 public class CurrentUser extends BasicModel {
+	
+	
+	private long id;
 	private String userId;
 
 	private String username;
@@ -25,8 +28,9 @@ public class CurrentUser extends BasicModel {
 	public CurrentUser() {
 	}
 
-	public CurrentUser(String userId, String username, String authToken, String password, String rawPassword,
+	public CurrentUser(long id,String userId, String username, String authToken, String password, String rawPassword,
 			String expireDate, String realName, String bcrypt, String avatarOrigin) {
+		this.id = id;
 		this.userId = userId;
 		this.username = username;
 		this.authToken = authToken;
@@ -36,6 +40,14 @@ public class CurrentUser extends BasicModel {
 		this.realName = realName;
 		this.bcrypt = bcrypt;
 		this.avatarOrigin = avatarOrigin;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getUserId() {

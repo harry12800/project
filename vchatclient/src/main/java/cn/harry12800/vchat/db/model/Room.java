@@ -9,7 +9,7 @@ package cn.harry12800.vchat.db.model;
  */
 
 public class Room extends BasicModel implements Comparable<Room> {
-	private String roomId;
+	private long roomId;
 	private String type;
 	private String name;
 	private String topic;
@@ -38,11 +38,11 @@ public class Room extends BasicModel implements Comparable<Room> {
 		this.unreadCount = unreadCount;
 	}
 
-	public String getRoomId() {
+	public long getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(String roomId) {
+	public void setRoomId(long roomId) {
 		this.roomId = roomId;
 	}
 

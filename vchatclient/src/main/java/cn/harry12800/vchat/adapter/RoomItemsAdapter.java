@@ -95,7 +95,7 @@ public class RoomItemsAdapter extends BaseAdapter<RoomItemViewHolder> {
 		}
 
 		// 设置是否激活
-		if (ChatPanel.CHAT_ROOM_OPEN_ID != null && item.getRoomId().equals(ChatPanel.CHAT_ROOM_OPEN_ID)) {
+		if (ChatPanel.CHAT_ROOM_OPEN_ID != 0 && item.getRoomId() == (ChatPanel.CHAT_ROOM_OPEN_ID)) {
 			setBackground(viewHolder, Colors.ITEM_SELECTED);
 			selectedViewHolder = viewHolder;
 		}
@@ -142,7 +142,7 @@ public class RoomItemsAdapter extends BaseAdapter<RoomItemViewHolder> {
 			});
 	}
 
-	private String[] getRoomMembers(String roomId) {
+	private String[] getRoomMembers(long roomId) {
 		Room room = roomService.findById(roomId);
 		String members = room.getMember();
 		String[] memberArr = null;
@@ -173,7 +173,7 @@ public class RoomItemsAdapter extends BaseAdapter<RoomItemViewHolder> {
 		holder.timeUnread.setBackground(color);
 	}
 
-	private void enterRoom(String roomId) {
+	private void enterRoom(long roomId) {
 		// 加载房间消息
 		ChatPanel.getContext().enterRoom(roomId);
 

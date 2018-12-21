@@ -16,28 +16,28 @@ public class MessageDao extends BasicDao {
 		super(session, MessageDao.class);
 	}
 
-	public Message findLastMessage(String roomId) {
+	public Message findLastMessage(long roomId) {
 		return (Message) session.selectOne("findLastMessage", roomId);
 	}
 
-	public int deleteByRoomId(String roomId) {
+	public int deleteByRoomId(Long roomId) {
 		return session.delete("deleteByRoomId", roomId);
 	}
 
-	public int countByRoom(String roomId) {
+	public int countByRoom(Long roomId) {
 		return (int) session.selectOne("countByRoom", roomId);
 	}
 
-	public List<Message> findByPage(String roomId, int page, int pageLength) {
+	public List<Message> findByPage(Long roomId, int page, int pageLength) {
 		page = page < 1 ? 1 : page;
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("roomId", "'" + roomId + "'");
+		map.put("roomId", roomId );
 		map.put("offset", (page - 1) * pageLength);
 		map.put("pageLength", pageLength);
 		return session.selectList("findByPage", map);
 	}
 
-	public long findLastMessageTime(String roomId) {
+	public long findLastMessageTime(Long roomId) {
 		Object count = session.selectOne("findLastMessageTime", roomId);
 		return count == null ? -1 : (long) count;
 	}
@@ -48,9 +48,9 @@ public class MessageDao extends BasicDao {
 		return count;
 	}
 
-	public List<Message> findBetween(String roomId, long start, long end) {
+	public List<Message> findBetween(long roomId, long start, long end) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("roomId", "'" + roomId + "'");
+		map.put("roomId",  roomId);
 		map.put("start", start);
 		map.put("end", end);
 		return session.selectList("findBetween", map);
@@ -61,9 +61,9 @@ public class MessageDao extends BasicDao {
 		return count == null ? -1 : (long) count;
 	}
 
-	public List<Message> findOffset(String roomId, int offset, int pageLength) {
+	public List<Message> findOffset(long roomId, int offset, int pageLength) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("roomId", "'" + roomId + "'");
+		map.put("roomId", "" + roomId + "");
 		map.put("offset", offset);
 		map.put("pageLength", pageLength);
 		return session.selectList("findByPage", map);

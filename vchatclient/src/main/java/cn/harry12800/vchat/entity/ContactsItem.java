@@ -6,24 +6,24 @@ import cn.harry12800.vchat.utils.CharacterParser;
  * Created by harry12800 on 17-5-30.
  */
 public class ContactsItem implements Comparable<ContactsItem> {
-	private String id;
+	private long id;
 	private String name;
 	private String type;
 
 	public ContactsItem() {
 	}
 
-	public ContactsItem(String id, String name, String type) {
+	public ContactsItem(long id, String name, String type) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
 	}
 
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

@@ -13,8 +13,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.harry12800.common.module.packet.PullAllUserPacket;
-import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
-import cn.harry12800.common.module.user.dto.UserResponse;
+import cn.harry12800.common.module.packet.entity.UserEnity;
 import cn.harry12800.j2se.component.rc.RCListView;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.vchat.adapter.ContactsItemsAdapter;
@@ -71,10 +70,9 @@ public class ContactsPanel extends ParentAvailablePanel {
 			e.printStackTrace();
 			// MainFrame.("无法连接服务器");
 		}
-		List<ContactsUser> contactsUsers = contactsUserService.findAll();
-		for (ContactsUser contactsUser:contactsUsers) {
-			ContactsItem item = new ContactsItem(contactsUser.getUserId(),
-					contactsUser.getUsername(), "d");
+		 List<ContactsUser> contactsUsers = contactsUserService.findAll();
+		for (ContactsUser contactsUser : contactsUsers) {
+			ContactsItem item = new ContactsItem(contactsUser.getUserId(), contactsUser.getUsername(), "d");
 			contactsItemList.add(item);
 		}
 
@@ -128,7 +126,7 @@ public class ContactsPanel extends ParentAvailablePanel {
 		// TODO: 服务器获取头像，这里从资源文件夹中获取
 		try {
 			String name = "/avatar/" + username + ".png";
-			//			System.out.println(name);
+			// System.out.println(name);
 			URL url = getClass().getResource(name);
 			BufferedImage image = ImageIO.read(url);
 			processAvatarData(image, username);
@@ -158,19 +156,20 @@ public class ContactsPanel extends ParentAvailablePanel {
 		}
 	}
 
-	public void initData(ShowAllUserResponse userResponse) {
+	public void initData(cn.harry12800.common.module.packet.PullAllUserPacket.Response body) {
 		contactsItemList.clear();
 		contactsListView.setAdapter(new ContactsItemsAdapter(contactsItemList));
-		List<UserResponse> users = userResponse.getUsers();
-		for (UserResponse user : users) {
-			ContactsItem item = new ContactsItem(user.getUserId(), user.getRealName(), "d");
+		List<UserEnity> users = body.users;
+		for (UserEnity user : users) {
+			ContactsItem item = new ContactsItem(user.getId(), user.getRealName(), "d");
 			contactsItemList.add(item);
-			ContactsUser contactsUser = new ContactsUser(Launcher.currentUser.getUserId(), user.getRealName(), user.getRealName(),user.getUserId());
-			contactsUserService.insertOrUpdate(contactsUser );
+			ContactsUser contactsUser = new ContactsUser(Launcher.currentUser.getId(), user.getRealName(),
+					user.getRealName(), user.getId());
+			contactsUserService.insertOrUpdate(contactsUser);
 		}
 		notifyDataSetChanged();
 		Launcher.loadUsers(users);
-//		downloadAvatar(users);
-//		roomItemsListView.notifyDataSetChanged(true);
+		// downloadAvatar(users);
+		// roomItemsListView.notifyDataSetChanged(true);
 	}
 }

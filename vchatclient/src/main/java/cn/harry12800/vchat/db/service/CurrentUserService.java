@@ -15,13 +15,15 @@ public class CurrentUserService extends BasicService<CurrentUserDao, CurrentUser
 	}
 
 	public int insertOrUpdate(CurrentUser currentUser) {
-		if (exist(currentUser.getUserId())) {
+		if (exist(currentUser)) {
 			return update(currentUser);
 		} else {
 			return insert(currentUser);
 		}
 	}
-
+	boolean exist(CurrentUser room){
+		return dao.exist(room);
+	}
 	/*
 	 * @Override public List<CurrentUser> findAll() { // TODO: 从数据库获取当前登录用户
 	 * List<CurrentUser> list = new ArrayList(); list.add(new

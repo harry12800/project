@@ -305,7 +305,7 @@ public class RoomMembersPanel extends ParentAvailablePanel {
 	 *
 	 * @param roomId
 	 */
-	private void deleteChannelOrGroup(String roomId) {
+	private void deleteChannelOrGroup(long roomId) {
 		JOptionPane.showMessageDialog(null, "删除群聊：" + roomId, "删除群聊", JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -314,7 +314,7 @@ public class RoomMembersPanel extends ParentAvailablePanel {
 	 *
 	 * @param roomId
 	 */
-	private void leaveChannelOrGroup(final String roomId) {
+	private void leaveChannelOrGroup(final long roomId) {
 		JOptionPane.showMessageDialog(null, "退出群聊：" + roomId, "退出群聊", JOptionPane.INFORMATION_MESSAGE);
 	}
 

@@ -49,8 +49,8 @@ public class FileChatPacket extends GoBackPacket {
 		/**
 		 * 要向哪个会话发消息
 		 */
-		public String targetUserId;
-		public String senderUserId;
+		public long targetUserId;
+		public long senderUserId;
 		public short total;
 		public short index;
 		public long position;

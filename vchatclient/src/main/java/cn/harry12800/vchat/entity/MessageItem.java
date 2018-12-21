@@ -20,12 +20,12 @@ public class MessageItem implements Comparable<MessageItem> {
 	public static final int RIGHT_ATTACHMENT = -3;
 
 	private String id;
-	private String roomId;
+	private long roomId;
 	private String messageContent;
 	private boolean groupable;
 	private long timestamp;
 	private String senderUsername;
-	private String senderId;
+	private long senderId;
 	private long updatedAt;
 	private int unreadCount;
 	private boolean needToResend;
@@ -44,7 +44,7 @@ public class MessageItem implements Comparable<MessageItem> {
 	public MessageItem() {
 	}
 
-	public MessageItem(Message message, String currentUserId) {
+	public MessageItem(Message message, long currentUserId) {
 		this();
 		this.setId(message.getId());
 		this.setMessageContent(message.getMessageContent());
@@ -84,7 +84,7 @@ public class MessageItem implements Comparable<MessageItem> {
 			this.setMessageType(SYSTEM_MESSAGE);
 		} else {
 			// 自己发的消息
-			if (message.getSenderId().equals(currentUserId)) {
+			if (message.getSenderId() == currentUserId) {
 				// 文件附件
 				if (isFileAttachment) {
 					this.setMessageType(RIGHT_ATTACHMENT);
@@ -128,11 +128,11 @@ public class MessageItem implements Comparable<MessageItem> {
 		this.id = id;
 	}
 
-	public String getRoomId() {
+	public long getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(String roomId) {
+	public void setRoomId(long roomId) {
 		this.roomId = roomId;
 	}
 
@@ -168,11 +168,11 @@ public class MessageItem implements Comparable<MessageItem> {
 		this.senderUsername = senderUsername;
 	}
 
-	public String getSenderId() {
+	public long getSenderId() {
 		return senderId;
 	}
 
-	public void setSenderId(String senderId) {
+	public void setSenderId(long senderId) {
 		this.senderId = senderId;
 	}
 

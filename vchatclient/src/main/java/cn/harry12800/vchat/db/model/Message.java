@@ -6,12 +6,12 @@ package cn.harry12800.vchat.db.model;
 
 public class Message extends BasicModel {
 	private String id;
-	private String roomId;
+	private long roomId;
 	private String messageContent;
 	private boolean groupable;
 	private long timestamp;
 	private String senderUsername;
-	private String senderId;
+	private long senderId;
 	private long updatedAt;
 	private boolean needToResend;
 	private int progress; // 文件上传进度
@@ -32,11 +32,11 @@ public class Message extends BasicModel {
 		this.id = id;
 	}
 
-	public String getRoomId() {
+	public long getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(String roomId) {
+	public void setRoomId(long roomId) {
 		this.roomId = roomId;
 	}
 
@@ -72,11 +72,11 @@ public class Message extends BasicModel {
 		this.senderUsername = senderUsername;
 	}
 
-	public String getSenderId() {
+	public long getSenderId() {
 		return senderId;
 	}
 
-	public void setSenderId(String senderId) {
+	public void setSenderId(long senderId) {
 		this.senderId = senderId;
 	}
 

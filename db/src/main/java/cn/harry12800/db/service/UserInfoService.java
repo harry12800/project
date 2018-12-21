@@ -122,7 +122,14 @@ public class UserInfoService {// extends CrudService<UserInfoMapper, UserInfo> {
 		}
 		return user;
 	}
-
+	public UserInfo findById(long userId) {
+		// 用户不存在
+		UserInfo user = userMapper.findById(userId);
+		if (user == null) {
+			throw new ErrorCodeException(ResultCode.USER_NO_EXIST);
+		}
+		return user;
+	}
 	@Autowired
 	FingerChatUserMapper mapper;
 	@Autowired

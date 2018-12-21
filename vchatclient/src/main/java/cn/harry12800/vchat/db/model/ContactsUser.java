@@ -6,9 +6,8 @@ package cn.harry12800.vchat.db.model;
 
 public class ContactsUser extends BasicModel {
 	
-	private String userId;
-	private String friendId;
-
+	private long userId;
+	private long friendId;
 	private String username;
 
 	private String name;
@@ -16,26 +15,27 @@ public class ContactsUser extends BasicModel {
 	public ContactsUser() {
 	}
 
-	public ContactsUser(String userId, String username, String name, String friendId) {
+	public ContactsUser(long userId, String username, String name, long friendId) {
 		this.userId = userId;
 		this.username = username;
 		this.name = name;
 		this.friendId = friendId;
 	}
 
-	public String getFriendId() {
+
+	public long getFriendId() {
 		return friendId;
 	}
 
-	public void setFriendId(String friendId) {
+	public void setFriendId(long friendId) {
 		this.friendId = friendId;
 	}
 
-	public String getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 

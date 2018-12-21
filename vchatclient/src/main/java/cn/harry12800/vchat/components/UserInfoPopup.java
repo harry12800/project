@@ -127,8 +127,8 @@ public class UserInfoPopup extends JPopupMenu {
 
 	private void openOrCreateDirectChat() {
 		ContactsUser user = contactsUserService.find("username", username).get(0);
-		String userId = user.getFriendId();
-		String creatorId = Launcher.currentUser.getUserId();
+		long userId = user.getFriendId();
+		long creatorId = Launcher.currentUser.getId();
 		Room room = roomService.findRelativeRoomIdByUserId(userId,creatorId);
 
 

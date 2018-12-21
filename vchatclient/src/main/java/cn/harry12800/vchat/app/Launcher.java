@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import org.apache.ibatis.session.SqlSession;
 
+import cn.harry12800.common.module.packet.entity.UserEnity;
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.component.utils.ImageUtils;
 import cn.harry12800.tools.Maps;
@@ -147,26 +148,29 @@ public class Launcher {
 		return context;
 	}
 
-	public static Map<String, UserResponse> userMaps = Maps.newHashMap();
+	public static Map<String, UserEnity> userMaps = Maps.newHashMap();
 	public static Map<Long, String> iduserIdMaps = Maps.newHashMap();
-	public static void loadUsers(List<UserResponse> users) {
-		for (UserResponse user : users) {
-			userMaps.put(user.getUserId(), user);
-			iduserIdMaps.put(user.getId(), user.getUserId());
-		}
-	}
 
-	public static void loadUser(UserResponse user) {
+	public static void loadUser(UserEnity user) {
 		userMaps.put(user.getUserId(), user);
 	}
 
-	public static String getUserNameByUserId(String id) {
+	public static String getUserNameByUserId(long id) {
 		return userMaps.get(id) == null ? "" : userMaps.get(id).getNickName();
 	}
-	public static long getIdByUserId(String id) {
+
+	public static long getIdByUserId(long id) {
 		return userMaps.get(id) == null ? -1L : userMaps.get(id).getId();
 	}
+
 	public static String getUserIdById(long id) {
 		return iduserIdMaps.get(id) == null ? "" : iduserIdMaps.get(id);
+	}
+
+	public static void loadUsers(List<UserEnity> users) {
+		for (UserEnity user : users) {
+			userMaps.put(user.getUserId(), user);
+			iduserIdMaps.put(user.getId(), user.getUserId());
+		}
 	}
 }

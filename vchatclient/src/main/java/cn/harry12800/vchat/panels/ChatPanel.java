@@ -21,9 +21,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -54,9 +52,6 @@ import cn.harry12800.j2se.module.tray.TrayInfo;
 import cn.harry12800.j2se.module.tray.TrayListener;
 import cn.harry12800.j2se.module.tray.TrayUtil;
 import cn.harry12800.j2se.style.ui.Colors;
-import cn.harry12800.j2se.utils.Clip;
-import cn.harry12800.j2se.utils.HttpUtil;
-import cn.harry12800.j2se.utils.JsonUtils;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.StringUtils;
 import cn.harry12800.vchat.adapter.message.BaseMessageViewHolder;
@@ -65,7 +60,6 @@ import cn.harry12800.vchat.adapter.message.MessageRightAttachmentViewHolder;
 import cn.harry12800.vchat.adapter.message.MessageRightImageViewHolder;
 import cn.harry12800.vchat.app.App;
 import cn.harry12800.vchat.app.Launcher;
-import cn.harry12800.vchat.app.config.Contants;
 import cn.harry12800.vchat.app.websocket.PullWebInfo.Letter;
 import cn.harry12800.vchat.components.GBC;
 import cn.harry12800.vchat.components.message.FileEditorThumbnail;
@@ -101,7 +95,7 @@ public class ChatPanel extends ParentAvailablePanel {
 	private MessagePanel messagePanel;
 	private MessageEditorPanel messageEditorPanel;
 	private static ChatPanel context;
-	public static String CHAT_ROOM_OPEN_ID = "";
+	public static long CHAT_ROOM_OPEN_ID = 0;
 
 	// APP启动时，已加载过远程未读消息的Rooms
 	private static List<String> remoteHistoryLoadedRooms = new ArrayList<>();
@@ -126,7 +120,7 @@ public class ChatPanel extends ParentAvailablePanel {
 	// 每次加载的消息条数
 	private static final int PAGE_LENGTH = 10;
 
-	String roomId;
+	long roomId;
 
 	private Logger logger = Logger.getLogger(this.getClass());
 
@@ -167,7 +161,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		add(messagePanel, new GBC(0, 0).setFill(GBC.BOTH).setWeight(1, 4));
 		add(messageEditorPanel, new GBC(0, 1).setFill(GBC.BOTH).setWeight(1, 1));
 
-		if (roomId == null) {
+		if (roomId == 0) {
 			messagePanel.setVisible(false);
 			messageEditorPanel.setVisible(false);
 		}
@@ -178,7 +172,7 @@ public class ChatPanel extends ParentAvailablePanel {
 	}
 
 	private void initData() {
-		if (roomId != null) {
+		if (roomId != 0) {
 			// 如果是从搜索列表进入房间的
 			if (firstMessageTimestamp != 0L) {
 				loadMessageWithEarliestTime(firstMessageTimestamp);
@@ -196,12 +190,12 @@ public class ChatPanel extends ParentAvailablePanel {
 			@Override
 			public void onScrollToTop() {
 				// 当滚动到顶部时，继续拿前面的消息
-				if (roomId != null) {
+				if (roomId != 0) {
 					List<Message> messages = messageService.findOffset(roomId, messageItems.size(), PAGE_LENGTH);
 
 					if (messages.size() > 0) {
 						for (int i = messages.size() - 1; i >= 0; i--) {
-							MessageItem item = new MessageItem(messages.get(i), currentUser.getUserId());
+							MessageItem item = new MessageItem(messages.get(i), currentUser.getId());
 							messageItems.add(0, item);
 						}
 					}
@@ -437,22 +431,23 @@ public class ChatPanel extends ParentAvailablePanel {
 	 * @param roomId
 	 * @param firstMessageTimestamp
 	 */
-	public void enterRoom(String roomId, long firstMessageTimestamp) {
-		if (roomId == null || roomId.isEmpty()) {
+	public void enterRoom(long roomId, long firstMessageTimestamp) {
+		if (roomId == 0) {
 			return;
 		}
 		this.firstMessageTimestamp = firstMessageTimestamp;
 		this.roomId = roomId;
 		CHAT_ROOM_OPEN_ID = roomId;
-		String creatorId = Launcher.currentUser.getUserId();
-		this.room = roomService.findRelativeRoomIdByUserId(roomId, creatorId);
+		long creatorId = Launcher.currentUser.getId();
+		// TODO
+		// this.room = roomService.findRelativeRoomIdByUserId(roomId,
+		// creatorId);
 		// 更新消息列表
 		this.notifyDataSetChanged();
 		// 更新房间标题，尤其是成员数
 		updateRoomTitle();
-		//		RoomMembersPanel.getContext().setRoomId(roomId);
+		// RoomMembersPanel.getContext().setRoomId(roomId);
 
-		
 		messageEditorPanel.getEditor().setText("");
 		updateUnreadCount(0);
 
@@ -463,7 +458,7 @@ public class ChatPanel extends ParentAvailablePanel {
 	 *
 	 * @param roomId
 	 */
-	public void enterRoom(String roomId) {
+	public void enterRoom(long roomId) {
 		enterRoom(roomId, 0L);
 	}
 
@@ -493,7 +488,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		if (messages.size() > 0) {
 			for (Message message : messages) {
 				if (!message.isDeleted()) {
-					MessageItem item = new MessageItem(message, currentUser.getUserId());
+					MessageItem item = new MessageItem(message, currentUser.getId());
 					this.messageItems.add(item);
 				}
 			}
@@ -513,7 +508,7 @@ public class ChatPanel extends ParentAvailablePanel {
 
 		if (messages.size() > 0) {
 			for (Message message : messages) {
-				MessageItem item = new MessageItem(message, currentUser.getUserId());
+				MessageItem item = new MessageItem(message, currentUser.getId());
 				messageItems.add(item);
 			}
 		}
@@ -537,7 +532,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		if (count < 0) {
 			System.out.println(count);
 		} else if (count == 0) {
-			TrayUtil.getTray().popTrayInfo(roomId, ETrayType.CHAT);
+			TrayUtil.getTray().popTrayInfo(roomId + "", ETrayType.CHAT);
 		}
 		room.setUnreadCount(count);
 		room.setTotalReadCount(room.getMsgSum());
@@ -599,7 +594,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		}
 
 		// 插入新的消息
-		MessageItem messageItem = new MessageItem(message, currentUser.getUserId());
+		MessageItem messageItem = new MessageItem(message, currentUser.getId());
 		this.messageItems.add(messageItem);
 		messagePanel.getMessageListView().notifyItemInserted(messageItems.size() - 1, false);
 
@@ -621,13 +616,14 @@ public class ChatPanel extends ParentAvailablePanel {
 		messagePanel.getMessageListView().setAutoScrollToBottom();
 
 	}
+
 	/**
 	 * 添加一条消息到消息列表最后
 	 *
 	 * @param item
 	 */
 	public void addMessageItemToTop(MessageItem item) {
-		this.messageItems.add(0,item);
+		this.messageItems.add(0, item);
 		messagePanel.getMessageListView().notifyItemInserted(0, true);
 		messagePanel.getMessageListView().setAutoScrollToTop();
 
@@ -649,7 +645,7 @@ public class ChatPanel extends ParentAvailablePanel {
 			messageId = randomMessageId();
 			item.setMessageContent(content);
 			item.setTimestamp(System.currentTimeMillis());
-			item.setSenderId(currentUser.getUserId());
+			item.setSenderId(currentUser.getId());
 			item.setSenderUsername(currentUser.getUsername());
 			item.setId(messageId);
 			item.setMessageType(MessageItem.RIGHT_TEXT);
@@ -658,7 +654,7 @@ public class ChatPanel extends ParentAvailablePanel {
 			dbMessage.setId(messageId);
 			dbMessage.setMessageContent(content);
 			dbMessage.setRoomId(roomId);
-			dbMessage.setSenderId(currentUser.getUserId());
+			dbMessage.setSenderId(currentUser.getId());
 			dbMessage.setSenderUsername(currentUser.getUsername());
 			dbMessage.setTimestamp(item.getTimestamp());
 			dbMessage.setNeedToResend(false);
@@ -688,16 +684,14 @@ public class ChatPanel extends ParentAvailablePanel {
 			}
 		}
 
-		//		content = StringEscapeUtils.escapeJava(content);
+		// content = StringEscapeUtils.escapeJava(content);
 
 		// TODO: 发送消息到服务器
 		// 发送
-		if(roomId.length()!=32) {
-			sendToServer(content);
-		}else {
-			sendToWebSocketServer(content);
-		}
-		
+
+		sendToServer(content);
+		// sendToWebSocketServer(content);
+
 		// TODO：完善发送消息回调：
 		boolean sentSuccess = true;
 		if (sentSuccess) {
@@ -721,20 +715,22 @@ public class ChatPanel extends ParentAvailablePanel {
 
 		// 10秒后如果发送不成功，则显示重发按钮
 		/*
-		 * MessageResendTask task = new MessageResendTask(); task.setListener(new
-		 * ResendTaskCallback(10000) {
+		 * MessageResendTask task = new MessageResendTask();
+		 * task.setListener(new ResendTaskCallback(10000) {
 		 * 
 		 * @Override public void onNeedResend(String messageId) { Message msg =
-		 * messageService.findById(messageId); if (msg.getUpdatedAt() == 0) { // 更新消息列表
+		 * messageService.findById(messageId); if (msg.getUpdatedAt() == 0) { //
+		 * 更新消息列表
 		 * 
-		 * int pos = findMessageItemPositionInViewReverse(messageId); if (pos > -1) {
-		 * messageItems.get(pos).setNeedToResend(true); msg.setNeedToResend(true);
-		 * messageService.update(msg);
+		 * int pos = findMessageItemPositionInViewReverse(messageId); if (pos >
+		 * -1) { messageItems.get(pos).setNeedToResend(true);
+		 * msg.setNeedToResend(true); messageService.update(msg);
 		 * messagePanel.getMessageListView().notifyItemChanged(pos); }
 		 * 
 		 * 
 		 * // 更新房间列表 // 注意这里不能用类的成员room，因为可能已经离开了原来的房间 Room room =
-		 * roomService.findById(msg.getRoomId()); room.setLastMessage("[有消息发送失败]");
+		 * roomService.findById(msg.getRoomId());
+		 * room.setLastMessage("[有消息发送失败]");
 		 * room.setLastChatAt(msg.getTimestamp()); roomService.update(room);
 		 * RoomsPanel.getContext().updateRoomItem(msg.getRoomId()); } } });
 		 * task.execute(messageId);
@@ -742,26 +738,26 @@ public class ChatPanel extends ParentAvailablePanel {
 	}
 
 	private void sendToWebSocketServer(String content) {
-		String path2 = Contants.getPath(Contants.sendTextWebsocketPath);
-		Letter letter = new Letter();
-		letter.from = "harry12800";
-		letter.to = roomId;
-		letter.time = new Date();
-		letter.data = content;
-		Map<String, String> headers = new HashMap<>(0);
-		try {
-			String post = HttpUtil.postJson(path2, headers, JsonUtils.object2String(letter));
-			System.out.println(post);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+//		String path2 = Contants.getPath(Contants.sendTextWebsocketPath);
+//		Letter letter = new Letter();
+//		letter.from = "harry12800";
+//		letter.to = roomId;
+//		letter.time = new Date();
+//		letter.data = content;
+//		Map<String, String> headers = new HashMap<>(0);
+//		try {
+//			String post = HttpUtil.postJson(path2, headers, JsonUtils.object2String(letter));
+//			System.out.println(post);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+
 	}
 
 	private void sendToServer(String content) {
 		try {
 			// 构建请求
-			PrivateChatPacket p =new PrivateChatPacket(Launcher.getIdByUserId(roomId), content);
+			PrivateChatPacket p = new PrivateChatPacket(Launcher.getIdByUserId(roomId), content);
 			Launcher.client.sendRequest(p.requestPacket);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -914,7 +910,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		final String messageId = randomMessageId();
 		item.setMessageContent(name);
 		item.setTimestamp(System.currentTimeMillis());
-		item.setSenderId(currentUser.getUserId());
+		item.setSenderId(currentUser.getId());
 		item.setSenderUsername(currentUser.getUsername());
 		item.setId(messageId);
 		item.setProgress(0);
@@ -922,7 +918,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		dbMessage.setId(messageId);
 		dbMessage.setMessageContent(name);
 		dbMessage.setRoomId(roomId);
-		dbMessage.setSenderId(currentUser.getUserId());
+		dbMessage.setSenderId(currentUser.getId());
 		dbMessage.setSenderUsername(currentUser.getUsername());
 		dbMessage.setTimestamp(item.getTimestamp());
 		dbMessage.setUpdatedAt(item.getTimestamp());
@@ -1017,14 +1013,22 @@ public class ChatPanel extends ParentAvailablePanel {
 
 	/**
 	 * 发送块数据
-	 * @param name  文件的名字
-	 * @param position 文件块的起始位置
-	 * @param messageId  消息id
-	 * @param partIndex  第几部分
-	 * @param dataParts 字节块数据
-	 * @param callback  回调
+	 * 
+	 * @param name
+	 *            文件的名字
+	 * @param position
+	 *            文件块的起始位置
+	 * @param messageId
+	 *            消息id
+	 * @param partIndex
+	 *            第几部分
+	 * @param dataParts
+	 *            字节块数据
+	 * @param callback
+	 *            回调
 	 */
-	private void sendDataPart(String name, long position, String messageId, short partIndex, List<byte[]> dataParts, UploadTaskCallback callback) {
+	private void sendDataPart(String name, long position, String messageId, short partIndex, List<byte[]> dataParts,
+			UploadTaskCallback callback) {
 		// TODO： 发送第 partIndex 个分块到服务器
 		new Thread(new Runnable() {
 			@Override
@@ -1033,14 +1037,14 @@ public class ChatPanel extends ParentAvailablePanel {
 				try {
 					FileChatRequest request = new FileChatRequest();
 					request.setData(dataParts.get(partIndex));
-					request.setSenderUserId(currentUser.getUserId());
+					request.setSenderUserId(currentUser.getId());
 					request.setIndex(partIndex);
 					request.setMessageId(messageId);
 					request.setPosition(position);
 					request.setTargetUserId(roomId);
 					request.setTotal((short) dataParts.size());
 					request.setName(name);
-					FileChatPacket p  = new FileChatPacket(request);
+					FileChatPacket p = new FileChatPacket(request);
 					Launcher.client.sendRequest(p.requestPacket);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -1155,69 +1159,75 @@ public class ChatPanel extends ParentAvailablePanel {
 	 * @param messageId
 	 */
 	private void downloadFile(FileAttachment fileAttachment, String messageId) {
-//		final DownloadTask task = new DownloadTask(new HttpUtil.ProgressListener() {
-//			@Override
-//			public void onProgress(int progress) {
-//				int pos = findMessageItemPositionInViewReverse(messageId);
-//				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
-//
-//				logger.debug("文件下载进度：" + progress);
-//				if (pos < 0 || holder == null) {
-//					return;
-//				}
-//
-//				if (progress >= 0 && progress < 100) {
-//					if (holder.sizeLabel.isVisible()) {
-//						holder.sizeLabel.setVisible(false);
-//					}
-//					if (!holder.progressBar.isVisible()) {
-//						holder.progressBar.setVisible(true);
-//					}
-//
-//					holder.progressBar.setValue(progress);
-//				} else if (progress >= 100) {
-//					holder.progressBar.setVisible(false);
-//					holder.sizeLabel.setVisible(true);
-//				}
-//			}
-//		});
-//
-//		task.setListener(new HttpResponseListener<byte[]>() {
-//			@Override
-//			public void onSuccess(byte[] data) {
-//				// System.out.println(data);
-//				String path = fileCache.cacheFile(fileAttachment.getId(), fileAttachment.getTitle(), data);
-//
-//				int pos = findMessageItemPositionInViewReverse(messageId);
-//				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
-//
-//				if (pos < 0 || holder == null) {
-//					return;
-//				}
-//				if (path == null) {
-//					holder.sizeLabel.setVisible(true);
-//					holder.sizeLabel.setText("文件获取失败");
-//					holder.progressBar.setVisible(false);
-//				} else {
-//					holder.sizeLabel.setVisible(true);
-//					System.out.println("文件已缓存在 " + path);
-//					holder.sizeLabel.setText(fileCache.fileSizeString(path));
-//				}
-//			}
-//
-//			@Override
-//			public void onFailed() {
-//				int pos = findMessageItemPositionInViewReverse(messageId);
-//				MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder) getViewHolderByPosition(pos);
-//				holder.sizeLabel.setVisible(true);
-//				holder.sizeLabel.setText("文件获取失败");
-//				holder.progressBar.setVisible(false);
-//			}
-//		});
-//
-//		String url = Launcher.HOSTNAME + fileAttachment.getLink() + "?rc_uid=" + currentUser.getUserId() + "&rc_token="
-//				+ currentUser.getAuthToken();
-//		task.execute(url);
+		// final DownloadTask task = new DownloadTask(new
+		// HttpUtil.ProgressListener() {
+		// @Override
+		// public void onProgress(int progress) {
+		// int pos = findMessageItemPositionInViewReverse(messageId);
+		// MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder)
+		// getViewHolderByPosition(pos);
+		//
+		// logger.debug("文件下载进度：" + progress);
+		// if (pos < 0 || holder == null) {
+		// return;
+		// }
+		//
+		// if (progress >= 0 && progress < 100) {
+		// if (holder.sizeLabel.isVisible()) {
+		// holder.sizeLabel.setVisible(false);
+		// }
+		// if (!holder.progressBar.isVisible()) {
+		// holder.progressBar.setVisible(true);
+		// }
+		//
+		// holder.progressBar.setValue(progress);
+		// } else if (progress >= 100) {
+		// holder.progressBar.setVisible(false);
+		// holder.sizeLabel.setVisible(true);
+		// }
+		// }
+		// });
+		//
+		// task.setListener(new HttpResponseListener<byte[]>() {
+		// @Override
+		// public void onSuccess(byte[] data) {
+		// // System.out.println(data);
+		// String path = fileCache.cacheFile(fileAttachment.getId(),
+		// fileAttachment.getTitle(), data);
+		//
+		// int pos = findMessageItemPositionInViewReverse(messageId);
+		// MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder)
+		// getViewHolderByPosition(pos);
+		//
+		// if (pos < 0 || holder == null) {
+		// return;
+		// }
+		// if (path == null) {
+		// holder.sizeLabel.setVisible(true);
+		// holder.sizeLabel.setText("文件获取失败");
+		// holder.progressBar.setVisible(false);
+		// } else {
+		// holder.sizeLabel.setVisible(true);
+		// System.out.println("文件已缓存在 " + path);
+		// holder.sizeLabel.setText(fileCache.fileSizeString(path));
+		// }
+		// }
+		//
+		// @Override
+		// public void onFailed() {
+		// int pos = findMessageItemPositionInViewReverse(messageId);
+		// MessageAttachmentViewHolder holder = (MessageAttachmentViewHolder)
+		// getViewHolderByPosition(pos);
+		// holder.sizeLabel.setVisible(true);
+		// holder.sizeLabel.setText("文件获取失败");
+		// holder.progressBar.setVisible(false);
+		// }
+		// });
+		//
+		// String url = Launcher.HOSTNAME + fileAttachment.getLink() +
+		// "?rc_uid=" + currentUser.getUserId() + "&rc_token="
+		// + currentUser.getAuthToken();
+		// task.execute(url);
 	}
 
 	/**
@@ -1283,106 +1293,115 @@ public class ChatPanel extends ParentAvailablePanel {
 	}
 
 	public void showWebSocketMsg(Letter letter) {
-		if (currentUser.getUserId().equals(letter.from))
-			return;
-		System.out.println("收到消息");
-		Message message = new Message();
-		message.setId(StringUtils.getUUID());
-		message.setRoomId(letter.from);
-		if ("抖动".equals(letter.data)) {
-			Clip.shakeFrame(MainFrame.getContext(), 8);
-		}
-		TrayInfo trayInfo = new TrayInfo();
-		trayInfo.e = new TrayListener() {
-			public void exe(TrayInfo e) {
-				MainFrame.getContext().setExtendedState(JFrame.NORMAL);
-				MainFrame.getContext().toFront();
-				TabOperationPanel.getContext().showChatPanel();
-				MainFrame.getContext().setVisible(true);
-			}
-		};
-		trayInfo.id = letter.from;
-		trayInfo.type = ETrayType.CHAT;
-		String senderUserName = letter.from;
-		System.out.println("用户：" + senderUserName);
-		trayInfo.icon = new ImageIcon(
-				AvatarUtil.createOrLoadUserAvatar(senderUserName).getScaledInstance(16, 16, Image.SCALE_SMOOTH));
-		//		AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
-		TrayUtil.getTray().pushTrayInfo(trayInfo);
-		message.setMessageContent(letter.data);
-		message.setSenderId(letter.from);
-		message.setTimestamp(new Date().getTime());
-		message.setSenderUsername(senderUserName);
-		messageService.insertOrUpdate(message);
-		Room friendRoom = roomService.findRelativeRoomIdByUserId(letter.from, Launcher.currentUser.getUserId());
-		friendRoom.setLastMessage(message.getMessageContent());
-		friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
-		roomService.insertOrUpdate(friendRoom);
-		MessageItem item = new MessageItem(message, friendRoom.getRoomId());
-		item.setMessageType(MessageItem.LEFT_TEXT);
-		System.out.println(room + ":null");
-		if (room != null && friendRoom.getType().equals("d") && room.getName().equals(message.getSenderUsername())) {
-			addMessageItemToEnd(item);
-		}
-		RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
+		// if (currentUser.getUserId().equals(letter.from))
+		// return;
+		// System.out.println("收到消息");
+		// Message message = new Message();
+		// message.setId(StringUtils.getUUID());
+		// message.setRoomId(letter.from);
+		// if ("抖动".equals(letter.data)) {
+		// Clip.shakeFrame(MainFrame.getContext(), 8);
+		// }
+		// TrayInfo trayInfo = new TrayInfo();
+		// trayInfo.e = new TrayListener() {
+		// public void exe(TrayInfo e) {
+		// MainFrame.getContext().setExtendedState(JFrame.NORMAL);
+		// MainFrame.getContext().toFront();
+		// TabOperationPanel.getContext().showChatPanel();
+		// MainFrame.getContext().setVisible(true);
+		// }
+		// };
+		// trayInfo.id = letter.from;
+		// trayInfo.type = ETrayType.CHAT;
+		// String senderUserName = letter.from;
+		// System.out.println("用户：" + senderUserName);
+		// trayInfo.icon = new ImageIcon(
+		// AvatarUtil.createOrLoadUserAvatar(senderUserName).getScaledInstance(16,
+		// 16, Image.SCALE_SMOOTH));
+		// //
+		// AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
+		// TrayUtil.getTray().pushTrayInfo(trayInfo);
+		// message.setMessageContent(letter.data);
+		// message.setSenderId(letter.from);
+		// message.setTimestamp(new Date().getTime());
+		// message.setSenderUsername(senderUserName);
+		// messageService.insertOrUpdate(message);
+		// // TODO
+		// Room friendRoom = roomService.findRelativeRoomIdByUserId(letter.from,
+		// Launcher.currentUser.getId());
+		// friendRoom.setLastMessage(message.getMessageContent());
+		// friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
+		// roomService.insertOrUpdate(friendRoom);
+		// MessageItem item = new MessageItem(message, friendRoom.getRoomId());
+		// item.setMessageType(MessageItem.LEFT_TEXT);
+		// System.out.println(room + ":null");
+		// if (room != null && friendRoom.getType().equals("d") &&
+		// room.getName().equals(message.getSenderUsername())) {
+		// addMessageItemToEnd(item);
+		// }
+		// RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
 	}
-	
+
 	public void showReceiveMsg(MsgResponse msg) {
-		String userId = Launcher.getUserIdById(msg.getFromId());
-		if (currentUser.getUserId().equals(userId))
-			return;
-		System.out.println("收到消息");
-		Message message = new Message();
-		message.setId(StringUtils.getUUID());
-		message.setRoomId(userId);
-		String string = new String(msg.getData());
-		//		string = StringEscapeUtils.unescapeJava(string);
-		System.out.println(string);
-		if ("抖动".equals(string)) {
-			Clip.shakeFrame(MainFrame.getContext(), 8);
-		}
-		TrayInfo trayInfo = new TrayInfo();
-		trayInfo.e = new TrayListener() {
-			public void exe(TrayInfo e) {
-				MainFrame.getContext().setExtendedState(JFrame.NORMAL);
-				MainFrame.getContext().toFront();
-				TabOperationPanel.getContext().showChatPanel();
-				MainFrame.getContext().setVisible(true);
-			}
-		};
-		trayInfo.id = userId;
-		trayInfo.type = ETrayType.CHAT;
-		String senderUserName = Launcher.getUserNameByUserId(trayInfo.id);
-		System.out.println("用户：" + senderUserName);
-		trayInfo.icon = new ImageIcon(
-				AvatarUtil.createOrLoadUserAvatar(senderUserName).getScaledInstance(16, 16, Image.SCALE_SMOOTH));
-		//		AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
-		TrayUtil.getTray().pushTrayInfo(trayInfo);
-		message.setMessageContent(string);
-		message.setSenderId(msg.getFromId() + "");
-		message.setTimestamp(new Date().getTime());
-		message.setSenderUsername(senderUserName);
-		messageService.insertOrUpdate(message);
-		Room friendRoom = roomService.findRelativeRoomIdByUserId(userId, Launcher.currentUser.getUserId());
-		if(friendRoom == null){
-			friendRoom = new Room();
-			friendRoom.setCreatorId(Launcher.currentUser.getUserId());
-			friendRoom.setRoomId(userId);
-			friendRoom.setName(userId);
-			friendRoom.setTopic(userId);
-			friendRoom.setType("d");
-			friendRoom.setLastChatAt(new Date().getTime());
-		}
-		friendRoom.setUnreadCount(friendRoom.getUnreadCount()+1);
-		friendRoom.setLastMessage(message.getMessageContent());
-		roomService.insertOrUpdate(friendRoom);
-		MessageItem item = new MessageItem(message, friendRoom.getRoomId());
-		item.setMessageType(MessageItem.LEFT_TEXT);
-		System.out.println(room + ":null");
-		if (room != null && friendRoom.getType().equals("d") && room.getName().equals(message.getSenderUsername())) {
-			addMessageItemToEnd(item);
-		}
-		RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
+		// String userId = Launcher.getUserIdById(msg.getFromId());
+		// if (currentUser.getUserId().equals(userId))
+		// return;
+		// System.out.println("收到消息");
+		// Message message = new Message();
+		// message.setId(StringUtils.getUUID());
+		// message.setRoomId(userId);
+		// String string = new String(msg.getData());
+		// // string = StringEscapeUtils.unescapeJava(string);
+		// System.out.println(string);
+		// if ("抖动".equals(string)) {
+		// Clip.shakeFrame(MainFrame.getContext(), 8);
+		// }
+		// TrayInfo trayInfo = new TrayInfo();
+		// trayInfo.e = new TrayListener() {
+		// public void exe(TrayInfo e) {
+		// MainFrame.getContext().setExtendedState(JFrame.NORMAL);
+		// MainFrame.getContext().toFront();
+		// TabOperationPanel.getContext().showChatPanel();
+		// MainFrame.getContext().setVisible(true);
+		// }
+		// };
+		// trayInfo.id = userId;
+		// trayInfo.type = ETrayType.CHAT;
+		// String senderUserName = Launcher.getUserNameByUserId(trayInfo.id);
+		// System.out.println("用户：" + senderUserName);
+		// trayInfo.icon = new ImageIcon(
+		// AvatarUtil.createOrLoadUserAvatar(senderUserName).getScaledInstance(16,
+		// 16, Image.SCALE_SMOOTH));
+		// //
+		// AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
+		// TrayUtil.getTray().pushTrayInfo(trayInfo);
+		// message.setMessageContent(string);
+		// message.setSenderId(msg.getFromId() + "");
+		// message.setTimestamp(new Date().getTime());
+		// message.setSenderUsername(senderUserName);
+		// messageService.insertOrUpdate(message);
+		// Room friendRoom = roomService.findRelativeRoomIdByUserId(userId,
+		// Launcher.currentUser.getId());
+		// if(friendRoom == null){
+		// friendRoom = new Room();
+		// friendRoom.setCreatorId(Launcher.currentUser.getUserId());
+		// friendRoom.setRoomId(userId);
+		// friendRoom.setName(userId);
+		// friendRoom.setTopic(userId);
+		// friendRoom.setType("d");
+		// friendRoom.setLastChatAt(new Date().getTime());
+		// }
+		// friendRoom.setUnreadCount(friendRoom.getUnreadCount()+1);
+		// friendRoom.setLastMessage(message.getMessageContent());
+		// roomService.insertOrUpdate(friendRoom);
+		// MessageItem item = new MessageItem(message, friendRoom.getRoomId());
+		// item.setMessageType(MessageItem.LEFT_TEXT);
+		// System.out.println(room + ":null");
+		// if (room != null && friendRoom.getType().equals("d") &&
+		// room.getName().equals(message.getSenderUsername())) {
+		// addMessageItemToEnd(item);
+		// }
+		// RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
 	}
 
 	public void showReceiveMsgFail(String tipContent) {
@@ -1391,8 +1410,8 @@ public class ChatPanel extends ParentAvailablePanel {
 
 	public void showReceiveFileMsg(FileChatRequest msg) {
 		String homePath = App.basePath;
-		String dirPath = homePath + File.separator + "data" + File.separator + "chat"
-				+ File.separator + currentUser.getUsername() + File.separator + Launcher.getUserNameByUserId(msg.getSenderUserId());
+		String dirPath = homePath + File.separator + "data" + File.separator + "chat" + File.separator
+				+ currentUser.getUsername() + File.separator + Launcher.getUserNameByUserId(msg.getSenderUserId());
 		if (!new File(dirPath).exists()) {
 			new File(dirPath).mkdirs();
 		}
@@ -1420,15 +1439,15 @@ public class ChatPanel extends ParentAvailablePanel {
 		System.out.println("用户：" + senderUserName);
 		trayInfo.icon = new ImageIcon(
 				AvatarUtil.createOrLoadUserAvatar(senderUserName).getScaledInstance(16, 16, Image.SCALE_SMOOTH));
-		//		AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
+		// AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
 		TrayUtil.getTray().pushTrayInfo(trayInfo);
 		Message message = new Message();
 		message.setId(StringUtils.getUUID());
-		message.setRoomId(msg.getSenderUserId() + "");
+		message.setRoomId(msg.getSenderUserId());
 		message.setSenderUsername(senderUserName);
 		message.setMessageContent(msg.getName());
-		//		string = StringEscapeUtils.unescapeJava(string);
-		message.setSenderId(msg.getSenderUserId() + "");
+		// string = StringEscapeUtils.unescapeJava(string);
+		message.setSenderId(msg.getSenderUserId());
 		message.setTimestamp(new Date().getTime());
 		String suffix = StringUtils.getSuffix(msg.getName());
 		String mime = MimeTypeUtil.getMime(suffix);
@@ -1446,7 +1465,8 @@ public class ChatPanel extends ParentAvailablePanel {
 			imageAttachmentService.insertOrUpdate(attachment);
 			MessageItem item = new MessageItem(message, friendRoom.getRoomId());
 			item.setMessageType(MessageItem.LEFT_IMAGE);
-			if (room != null && friendRoom.getType().equals("d") && room.getName().equals(message.getSenderUsername())) {
+			if (room != null && friendRoom.getType().equals("d")
+					&& room.getName().equals(message.getSenderUsername())) {
 				addMessageItemToEnd(item);
 			}
 			RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
@@ -1464,7 +1484,8 @@ public class ChatPanel extends ParentAvailablePanel {
 			fileAttachmentService.insertOrUpdate(attachment);
 			MessageItem item = new MessageItem(message, friendRoom.getRoomId());
 			item.setMessageType(MessageItem.LEFT_ATTACHMENT);
-			if (room != null && friendRoom.getType().equals("d") && room.getName().equals(message.getSenderUsername())) {
+			if (room != null && friendRoom.getType().equals("d")
+					&& room.getName().equals(message.getSenderUsername())) {
 				addMessageItemToEnd(item);
 			}
 			RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());

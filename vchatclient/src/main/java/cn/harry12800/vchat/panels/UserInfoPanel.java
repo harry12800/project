@@ -106,12 +106,11 @@ public class UserInfoPanel extends ParentAvailablePanel {
 
 	private void openOrCreateDirectChat() {
 		ContactsUser user = contactsUserService.find("username", username).get(0);
-		String userId = user.getFriendId();
+		long userId = user.getFriendId();
 		System.out.println(userId);
-		String creatorId = Launcher.currentUser.getUserId();
+		long creatorId = Launcher.currentUser.getId();
 		System.out.println(creatorId);
 		Room room = roomService.findRelativeRoomIdByUserId(userId,creatorId);
-
 		System.out.println(room);
 		// 房间已存在，直接打开，否则发送请求创建房间
 		if (room != null) {
