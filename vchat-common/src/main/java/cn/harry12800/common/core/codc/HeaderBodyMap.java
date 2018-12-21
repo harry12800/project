@@ -21,7 +21,8 @@ public class HeaderBodyMap {
         Integer x = 0 | (b0 << 24) | (b1 << 16) | (b2 << 8) | b3;
         map.put(x, clazz);
     }
-    public static void register(int serviceId ,int commandId,Class<?extends BaseBody> clazz){
+
+	public static void register(int serviceId ,int commandId,Class<?extends BaseBody> clazz){
         Integer x = 0 | (serviceId << 8) | commandId ;
         map.put(x, clazz);
     }

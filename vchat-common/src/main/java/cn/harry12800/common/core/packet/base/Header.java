@@ -10,13 +10,22 @@ public class Header {
 	@Tag(4)
 	public long destination=0; // 目的地
 	@Tag(3)
-	public short serviceId=0; // SID
+	public int serviceId=0; // SID
 	@Tag(4)
-	public short commandId=0; // CID
+	public int commandId=0; // CID
 	@Tag(5)
 	public short reserved=0; // 保留，可用于如序列号等
 
 	public Header() { }
+	
+
+	
+	public Header(int serviceId, int commandId) {
+		super();
+		this.serviceId = serviceId;
+		this.commandId = commandId;
+	}
+
 
 	@Override
 	public String toString() {

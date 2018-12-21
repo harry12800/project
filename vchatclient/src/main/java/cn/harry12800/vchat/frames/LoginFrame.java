@@ -333,11 +333,11 @@ public class LoginFrame extends JFrame {
 			usernameField.setEditable(false);
 			passwordField.setEditable(false);
 			try {
-				LoginRequest loginRequest = new LoginRequest();
+//				LoginRequest loginRequest = new LoginRequest();
 				LoginPacket loginPacket = new LoginPacket(name,pwd);
-				Request request = Request.valueOf(ModuleId.USER, UserCmd.LOGIN, loginRequest.getBytes());
+//				Request request = Request.valueOf(ModuleId.USER, UserCmd.LOGIN, loginRequest.getBytes());
 //				Launcher.client.sendRequest(request);
-				Launcher.client.sendRequest(loginPacket.requestPacket);
+				Launcher.client.sendLoginRequest(loginPacket.requestPacket);
 			} catch (Exception e) {
 				showMessage("无法连接服务器");
 				loginButton.setEnabled(true);

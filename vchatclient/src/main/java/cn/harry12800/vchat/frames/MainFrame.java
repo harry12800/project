@@ -27,11 +27,8 @@ import javax.swing.border.Border;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
 
-import cn.harry12800.common.core.model.Request;
-import cn.harry12800.common.module.ModuleId;
-import cn.harry12800.common.module.UserCmd;
-import cn.harry12800.common.module.user.dto.LoginRequest;
-import cn.harry12800.common.module.user.dto.PullMsgRequest;
+import cn.harry12800.common.module.packet.LoginPacket;
+import cn.harry12800.common.module.packet.PullMsgPacket;
 import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
 import cn.harry12800.j2se.component.rc.RCProgressBar;
 import cn.harry12800.j2se.component.utils.ImageUtils;
@@ -453,13 +450,11 @@ public class MainFrame extends JFrame {
 
 	private void startPullMsg() {
 		try {
-			PullMsgRequest request = new PullMsgRequest();
-			request.setUserid(Long.valueOf(Launcher.currentUser.getUserId()));
 			// 构建请求
-			Request req = Request.valueOf(ModuleId.USER, UserCmd.PULL_MSG, request.getBytes());
-			Launcher.client.sendRequest(req);
+			PullMsgPacket p = new PullMsgPacket(Long.valueOf(Launcher.currentUser.getUserId()));
+			Launcher.client.sendRequest(p.requestPacket);
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 
@@ -510,12 +505,10 @@ public class MainFrame extends JFrame {
 
 	public void reLogin() {
 		try {
-			LoginRequest loginRequest = new LoginRequest();
-			loginRequest.setUserName(Launcher.currentUser.getUserId());
-			loginRequest.setPassward(Launcher.currentUser.getPassword());
-			Request request = Request.valueOf(ModuleId.USER, UserCmd.LOGIN, loginRequest.getBytes());
-			Launcher.client.sendRequest(request);
+			LoginPacket p = new LoginPacket(Launcher.currentUser.getUserId(), Launcher.currentUser.getPassword());
+			Launcher.client.sendRequest(p.requestPacket);
 		} catch (Exception e1) {
+			e1.printStackTrace();
 			new MessageDialog(MainFrame.getContext(), "提示", "无法连接服务器");
 		}
 	}

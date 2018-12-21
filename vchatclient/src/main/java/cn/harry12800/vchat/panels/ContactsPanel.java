@@ -12,10 +12,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cn.harry12800.common.core.model.Request;
-import cn.harry12800.common.module.ModuleId;
-import cn.harry12800.common.module.UserCmd;
-import cn.harry12800.common.module.user.dto.ShowAllUserRequest;
+import cn.harry12800.common.module.packet.PullAllUserPacket;
 import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.component.rc.RCListView;
@@ -68,9 +65,8 @@ public class ContactsPanel extends ParentAvailablePanel {
 	private void initData() {
 		contactsItemList.clear();
 		try {
-			ShowAllUserRequest request = new ShowAllUserRequest();
-			Request req = Request.valueOf(ModuleId.USER, UserCmd.SHOW_ALL_USER, request.getBytes());
-			Launcher.client.sendRequest(req);
+			PullAllUserPacket p = new PullAllUserPacket();
+			Launcher.client.sendRequest(p.requestPacket);
 		} catch (Exception e) {
 			e.printStackTrace();
 			// MainFrame.("无法连接服务器");

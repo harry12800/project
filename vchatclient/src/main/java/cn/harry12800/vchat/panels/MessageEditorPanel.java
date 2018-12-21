@@ -20,10 +20,7 @@ import javax.swing.JScrollPane;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
 
-import cn.harry12800.common.core.model.Request;
-import cn.harry12800.common.module.ChatCmd;
-import cn.harry12800.common.module.ModuleId;
-import cn.harry12800.common.module.chat.dto.PrivateChatRequest;
+import cn.harry12800.common.module.packet.ShakeWindowPacket;
 import cn.harry12800.j2se.component.rc.RCButton;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.FontUtil;
@@ -259,13 +256,9 @@ public class MessageEditorPanel extends ParentAvailablePanel {
 
 	protected void sendShake() {
 		try {
-			PrivateChatRequest request = new PrivateChatRequest();
-			request.setContext("抖动");
 			long idByUserId = Launcher.getIdByUserId(ChatPanel.getContext().roomId);
-			request.setTargetUserId(idByUserId);
-			// 构建请求
-			Request req = Request.valueOf(ModuleId.CHAT, ChatCmd.PRIVATE_CHAT, request.getBytes());
-			Launcher.client.sendRequest(req);
+			ShakeWindowPacket p = new ShakeWindowPacket(idByUserId);
+			Launcher.client.sendRequest(p.requestPacket);
 		} catch (Exception e) {
 
 		}

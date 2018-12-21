@@ -43,12 +43,10 @@ import javax.swing.text.StyleConstants;
 
 import org.apache.log4j.Logger;
 
-import cn.harry12800.common.core.model.Request;
-import cn.harry12800.common.module.ChatCmd;
-import cn.harry12800.common.module.ModuleId;
 import cn.harry12800.common.module.chat.dto.FileChatRequest;
 import cn.harry12800.common.module.chat.dto.MsgResponse;
-import cn.harry12800.common.module.chat.dto.PrivateChatRequest;
+import cn.harry12800.common.module.packet.FileChatPacket;
+import cn.harry12800.common.module.packet.PrivateChatPacket;
 import cn.harry12800.j2se.component.rc.RCBorder;
 import cn.harry12800.j2se.component.rc.RCListView;
 import cn.harry12800.j2se.module.tray.ETrayType;
@@ -63,7 +61,6 @@ import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.StringUtils;
 import cn.harry12800.vchat.adapter.message.BaseMessageViewHolder;
 import cn.harry12800.vchat.adapter.message.MessageAdapter;
-import cn.harry12800.vchat.adapter.message.MessageAttachmentViewHolder;
 import cn.harry12800.vchat.adapter.message.MessageRightAttachmentViewHolder;
 import cn.harry12800.vchat.adapter.message.MessageRightImageViewHolder;
 import cn.harry12800.vchat.app.App;
@@ -88,7 +85,6 @@ import cn.harry12800.vchat.entity.MessageItem;
 import cn.harry12800.vchat.frames.MainFrame;
 import cn.harry12800.vchat.helper.MessageViewHolderCacheHelper;
 import cn.harry12800.vchat.listener.ExpressionListener;
-import cn.harry12800.vchat.tasks.HttpResponseListener;
 import cn.harry12800.vchat.tasks.UploadTaskCallback;
 import cn.harry12800.vchat.utils.AvatarUtil;
 import cn.harry12800.vchat.utils.ClipboardUtil;
@@ -764,14 +760,11 @@ public class ChatPanel extends ParentAvailablePanel {
 
 	private void sendToServer(String content) {
 		try {
-			PrivateChatRequest request = new PrivateChatRequest();
-			request.setContext(content);
-			request.setTargetUserId(Launcher.getIdByUserId(roomId));
 			// 构建请求
-			Request req = Request.valueOf(ModuleId.CHAT, ChatCmd.PRIVATE_CHAT, request.getBytes());
-			Launcher.client.sendRequest(req);
+			PrivateChatPacket p =new PrivateChatPacket(Launcher.getIdByUserId(roomId), content);
+			Launcher.client.sendRequest(p.requestPacket);
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 
@@ -1047,8 +1040,8 @@ public class ChatPanel extends ParentAvailablePanel {
 					request.setTargetUserId(roomId);
 					request.setTotal((short) dataParts.size());
 					request.setName(name);
-					Request req = Request.valueOf(ModuleId.CHAT, ChatCmd.FILE_CHAT, request.getBytes());
-					Launcher.client.sendRequest(req);
+					FileChatPacket p  = new FileChatPacket(request);
+					Launcher.client.sendRequest(p.requestPacket);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

@@ -245,6 +245,8 @@ public class ProtocolConstant {
 	public static final int CID_MSG_UNREAD_CNT_RESPONSE = 8;
 	public static final int CID_MSG_UNREAD_MSG_REUQEST = 9;
 	public static final int CID_MSG_HISTORY_MSG_REQUEST = 10;
+	public static final int CID_MSG_SHAKE_WINDOW_REQUEST = 11;
+	public static final int CID_MSG_SHAKE_WINDOW_RESPONSE = 12;
 	// public static final int CID_MSG_LIST_RESPONSE = 11;
 	public static final int CID_MSG_HISTORY_SERVICE_MSG_REQUEST = 12;
 	public static final int CID_MSG_HISTORY_SERVICE_MSG_RESPONSE = 13;
@@ -260,7 +262,10 @@ public class ProtocolConstant {
 	public static final int CID_QUERY_USER_ONLINE_STATUS_RESPONSE = 9;
 
 	public static final int CID_HEART_BEAT = 1;
+	
+	public static final int CID_FILE_SEND = 1;
 
+	
 	public static final int RES_RESULT_SUCCESS = 0;
 
 	public static final int CLIENT_TYPE = 0x12;// 表示android，登陆消息服务器时使用
