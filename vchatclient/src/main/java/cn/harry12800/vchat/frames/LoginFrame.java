@@ -28,6 +28,7 @@ import cn.harry12800.common.core.model.Request;
 import cn.harry12800.common.module.ModuleId;
 import cn.harry12800.common.module.UserCmd;
 import cn.harry12800.common.module.packet.LoginPacket;
+import cn.harry12800.common.module.packet.entity.UserEnity;
 import cn.harry12800.common.module.user.dto.LoginRequest;
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.action.AbstractMouseListener;
@@ -357,36 +358,25 @@ public class LoginFrame extends JFrame {
 		passwordField.setEditable(true);
 	}
 
-	public void loginSuccess(UserResponse userResponse) {
+	public void loginSuccess(LoginPacket.Response body) {
 		this.dispose();
 		context = null;
-		System.out.println(userResponse);
+		System.out.println(body);
 		CurrentUser currentUser = new CurrentUser();
-		currentUser.setUserId(userResponse.getUserId());
-		currentUser.setUsername(userResponse.getNickName());
+		currentUser.setId(body.id);
+		currentUser.setUserId(body.getUserId());
+		currentUser.setUsername(body.getNickName());
 		currentUser.setPassword(new String(passwordField.getPassword()));
 		currentUserService.insertOrUpdate(currentUser);
 		Launcher.currentUser = currentUser;
-		Launcher.iduserIdMaps.put(userResponse.getId(), userResponse.getUserId());
-		Config.setProp("username", userResponse.getUserId());
-		MainFrame frame = MainFrame.getContext();
-		TrayUtil.getTray().setFrame(frame);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
-	public void loginSuccess(LoginPacket.Response userResponse) {
-		this.dispose();
-		context = null;
-		System.out.println(userResponse);
-		CurrentUser currentUser = new CurrentUser();
-		currentUser.setId(userResponse.id);
-		currentUser.setUserId(userResponse.getUserId());
-		currentUser.setUsername(userResponse.getNickName());
-		currentUser.setPassword(new String(passwordField.getPassword()));
-		currentUserService.insertOrUpdate(currentUser);
-		Launcher.currentUser = currentUser;
-		Launcher.iduserIdMaps.put(userResponse.getId(), userResponse.getUserId());
-		Config.setProp("username", userResponse.getUserId());
+		UserEnity entity = new UserEnity();
+
+		entity.id = body.id;
+		entity.avatarUrl = body.avatarUrl;
+		entity.userId = body.userId;
+		entity.nickName = body.nickName;
+		Launcher.loadUser (entity );
+		Config.setProp("username", body.getUserId());
 		MainFrame frame = MainFrame.getContext();
 		TrayUtil.getTray().setFrame(frame);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

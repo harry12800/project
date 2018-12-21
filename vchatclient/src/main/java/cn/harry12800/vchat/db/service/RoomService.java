@@ -26,10 +26,12 @@ public class RoomService extends BasicService<RoomDao, Room> {
 	boolean exist(Room room){
 		return dao.exist(room);
 	}
+	
+	// 查找自己和好友的房间
 	public Room findRelativeRoomIdByUserId(long userId,long creatorId) {
 		return dao.findRelativeRoomIdByUserId(userId,creatorId);
 	}
-
+	// 查找自己的所有房间
 	public List<Room> findRelativeRoomIdByCreatorId(long userId) {
 		return dao.findRelativeRoomIdByCreatorId(userId);
 	}

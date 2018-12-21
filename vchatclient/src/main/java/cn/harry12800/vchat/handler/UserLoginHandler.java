@@ -59,7 +59,7 @@ public class UserLoginHandler {
 			UserResponse userResponse = new UserResponse();
 			userResponse.readFromBytes(data);
 			if (Launcher.currentUser == null) {
-				LoginFrame.getContext().loginSuccess(userResponse);
+//				LoginFrame.getContext().loginSuccess(userResponse);
 			} else {
 
 			}
@@ -97,7 +97,7 @@ public class UserLoginHandler {
 			msg.readFromBytes(data);
 			List<MsgResponse> msgs = msg.getMsgs();
 			for (MsgResponse msgResponse : msgs) {
-				ChatPanel.getContext().showReceiveMsg(msgResponse);
+//				ChatPanel.getContext().showReceiveMsg(msgResponse);
 			}
 		} else {
 			ChatPanel.getContext().showReceiveMsgFail(resultCodeTip.getTipContent(resultCode));

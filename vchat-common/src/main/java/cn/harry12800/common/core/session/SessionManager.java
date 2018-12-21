@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.google.protobuf.GeneratedMessage;
 
 import cn.harry12800.common.core.model.Response;
+import cn.harry12800.common.core.packet.base.Packet;
 import cn.harry12800.common.core.serial.Serializer;
 
 /**
@@ -86,5 +87,13 @@ public class SessionManager {
 	 */
 	public static Set<Long> getOnlineUsers() {
 		return Collections.unmodifiableSet(onlineSessions.keySet());
+	}
+
+	public static void sendMessage(long userId,
+			Packet<?> packet) {
+		Session session = onlineSessions.get(userId);
+		if (session != null && session.isConnected()) {
+			session.write(packet);
+		}
 	}
 }

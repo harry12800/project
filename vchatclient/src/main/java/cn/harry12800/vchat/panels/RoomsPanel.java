@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,15 +112,15 @@ public class RoomsPanel extends ParentAvailablePanel {
 	}
 
 	public void addNewRoomItemToTop(Room room){
-//		RoomItem item = new RoomItem();
-//		item.setRoomId(room.getRoomId());
-//		item.setTimestamp(room.getLastChatAt());
-//		item.setTitle(room.getName());
-//		item.setType(room.getType());
-//		item.setLastMessage(room.getLastMessage());
-//		item.setUnreadCount(room.getUnreadCount());
-//		roomItemList.add(0,item);
-//		notifyDataSetChanged(false);
+		RoomItem item = new RoomItem();
+		item.setRoomId(room.getRoomId());
+		item.setTimestamp(room.getLastChatAt());
+		item.setTitle(room.getName());
+		item.setType(room.getType());
+		item.setLastMessage(room.getLastMessage());
+		item.setUnreadCount(room.getUnreadCount());
+		roomItemList.add(0,item);
+		notifyDataSetChanged(false);
 	}
 	private void downloadAvatar(List<UserResponse> users) {
 
@@ -147,11 +146,11 @@ public class RoomsPanel extends ParentAvailablePanel {
 
 	private void initData() {
 		roomItemList.clear();
-		// TODO: 从数据库中加载房间列表
-//		Room harry12800 = roomService.findRelativeRoomIdByUserId(Launcher.currentUser.getUserId());
+		//  从数据库中加载房间列表
 		List<Room> rooms = roomService.findRelativeRoomIdByCreatorId(Launcher.currentUser.getId());
 		for (Room room : rooms) {
 			RoomItem item = new RoomItem();
+			Launcher.loadUser2Room(room.getMember(), room.getRoomId());
 			item.setRoomId(room.getRoomId());
 			item.setTimestamp(room.getLastChatAt());
 			item.setTitle(room.getName());
@@ -201,7 +200,7 @@ public class RoomsPanel extends ParentAvailablePanel {
 	 * @param roomId
 	 */
 	public void updateRoomItem(long roomId) {
-		if (roomId == 0 ) {
+		if (roomId < 0 ) {
 			notifyDataSetChanged(true);
 			return;
 		}

@@ -256,7 +256,7 @@ public class MessageEditorPanel extends ParentAvailablePanel {
 
 	protected void sendShake() {
 		try {
-			long idByUserId = Launcher.getIdByUserId(ChatPanel.getContext().roomId);
+			long idByUserId = Launcher.getUserIdByRoomId(ChatPanel.getContext().roomId);
 			ShakeWindowPacket p = new ShakeWindowPacket(idByUserId);
 			Launcher.client.sendRequest(p.requestPacket);
 		} catch (Exception e) {

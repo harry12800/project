@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import org.apache.ibatis.session.SqlSession;
 
 import cn.harry12800.common.module.packet.entity.UserEnity;
-import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.component.utils.ImageUtils;
 import cn.harry12800.tools.Maps;
 import cn.harry12800.vchat.client.Client;
@@ -148,29 +147,32 @@ public class Launcher {
 		return context;
 	}
 
-	public static Map<String, UserEnity> userMaps = Maps.newHashMap();
-	public static Map<Long, String> iduserIdMaps = Maps.newHashMap();
+	// 用户ID拿用户实体
+	public static Map<Long, UserEnity> userMaps = Maps.newHashMap();
+	// 房间ID 拿用户ID
+	public static Map<Long, Long> roomid2userIdMaps = Maps.newHashMap();
+	// 用户ID 拿房间ID
+	public static Map<Long, Long> userId2roomidMaps = Maps.newHashMap();
 
 	public static void loadUser(UserEnity user) {
-		userMaps.put(user.getUserId(), user);
+		userMaps.put(user.getId(), user);
 	}
-
-	public static String getUserNameByUserId(long id) {
-		return userMaps.get(id) == null ? "" : userMaps.get(id).getNickName();
-	}
-
-	public static long getIdByUserId(long id) {
-		return userMaps.get(id) == null ? -1L : userMaps.get(id).getId();
-	}
-
-	public static String getUserIdById(long id) {
-		return iduserIdMaps.get(id) == null ? "" : iduserIdMaps.get(id);
-	}
-
 	public static void loadUsers(List<UserEnity> users) {
-		for (UserEnity user : users) {
-			userMaps.put(user.getUserId(), user);
-			iduserIdMaps.put(user.getId(), user.getUserId());
+		for (UserEnity userEnity : users) {
+			loadUser(userEnity);
 		}
+	}
+
+	public static void loadUser2Room(long userId,long roomId) {
+		userId2roomidMaps.put(userId, roomId);
+		roomid2userIdMaps.put(roomId, userId);
+	}
+
+	public static long getUserIdByRoomId(long roomId) {
+		return roomid2userIdMaps.get(roomId);
+	}
+
+	public static String getUserNameByUserId(long userId) {
+		return userMaps.get(userId).getNickName();
 	}
 }

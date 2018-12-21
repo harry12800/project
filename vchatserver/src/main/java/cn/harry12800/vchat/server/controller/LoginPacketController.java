@@ -28,6 +28,7 @@ public class LoginPacketController extends ServerServlet<LoginPacket.Request, Lo
 		Packet<LoginPacket.Response> packet = new Packet<>();
 		// 参数判空
 		if (StringUtils.isEmpty(t.body.userName) || StringUtils.isEmpty(t.body.passward)) {
+			
 		}
 		// 判断当前会话是否已登录
 		if (session.getAttachment() != null) {
@@ -53,13 +54,16 @@ public class LoginPacketController extends ServerServlet<LoginPacket.Request, Lo
 			oldSession.close();
 		}
 
+		System.out.println(onlineUser);
+		System.out.println(user.getId());
+		
 		// 加入在线用户会话
 		if (SessionManager.putSession(user.getId(), session)) {
 			session.setAttachment(user);
 		} else {
 			throw new ErrorCodeException(ResultCode.LOGIN_FAIL);
 		}
-
+		System.out.println(SessionManager.isOnlineUser(user.getId()));
 		// 创建Response传输对象返回
 		res.setId(user.getId());
 		res.setUserId(user.getUserId());

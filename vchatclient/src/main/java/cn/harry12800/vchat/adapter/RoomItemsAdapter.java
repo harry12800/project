@@ -19,6 +19,7 @@ import cn.harry12800.vchat.db.service.RoomService;
 import cn.harry12800.vchat.entity.RoomItem;
 import cn.harry12800.vchat.panels.ChatPanel;
 import cn.harry12800.vchat.utils.AvatarUtil;
+import io.netty.util.internal.SystemPropertyUtil;
 
 /**
  * Created by harry12800 on 17-5-30.
@@ -111,6 +112,7 @@ public class RoomItemsAdapter extends BaseAdapter<RoomItemViewHolder> {
 					if (e.getButton() == MouseEvent.BUTTON1) {
 						if (selectedViewHolder != viewHolder) {
 							// 进入房间
+							System.err.println(item.getRoomId());
 							enterRoom(item.getRoomId());
 							for (RoomItemViewHolder holder : viewHolders) {
 								if (holder != viewHolder) {
@@ -143,26 +145,27 @@ public class RoomItemsAdapter extends BaseAdapter<RoomItemViewHolder> {
 	}
 
 	private String[] getRoomMembers(long roomId) {
-		Room room = roomService.findById(roomId);
-		String members = room.getMember();
+		// TODO
+//		Room room = roomService.findById(roomId);
+//		String members = room.getMember();
 		String[] memberArr = null;
 
 		List<String> roomMembers = new ArrayList<>();
-		if (members != null) {
-			String[] userArr = members.split(",");
-			for (int i = 0; i < userArr.length; i++) {
-				if (!roomMembers.contains(userArr[i])) {
-					roomMembers.add(userArr[i]);
-				}
-			}
-		}
-		String creator = room.getCreatorName();
-		if (creator != null) {
-			if (!roomMembers.equals(creator)) {
-				roomMembers.add(creator);
-			}
-		}
-
+//		if (members != null) {
+//			String[] userArr = members.split(",");
+//			for (int i = 0; i < userArr.length; i++) {
+//				if (!roomMembers.contains(userArr[i])) {
+//					roomMembers.add(userArr[i]);
+//				}
+//			}
+//		}
+//		String creator = room.getCreatorName();
+//		if (creator != null) {
+//			if (!roomMembers.equals(creator)) {
+//				roomMembers.add(creator);
+//			}
+//		}
+//
 		memberArr = roomMembers.toArray(new String[] {});
 		return memberArr;
 	}

@@ -30,7 +30,7 @@ public class ChatHandler {
 		if (resultCode == ResultCode.SUCCESS) {
 			MsgResponse msg = new MsgResponse();
 			msg.readFromBytes(data);
-			ChatPanel.getContext().showReceiveMsg(msg);
+//			ChatPanel.getContext().showReceiveMsg(msg);
 		} else {
 			ChatPanel.getContext().showReceiveMsgFail(resultCodeTip.getTipContent(resultCode));
 		}
@@ -41,7 +41,7 @@ public class ChatHandler {
 		if (resultCode == ResultCode.SUCCESS) {
 			MsgResponse msg = new MsgResponse();
 			msg.readFromBytes(data);
-			ChatPanel.getContext().showReceiveMsg(msg);
+//			ChatPanel.getContext().showReceiveMsg(msg);
 		} else {
 			ChatPanel.getContext().showReceiveMsgFail(resultCodeTip.getTipContent(resultCode));
 		}

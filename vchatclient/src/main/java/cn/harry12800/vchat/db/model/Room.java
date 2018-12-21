@@ -14,12 +14,12 @@ public class Room extends BasicModel implements Comparable<Room> {
 	private String name;
 	private String topic;
 	private String muted;
-	private String member;
+	private long member;
 	private boolean sysMes;
 	private int msgSum;
 	private long lastChatAt;
 	private String creatorName;
-	private String creatorId;
+	private long creatorId;
 	private String jitsiTimeout;
 	private boolean readOnly;
 	private boolean archived;
@@ -78,11 +78,11 @@ public class Room extends BasicModel implements Comparable<Room> {
 		this.muted = muted;
 	}
 
-	public String getMember() {
+	public long getMember() {
 		return member;
 	}
 
-	public void setMember(String member) {
+	public void setMember(long member) {
 		this.member = member;
 	}
 
@@ -118,11 +118,11 @@ public class Room extends BasicModel implements Comparable<Room> {
 		this.creatorName = creatorName;
 	}
 
-	public String getCreatorId() {
+	public long getCreatorId() {
 		return creatorId;
 	}
 
-	public void setCreatorId(String creatorId) {
+	public void setCreatorId(long creatorId) {
 		this.creatorId = creatorId;
 	}
 

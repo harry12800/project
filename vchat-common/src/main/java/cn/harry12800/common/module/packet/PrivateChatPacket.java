@@ -52,6 +52,11 @@ public class PrivateChatPacket extends GoBackPacket {
 		 */
 		@Tag(3)
 		public String content;
+		
+		@Override
+		public String toString() {
+			return "Request [targetUserId=" + targetUserId + ", content=" + content + "]";
+		}
 		public Request() {
 		}
 		public Request(long targetUserId, String content) {

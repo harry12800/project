@@ -7,9 +7,9 @@
     <cache/>
 
     <insert id="insert">
-		INSERT INTO room(roomId, type, name, topic, muted, member, sysMes, msgSum, lastChatAt, creatorName, creatorId,
+		INSERT INTO room( type, name, topic, muted, member, sysMes, msgSum, lastChatAt, creatorName, creatorId,
 		jitsiTimeout, readOnly, archived, defaultRoom, createdAt, updatedAt, unreadCount, totalReadCount, lastMessage)
-		VALUES (#{roomId},#{type},#{name},#{topic},#{muted},#{member},#{sysMes},#{msgSum},#{lastChatAt},#{creatorName},#{creatorId},
+		VALUES (#{type},#{name},#{topic},#{muted},#{member},#{sysMes},#{msgSum},#{lastChatAt},#{creatorName},#{creatorId},
 		#{jitsiTimeout},#{readOnly},#{archived},#{defaultRoom},#{createdAt},#{updatedAt},#{unreadCount},#{totalReadCount},#{lastMessage})
 	</insert>
 
@@ -19,7 +19,7 @@
 	</select>
 
     <select id="findRelativeRoomIdByUserId" resultType="Room" statementType="STATEMENT" parameterType="map">
-        SELECT * FROM room where roomId = ${userId} and creatorId = ${creatorId}
+        SELECT * FROM room where member = ${userId} and creatorId = ${creatorId}
     </select>
      <select id="findSelfRoomIdByCreatorId" resultType="Room" statementType="STATEMENT" parameterType="map">
         SELECT * FROM room where creatorId = ${condition}

@@ -41,7 +41,7 @@ public class RoomMembersPanel extends ParentAvailablePanel {
 	private JButton leaveButton;
 
 	private List<String> members = new ArrayList<>();
-	private String roomId;
+	private long roomId;
 	private RoomService roomService = Launcher.roomService;
 	private CurrentUserService currentUserService = Launcher.currentUserService;
 	private CurrentUser currentUser;
@@ -92,7 +92,7 @@ public class RoomMembersPanel extends ParentAvailablePanel {
 		listView.setAdapter(adapter);
 	}
 
-	public void setRoomId(String roomId) {
+	public void setRoomId(long roomId) {
 		this.roomId = roomId;
 		room = roomService.findById(roomId);
 	}
@@ -107,7 +107,7 @@ public class RoomMembersPanel extends ParentAvailablePanel {
 	}
 
 	public void updateUI() {
-		if (roomId != null) {
+		if (roomId != 0) {
 			try {
 				room = roomService.findById(roomId);
 			} catch (Exception e) {
@@ -140,36 +140,36 @@ public class RoomMembersPanel extends ParentAvailablePanel {
 	private void getRoomMembers() {
 		members.clear();
 
-		// 单独聊天，成员只显示两人
+		//TODO 单独聊天，成员只显示两人
 		if (room.getType().equals("d")) {
 			members.add(currentUser.getUsername());
 			members.add(room.getName());
 		} else {
-			String roomMembers = room.getMember();
-			String[] userArr = new String[] {};
-			if (roomMembers != null) {
-				userArr = roomMembers.split(",");
-			}
-
-			if (isRoomCreator()) {
-				members.remove("添加成员");
-				members.add("添加成员");
-
-				if (userArr.length > 1) {
-					members.remove("删除成员");
-					members.add("删除成员");
-				}
-			}
-
-			if (room.getCreatorName() != null) {
-				members.add(room.getCreatorName());
-			}
-
-			for (int i = 0; i < userArr.length; i++) {
-				if (!members.contains(userArr[i])) {
-					members.add(userArr[i]);
-				}
-			}
+//			String roomMembers = room.getMember();
+//			String[] userArr = new String[] {};
+//			if (roomMembers != null) {
+//				userArr = roomMembers.split(",");
+//			}
+//
+//			if (isRoomCreator()) {
+//				members.remove("添加成员");
+//				members.add("添加成员");
+//
+//				if (userArr.length > 1) {
+//					members.remove("删除成员");
+//					members.add("删除成员");
+//				}
+//			}
+//
+//			if (room.getCreatorName() != null) {
+//				members.add(room.getCreatorName());
+//			}
+//
+//			for (int i = 0; i < userArr.length; i++) {
+//				if (!members.contains(userArr[i])) {
+//					members.add(userArr[i]);
+//				}
+//			}
 		}
 	}
 

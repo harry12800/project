@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -106,6 +105,7 @@ public class UserInfoPanel extends ParentAvailablePanel {
 
 	private void openOrCreateDirectChat() {
 		ContactsUser user = contactsUserService.find("username", username).get(0);
+		System.out.println(user);
 		long userId = user.getFriendId();
 		System.out.println(userId);
 		long creatorId = Launcher.currentUser.getId();
@@ -128,16 +128,19 @@ public class UserInfoPanel extends ParentAvailablePanel {
 	 */
 	private void createDirectChat(ContactsUser user) {
 		Room room = new Room();
-		room.setCreatorId(Launcher.currentUser.getUserId());
-		room.setRoomId(user.getFriendId());
+		room.setCreatorId(Launcher.currentUser.getId());
 		room.setName(user.getUsername());
+		room.setMember(user.getFriendId());
 		room.setTopic(user.getUsername());
 		room.setType("d");
 		roomService.insertOrUpdate(room);
+		room = roomService.findRelativeRoomIdByUserId(user.getFriendId(),Launcher.currentUser.getId());
+		System.err.println("aa"+room.getRoomId());
+		Launcher.loadUser2Room(user.getFriendId(), room.getRoomId());
 		RoomsPanel.getContext().addNewRoomItemToTop(room);
 		TabOperationPanel.getContext().showChatPanel();
 //		RoomsPanel.getContext().activeItem(0);
-		ChatPanel.getContext().enterRoom(user.getFriendId());
+		ChatPanel.getContext().enterRoom(room.getRoomId());
 	}
 	 
 }
