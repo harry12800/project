@@ -20,7 +20,7 @@ import io.netty.util.CharsetUtil;
  * @author harry12800
  *
  */
-public class ClientHandler extends SimpleChannelInboundHandler<Response> {
+public class ClientHandlerOld extends SimpleChannelInboundHandler<Response> {
 	/** 客户端请求的心跳命令  */
 	private static final ByteBuf HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer("hb_request",
 			CharsetUtil.UTF_8));
@@ -34,9 +34,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<Response> {
 	/**循环次数 */
 	private int fcount = 1;
 
-	private Client client;
+	private ClientOld client;
 
-	public ClientHandler(Client client) {
+	public ClientHandlerOld(ClientOld client) {
 		this.client = client;
 	}
 

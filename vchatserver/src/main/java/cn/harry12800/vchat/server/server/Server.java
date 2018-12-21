@@ -38,7 +38,7 @@ public class Server {
 			b.option(ChannelOption.SO_BACKLOG, 2048);// 链接缓冲池队列大小
 
 			// 绑定端口
-			b.bind(12800).sync();
+			b.bind(10000).sync();
 
 			System.out.println("start!!!");
 		} catch (Exception e) {

@@ -10,7 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.component.utils.ImageUtils;
 import cn.harry12800.tools.Maps;
-import cn.harry12800.vchat.client.Client;
+import cn.harry12800.vchat.client.ClientOld;
 import cn.harry12800.vchat.client.OfflineListenter;
 import cn.harry12800.vchat.db.model.CurrentUser;
 import cn.harry12800.vchat.db.service.ContactsUserService;
@@ -52,10 +52,10 @@ public class Launcher {
 		fileAttachmentService = new FileAttachmentService(sqlSession);
 	}
 
-	public static Client client;
+	public static ClientOld client;
 	static OfflineListenter listener = new MyOfflineListenter();
 	static {
-		client = new Client();
+		client = new ClientOld();
 		client.init(listener);
 	}
 	private JFrame currentFrame;

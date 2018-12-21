@@ -14,43 +14,56 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import cn.harry12800.common.core.annotion.SocketCommand;
-import cn.harry12800.common.core.annotion.SocketModule;
+import cn.harry12800.common.core.codc.HeaderBodyMap;
+import cn.harry12800.common.core.packet.base.BaseBody;
+import cn.harry12800.vchat.handler.IpCommand;
+import cn.harry12800.vchat.handler.ModuleHanlder;
+
+
 
 public class Scaner {
 
 	volatile static boolean scan = false;
 
 	public static void getInvoker() {
-		if (scan)
-			return;
+		if (scan) return;
 		scan = true;
 		Set<Class<?>> classes = getClasses("cn.harry12800.vchat");
 		for (Class<?> clazz : classes) {
 			//	System.out.println(clazz);
-			SocketModule socketModule = clazz.getAnnotation(SocketModule.class);
+			ModuleHanlder socketModule = clazz.getAnnotation(ModuleHanlder.class);
 			if (socketModule == null)
 				continue;
 			System.err.println(clazz);
+			Object newInstance = null;
+			try {
+				newInstance = clazz.newInstance();
+			} catch (InstantiationException e1) {
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				e1.printStackTrace();
+			}
 			Method[] methods = clazz.getMethods();
 			if (Objects.isNull(methods))
 				continue;
 			for (Method method : methods) {
-				SocketCommand socketCommand = method.getAnnotation(SocketCommand.class);
+				IpCommand socketCommand = method.getAnnotation(IpCommand.class);
 				if (Objects.isNull(socketCommand))
 					continue;
-				final short module = socketModule.module();
-				final short cmd = socketCommand.cmd();
+				String ip = socketCommand.ip();
+				Class<? extends BaseBody> bodyType = socketCommand.bodyType();
 				final String desc = socketCommand.desc();
-				if (InvokerHoler.getInvoker(module, cmd) == null) {
+				HeaderBodyMap.register(ip, bodyType);
+				if (InvokerHoler.getIpInvoker(ip)==null) {
 					try {
-						InvokerHoler.addInvoker(module, cmd, Invoker.valueOf(desc, method, clazz.newInstance()));
-						System.out.println("添加命令:" + "module:" + module + " cmd：" + cmd + " desc:" + desc);
+						Invoker invoker =Invoker.valueOf(desc, method, newInstance);
+						InvokerHoler.addIpInvoker(ip, invoker);
+						System.out.println("添加命令"+ip+"desc:" + desc);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else {
-					System.out.println("重复命令:" + "module:" + module + " cmd：" + cmd + " desc:" + desc);
+					System.out.println("重复命令"+clazz.getName()+"  :"+method.getName());
 				}
 			}
 

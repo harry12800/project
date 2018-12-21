@@ -27,6 +27,7 @@ import org.apache.ibatis.session.SqlSession;
 import cn.harry12800.common.core.model.Request;
 import cn.harry12800.common.module.ModuleId;
 import cn.harry12800.common.module.UserCmd;
+import cn.harry12800.common.module.packet.LoginPacket;
 import cn.harry12800.common.module.user.dto.LoginRequest;
 import cn.harry12800.common.module.user.dto.UserResponse;
 import cn.harry12800.j2se.action.AbstractMouseListener;
@@ -333,10 +334,10 @@ public class LoginFrame extends JFrame {
 			passwordField.setEditable(false);
 			try {
 				LoginRequest loginRequest = new LoginRequest();
-				loginRequest.setUserName(name);
-				loginRequest.setPassward(pwd);
+				LoginPacket loginPacket = new LoginPacket(name,pwd);
 				Request request = Request.valueOf(ModuleId.USER, UserCmd.LOGIN, loginRequest.getBytes());
-				Launcher.client.sendRequest(request);
+//				Launcher.client.sendRequest(request);
+				Launcher.client.sendRequest(loginPacket.requestPacket);
 			} catch (Exception e) {
 				showMessage("无法连接服务器");
 				loginButton.setEnabled(true);

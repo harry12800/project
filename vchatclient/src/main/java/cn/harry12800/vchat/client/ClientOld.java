@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import cn.harry12800.common.core.codc.RequestEncoder;
 import cn.harry12800.common.core.codc.ResponseDecoder;
 import cn.harry12800.common.core.model.Request;
+import cn.harry12800.common.core.packet.base.BaseBody;
+import cn.harry12800.common.core.packet.base.Packet;
 import cn.harry12800.j2se.utils.Config;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -30,7 +32,7 @@ import io.netty.handler.timeout.IdleStateHandler;
  * 
  */
 @Component
-public class Client {
+public class ClientOld {
 
 	/**
 	 * 服务类
@@ -67,10 +69,10 @@ public class Client {
 		bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 			@Override
 			public void initChannel(SocketChannel ch) throws Exception {
-				ch.pipeline().addLast(new IdleStateHandler(0, 6, 0, TimeUnit.SECONDS));
+//				ch.pipeline().addLast(new IdleStateHandler(0, 6, 0, TimeUnit.SECONDS));
 				ch.pipeline().addLast(new ResponseDecoder());
 				ch.pipeline().addLast(new RequestEncoder());
-				ClientHandler clientHandler = new ClientHandler(Client.this);
+				ClientHandlerOld clientHandler = new ClientHandlerOld(ClientOld.this);
 				ch.pipeline().addLast(clientHandler);
 			}
 		});
@@ -169,7 +171,18 @@ public class Client {
 		}
 		channel.writeAndFlush(request);
 	}
-
+	/**
+	 * 发送消息
+	 * 
+	 * @param request
+	 * @throws InterruptedException
+	 */
+	public void sendRequest(Packet<BaseBody> packet) throws InterruptedException {
+		if (channel == null || !channel.isActive()) {
+			connect();
+		}
+		channel.writeAndFlush(packet);
+	}
 	public String getWebHost() {
 		return webHost;
 	}
