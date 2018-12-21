@@ -51,11 +51,13 @@ import cn.harry12800.j2se.module.tray.TrayInfo;
 import cn.harry12800.j2se.module.tray.TrayListener;
 import cn.harry12800.j2se.module.tray.TrayUtil;
 import cn.harry12800.j2se.style.ui.Colors;
+import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.StringUtils;
 import cn.harry12800.vchat.adapter.message.BaseMessageViewHolder;
 import cn.harry12800.vchat.adapter.message.MessageAdapter;
 import cn.harry12800.vchat.adapter.message.MessageRightAttachmentViewHolder;
 import cn.harry12800.vchat.adapter.message.MessageRightImageViewHolder;
+import cn.harry12800.vchat.app.App;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.websocket.PullWebInfo.Letter;
 import cn.harry12800.vchat.components.GBC;
@@ -1343,92 +1345,6 @@ public class ChatPanel extends ParentAvailablePanel {
 
 	}
 
-	public void showReceiveFileMsg(FileChatRequest msg) {
-//		String homePath = App.basePath;
-//		String dirPath = homePath + File.separator + "data" + File.separator + "chat" + File.separator
-//				+ currentUser.getUsername() + File.separator + Launcher.getUserNameByUserId(msg.getSenderUserId());
-//		if (!new File(dirPath).exists()) {
-//			new File(dirPath).mkdirs();
-//		}
-//		File file = new File(dirPath, msg.getName());
-//		System.out.println(msg.getPosition());
-//		FileUtils.writeFile(file, msg.getPosition(), msg.getData());
-//		System.out.println("index:" + msg.getIndex() + "   total:" + msg.getTotal() + "   len:" + msg.getData().length);
-//		/**
-//		 * 判断是否是最后一条
-//		 */
-//		if (msg.getIndex() + 1 != msg.getTotal())
-//			return;
-//		TrayInfo trayInfo = new TrayInfo();
-//		trayInfo.e = new TrayListener() {
-//			public void exe(TrayInfo e) {
-//				MainFrame.getContext().setExtendedState(JFrame.NORMAL);
-//				MainFrame.getContext().toFront();
-//				TabOperationPanel.getContext().showChatPanel();
-//				MainFrame.getContext().setVisible(true);
-//			}
-//		};
-//		trayInfo.id = msg.getSenderUserId() + "";
-//		trayInfo.type = ETrayType.CHAT;
-//		String senderUserName = Launcher.getUserNameByUserId(msg.getSenderUserId());
-//		System.out.println("用户：" + senderUserName);
-//		trayInfo.icon = new ImageIcon(
-//				AvatarUtil.createOrLoadUserAvatar(senderUserName).getScaledInstance(16, 16, Image.SCALE_SMOOTH));
-//		// AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
-//		TrayUtil.getTray().pushTrayInfo(trayInfo);
-//		Message message = new Message();
-//		message.setId(StringUtils.getUUID());
-//		message.setRoomId(msg.getSenderUserId());
-//		message.setSenderUsername(senderUserName);
-//		message.setMessageContent(msg.getName());
-//		// string = StringEscapeUtils.unescapeJava(string);
-//		message.setSenderId(msg.getSenderUserId());
-//		message.setTimestamp(new Date().getTime());
-//		String suffix = StringUtils.getSuffix(msg.getName());
-//		String mime = MimeTypeUtil.getMime(suffix);
-//		if (mime.startsWith("image")) {
-//			message.setImageAttachmentId(msg.getMessageId());
-//			messageService.insertOrUpdate(message);
-//			Room friendRoom = roomService.findById(msg.getSenderUserId() + "");
-//			friendRoom.setLastMessage(message.getMessageContent());
-//			friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
-//			roomService.insertOrUpdate(friendRoom);
-//			ImageAttachment attachment = new ImageAttachment();
-//			attachment.setId(msg.getMessageId());
-//			attachment.setTitle(msg.getName());
-//			attachment.setImageUrl(file.getAbsolutePath());
-//			imageAttachmentService.insertOrUpdate(attachment);
-//			MessageItem item = new MessageItem(message, friendRoom.getRoomId());
-//			item.setMessageType(MessageItem.LEFT_IMAGE);
-//			if (room != null && friendRoom.getType().equals("d")
-//					&& room.getName().equals(message.getSenderUsername())) {
-//				addMessageItemToEnd(item);
-//			}
-//			RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
-//		} else {
-//			message.setFileAttachmentId(msg.getMessageId());
-//			messageService.insertOrUpdate(message);
-//			Room friendRoom = roomService.findById(msg.getSenderUserId() + "");
-//			friendRoom.setLastMessage(message.getMessageContent());
-//			friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
-//			roomService.insertOrUpdate(friendRoom);
-//			FileAttachment attachment = new FileAttachment();
-//			attachment.setId(msg.getMessageId());
-//			attachment.setTitle(msg.getName());
-//			attachment.setLink(file.getAbsolutePath());
-//			fileAttachmentService.insertOrUpdate(attachment);
-//			MessageItem item = new MessageItem(message, friendRoom.getRoomId());
-//			item.setMessageType(MessageItem.LEFT_ATTACHMENT);
-//			if (room != null && friendRoom.getType().equals("d")
-//					&& room.getName().equals(message.getSenderUsername())) {
-//				addMessageItemToEnd(item);
-//			}
-//			RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
-//		}
-//		System.out.println("加进来了2");
-
-	}
-
 	public void showReceiveMsg(PrivateChatPacket.Request body) {
 		System.out.println("收到消息");
 		Message message = new Message();
@@ -1486,5 +1402,89 @@ public class ChatPanel extends ParentAvailablePanel {
 			addMessageItemToEnd(item);
 		}
 		RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
+	}
+
+	public void showReceiveFileMsg(FileChatPacket.Request body) {
+		String homePath = App.basePath;
+		String dirPath = homePath + File.separator + "data" + File.separator + "chat" + File.separator
+				+ currentUser.getUsername() + File.separator + Launcher.getUserNameByUserId(body.senderUserId);
+		if (!new File(dirPath).exists()) {
+			new File(dirPath).mkdirs();
+		}
+		File file = new File(dirPath, body.name);
+		System.out.println(body.position);
+		FileUtils.writeFile(file, body.position,body.data);
+		/**
+		 * 判断是否是最后一条
+		 */
+		if (body.index+ 1 != body.total)
+			return;
+		TrayInfo trayInfo = new TrayInfo();
+		trayInfo.e = new TrayListener() {
+			public void exe(TrayInfo e) {
+				MainFrame.getContext().setExtendedState(JFrame.NORMAL);
+				MainFrame.getContext().toFront();
+				TabOperationPanel.getContext().showChatPanel();
+				MainFrame.getContext().setVisible(true);
+			}
+		};
+		trayInfo.id = body.senderUserId+"";
+		trayInfo.type = ETrayType.CHAT;
+		String senderUserName = Launcher.getUserNameByUserId(body.senderUserId);
+		System.out.println("用户：" + senderUserName);
+		trayInfo.icon = new ImageIcon(
+				AvatarUtil.createOrLoadUserAvatar(senderUserName).getScaledInstance(16, 16, Image.SCALE_SMOOTH));
+		// AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
+		TrayUtil.getTray().pushTrayInfo(trayInfo);
+		Message message = new Message();
+		message.setId(StringUtils.getUUID());
+		message.setRoomId(body.senderUserId);
+		message.setSenderUsername(senderUserName);
+		message.setMessageContent(body.name);
+		// string = StringEscapeUtils.unescapeJava(string);
+		message.setSenderId(body.senderUserId);
+		message.setTimestamp(new Date().getTime());
+		String suffix = StringUtils.getSuffix(body.name);
+		String mime = MimeTypeUtil.getMime(suffix);
+		if (mime.startsWith("image")) {
+			message.setImageAttachmentId(body.messageId);
+			messageService.insertOrUpdate(message);
+			Room friendRoom = roomService.findById(body.senderUserId);
+			friendRoom.setLastMessage(message.getMessageContent());
+			friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
+			roomService.insertOrUpdate(friendRoom);
+			ImageAttachment attachment = new ImageAttachment();
+			attachment.setId(body.messageId);
+			attachment.setTitle(body.name);
+			attachment.setImageUrl(file.getAbsolutePath());
+			imageAttachmentService.insertOrUpdate(attachment);
+			MessageItem item = new MessageItem(message, friendRoom.getRoomId());
+			item.setMessageType(MessageItem.LEFT_IMAGE);
+			if (room != null && friendRoom.getType().equals("d")
+					&& room.getName().equals(message.getSenderUsername())) {
+				addMessageItemToEnd(item);
+			}
+			RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
+		} else {
+			message.setFileAttachmentId(body.messageId);
+			messageService.insertOrUpdate(message);
+			Room friendRoom = roomService.findById(body.senderUserId);
+			friendRoom.setLastMessage(message.getMessageContent());
+			friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
+			roomService.insertOrUpdate(friendRoom);
+			FileAttachment attachment = new FileAttachment();
+			attachment.setId(body.messageId);
+			attachment.setTitle(body.name);
+			attachment.setLink(file.getAbsolutePath());
+			fileAttachmentService.insertOrUpdate(attachment);
+			MessageItem item = new MessageItem(message, friendRoom.getRoomId());
+			item.setMessageType(MessageItem.LEFT_ATTACHMENT);
+			if (room != null && friendRoom.getType().equals("d")
+					&& room.getName().equals(message.getSenderUsername())) {
+				addMessageItemToEnd(item);
+			}
+			RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
+		}
+		System.out.println("加进来了2");
 	}
 }

@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import cn.harry12800.common.core.exception.ErrorCodeException;
 import cn.harry12800.common.core.model.ResultCode;
 import cn.harry12800.common.core.packet.base.Packet;
+import cn.harry12800.common.core.session.Session;
 import cn.harry12800.common.core.session.SessionManager;
 import cn.harry12800.common.module.packet.PrivateChatPacket;
 import cn.harry12800.db.entity.ChatMsg;
 import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.mapper.ChatMsgMapper;
 import cn.harry12800.db.mapper.UserInfoMapper;
-import cn.harry12800.vchat.server.server.Session;
 import cn.harry12800.vchat.server.server.bussess.ServerIP;
 import cn.harry12800.vchat.server.server.bussess.ServerServlet;
 
@@ -47,10 +47,10 @@ public class PrivateChatPacketController extends ServerServlet<PrivateChatPacket
 		}
 		// 判断对方是否在线
 		ChatMsg msg = new ChatMsg();
-		
+
 		boolean online = SessionManager.isOnlineUser(t.body.targetUserId);
 		boolean online1 = SessionManager.isOnlineUser(user.getId());
-		System.out.println(online+ "Rpc:"+online1+""+t.body.targetUserId);
+		System.out.println(online + "Rpc:" + online1 + "" + t.body.targetUserId);
 		System.out.println(user);
 		System.out.println(t.body.targetUserId);
 		if (!online) {
@@ -62,7 +62,7 @@ public class PrivateChatPacketController extends ServerServlet<PrivateChatPacket
 			msg.setSendTime(new Date());
 			msg.setGo(targetUser.getId());
 			chatMsgMapper.createChatMsg(msg);
-		}else {
+		} else {
 			System.out.println("对方在线");
 			msg.setDataType(1);
 			msg.setArrive(1);
@@ -75,8 +75,7 @@ public class PrivateChatPacketController extends ServerServlet<PrivateChatPacket
 			SessionManager.sendMessage(targetUser.getId(), t);
 		}
 		// 创建消息对象
-
-		packet.header = t.header;
+		packet.header =PrivateChatPacket.copyHeader();
 		packet.header.commandId++;
 		packet.body = res;
 		return (Packet<PrivateChatPacket.Response>) packet;

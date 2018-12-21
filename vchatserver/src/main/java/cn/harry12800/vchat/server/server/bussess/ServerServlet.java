@@ -6,7 +6,7 @@ import java.util.Map;
 
 import cn.harry12800.common.core.packet.base.BaseBody;
 import cn.harry12800.common.core.packet.base.Packet;
-import cn.harry12800.vchat.server.server.Session;
+import cn.harry12800.common.core.session.Session;
 
 public abstract class ServerServlet<A extends BaseBody, B extends BaseBody> {
 

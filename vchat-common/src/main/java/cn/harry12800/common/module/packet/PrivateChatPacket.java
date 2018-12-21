@@ -23,7 +23,6 @@ public class PrivateChatPacket extends GoBackPacket {
 	static {
 		HeaderBodyMap.register(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_DATA,Request.class);
 		HeaderBodyMap.register(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_DATA+1,Response.class);
-		reqHeader = new Header(ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_DATA);
 		respHeader = new Header(ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_DATA+1);
 	}
 	public PrivateChatPacket() {
@@ -33,7 +32,7 @@ public class PrivateChatPacket extends GoBackPacket {
 	@SuppressWarnings("unchecked")
 	public PrivateChatPacket(long userId,String content) {
 		requestPacket = new RequestPacket();
-		requestPacket.header = reqHeader;
+		requestPacket.header = new Header(ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_DATA);
 		requestPacket.body = new Request(userId,content);
 		short seqNo = SequenceNumberMaker.getInstance().make();
 		requestPacket.header.reserved = seqNo;
@@ -71,5 +70,9 @@ public class PrivateChatPacket extends GoBackPacket {
 		 * id
 		 */
 	 
+	}
+
+	public static Header copyHeader() {
+		return new Header(ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_DATA);
 	}
 }

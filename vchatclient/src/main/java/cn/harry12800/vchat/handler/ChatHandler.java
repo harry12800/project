@@ -53,7 +53,7 @@ public class ChatHandler {
 			FileChatRequest msg = new FileChatRequest();
 			msg.readFromBytes(data);
 			System.err.println(msg);
-			ChatPanel.getContext().showReceiveFileMsg(msg);
+//			ChatPanel.getContext().showReceiveFileMsg(msg);
 		} else {
 			ChatPanel.getContext().showReceiveMsgFail(resultCodeTip.getTipContent(resultCode));
 		}

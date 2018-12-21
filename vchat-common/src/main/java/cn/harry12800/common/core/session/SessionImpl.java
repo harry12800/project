@@ -42,6 +42,7 @@ public class SessionImpl implements Session {
 
 	@Override
 	public void write(Object message) {
+		System.out.println("写出消息："+message);
 		channel.writeAndFlush(message);
 	}
 

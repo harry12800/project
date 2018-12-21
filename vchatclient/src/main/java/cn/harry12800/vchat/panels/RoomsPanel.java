@@ -209,7 +209,7 @@ public class RoomsPanel extends ParentAvailablePanel {
 			RoomItem item = roomItemList.get(i);
 			if (item.getRoomId() == (roomId)) {
 				s = true;
-				Room room = roomService.findById(item.getRoomId());
+				Room room = roomService.findById(roomId);
 				if (room != null) {
 					item.setLastMessage(room.getLastMessage());
 					item.setTimestamp(room.getLastChatAt());

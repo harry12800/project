@@ -24,7 +24,6 @@ public class FileChatPacket extends GoBackPacket {
 	static {
 		HeaderBodyMap.register(ProtocolConstant.SID_FILE, ProtocolConstant.CID_FILE_SEND,Request.class);
 		HeaderBodyMap.register(ProtocolConstant.SID_FILE, ProtocolConstant.CID_FILE_SEND+1,Response.class);
-		reqHeader = new Header(ProtocolConstant.SID_FILE,ProtocolConstant.CID_FILE_SEND);
 		respHeader = new Header(ProtocolConstant.SID_FILE,ProtocolConstant.CID_FILE_SEND+1);
 	}
 
@@ -34,7 +33,7 @@ public class FileChatPacket extends GoBackPacket {
 	@SuppressWarnings("unchecked")
 	public FileChatPacket(FileChatRequest request) {
 		requestPacket = new RequestPacket();
-		requestPacket.header = reqHeader;
+		requestPacket.header = new Header(ProtocolConstant.SID_FILE,ProtocolConstant.CID_FILE_SEND);
 		requestPacket.body = new Request(request);
 		short seqNo = SequenceNumberMaker.getInstance().make();
 		requestPacket.header.reserved = seqNo;
@@ -50,12 +49,19 @@ public class FileChatPacket extends GoBackPacket {
 		 * 要向哪个会话发消息
 		 */
 		public long targetUserId;
+		@Tag(3)
 		public long senderUserId;
+		@Tag(4)
 		public short total;
+		@Tag(5)
 		public short index;
+		@Tag(6)
 		public long position;
+		@Tag(7)
 		public String name;
+		@Tag(8)
 		public String messageId;
+		@Tag(9)
 		public byte[] data;
 
 		public Request() {
@@ -79,121 +85,10 @@ public class FileChatPacket extends GoBackPacket {
 		 * id
 		 */
 		@Tag(2)
-		public long id;
-		/**
-		 * 用户名
-		 */
-		@Tag(3)
-		public String userId;
+		public long ok;
+	}
 
-		/**
-		 * 昵称
-		 */
-		@Tag(4)
-		public String nickName;
-		/**
-		 * 真实姓名
-		 */
-		@Tag(5)
-		public String realName;
-		/**
-		 * 头像路径
-		 */
-		@Tag(6)
-		public String avatarUrl;
-		/**
-		 * 创建时间。
-		 */
-		@Tag(7)
-		public Long createTime;
-		@Tag(8)
-		public String phone;
-		@Tag(9)
-		public String sex;
-		@Tag(10)
-		public String mail;
-
-		public Response() { }
-
-		@Override
-		public String toString() {
-			return "LoginResponse [id=" + id + ", userId=" + userId + ", nickName=" + nickName + ", realName="
-					+ realName + ", avatarUrl=" + avatarUrl + ", createTime=" + createTime + ", phone=" + phone
-					+ ", sex=" + sex + ", mail=" + mail + "]";
-		}
-
-		public long getId() {
-			return id;
-		}
-
-		public void setId(long id) {
-			this.id = id;
-		}
-
-		public String getUserId() {
-			return userId;
-		}
-
-		public void setUserId(String userId) {
-			this.userId = userId;
-		}
-
-		public String getNickName() {
-			return nickName;
-		}
-
-		public void setNickName(String nickName) {
-			this.nickName = nickName;
-		}
-
-		public String getRealName() {
-			return realName;
-		}
-
-		public void setRealName(String realName) {
-			this.realName = realName;
-		}
-
-		public String getAvatarUrl() {
-			return avatarUrl;
-		}
-
-		public void setAvatarUrl(String avatarUrl) {
-			this.avatarUrl = avatarUrl;
-		}
-
-		public Long getCreateTime() {
-			return createTime;
-		}
-
-		public void setCreateTime(Long createTime) {
-			this.createTime = createTime;
-		}
-
-		public String getPhone() {
-			return phone;
-		}
-
-		public void setPhone(String phone) {
-			this.phone = phone;
-		}
-
-		public String getSex() {
-			return sex;
-		}
-
-		public void setSex(String sex) {
-			this.sex = sex;
-		}
-
-		public String getMail() {
-			return mail;
-		}
-
-		public void setMail(String mail) {
-			this.mail = mail;
-		}
-
-	 
+	public static Header copyHeader() {
+		return new Header(ProtocolConstant.SID_FILE,ProtocolConstant.CID_FILE_SEND);
 	}
 }

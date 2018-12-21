@@ -86,8 +86,8 @@ public class ChatHandlerImpl implements ChatHandler {
 			}
 			FileChatResponse e = new FileChatResponse();
 			e.ok = "ok";
-			SessionManager.sendMessage(user.getId(), ModuleId.CHAT, ChatCmd.FILE_CHAT, request);
-			SessionManager.sendMessage(userId, ModuleId.CHAT, ChatCmd.FILE_CHAT_RESULT, e);
+//			SessionManager.sendMessage(user.getId(), ModuleId.CHAT, ChatCmd.FILE_CHAT, request);
+//			SessionManager.sendMessage(userId, ModuleId.CHAT, ChatCmd.FILE_CHAT_RESULT, e);
 			//执行业务
 		} catch (ErrorCodeException e) {
 			return Result.ERROR(e.getErrorCode());

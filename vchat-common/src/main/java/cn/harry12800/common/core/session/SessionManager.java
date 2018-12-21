@@ -4,11 +4,9 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.protobuf.GeneratedMessage;
-
-import cn.harry12800.common.core.model.Response;
 import cn.harry12800.common.core.packet.base.Packet;
-import cn.harry12800.common.core.serial.Serializer;
+
+
 
 /**
  * 会话管理者
@@ -45,42 +43,19 @@ public class SessionManager {
 	}
 
 	/**
-	 * 发送消息[自定义协议]
-	 * @param <T>
-	 * @param userId
-	 * @param message
-	 */
-	public static <T extends Serializer> void sendMessage(long userId, short module, short cmd, T message) {
-		Session session = onlineSessions.get(userId);
-		if (session != null && session.isConnected()) {
-			Response response = new Response(module, cmd, message.getBytes());
-			session.write(response);
-		}
-	}
-
-	/**
 	 * 发送消息[protoBuf协议]
 	 * @param <T>
 	 * @param userId
 	 * @param message
 	 */
-	public static <T extends GeneratedMessage> void sendMessage(long userId, short module, short cmd, T message) {
+	public static void sendMessage(long userId, Packet<?> message) {
 		Session session = onlineSessions.get(userId);
+		System.out.println(session);
 		if (session != null && session.isConnected()) {
-			Response response = new Response(module, cmd, message.toByteArray());
-			session.write(response);
+			session.write(message);
 		}
 	}
-
-	/**
-	 * 是否在线
-	 * @param userId
-	 * @return
-	 */
-	public static boolean isOnlineUser(long userId) {
-		return onlineSessions.containsKey(userId);
-	}
-
+	 
 	/**
 	 * 获取所有在线用户
 	 * @return
@@ -88,12 +63,12 @@ public class SessionManager {
 	public static Set<Long> getOnlineUsers() {
 		return Collections.unmodifiableSet(onlineSessions.keySet());
 	}
-
-	public static void sendMessage(long userId,
-			Packet<?> packet) {
-		Session session = onlineSessions.get(userId);
-		if (session != null && session.isConnected()) {
-			session.write(packet);
-		}
+	/**
+	 * 是否在线
+	 * @param userId
+	 * @return
+	 */
+	public static boolean isOnlineUser(long userId) {
+		return onlineSessions.containsKey(userId);
 	}
 }
