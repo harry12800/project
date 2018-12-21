@@ -23,7 +23,6 @@ public class LoginPacket extends GoBackPacket {
 	static {
 		HeaderBodyMap.register(ProtocolConstant.SID_LOGIN, ProtocolConstant.CID_LOGIN_REQ_USERLOGIN,Request.class);
 		HeaderBodyMap.register(ProtocolConstant.SID_LOGIN, ProtocolConstant.CID_LOGIN_REQ_USERLOGIN+1,Response.class);
-		reqHeader = new Header(ProtocolConstant.SID_LOGIN,ProtocolConstant.CID_LOGIN_REQ_USERLOGIN);
 		respHeader = new Header(ProtocolConstant.SID_LOGIN,ProtocolConstant.CID_LOGIN_REQ_USERLOGIN+1);
 	}
 	public LoginPacket() { }
@@ -31,7 +30,7 @@ public class LoginPacket extends GoBackPacket {
 	@SuppressWarnings("unchecked")
 	public LoginPacket(String userName, String passward) {
 		requestPacket = new RequestPacket();
-		requestPacket.header = reqHeader;
+		requestPacket.header = new Header(ProtocolConstant.SID_LOGIN,ProtocolConstant.CID_LOGIN_REQ_USERLOGIN);
 		requestPacket.body = new Request(userName, passward);
 		short seqNo = SequenceNumberMaker.getInstance().make();
 		requestPacket.header.reserved = seqNo;
@@ -181,5 +180,9 @@ public class LoginPacket extends GoBackPacket {
 		}
 
 	 
+	}
+
+	public static Header copyHeader() {
+		return new Header(ProtocolConstant.SID_LOGIN,ProtocolConstant.CID_LOGIN_REQ_USERLOGIN);
 	}
 }

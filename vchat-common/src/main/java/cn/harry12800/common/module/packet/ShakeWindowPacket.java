@@ -21,18 +21,20 @@ public class ShakeWindowPacket extends GoBackPacket {
 	static Header reqHeader;
 	static Header respHeader;
 	static {
-		HeaderBodyMap.register(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST,Request.class);
-		HeaderBodyMap.register(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST+1,Response.class);
-		reqHeader = new Header(ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST);
-		respHeader = new Header(ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST+1);
+		HeaderBodyMap.register(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST, Request.class);
+		HeaderBodyMap.register(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST + 1,
+				Response.class);
+		respHeader = new Header(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST + 1);
 	}
+
 	public ShakeWindowPacket() {
-		
+
 	}
+
 	@SuppressWarnings("unchecked")
 	public ShakeWindowPacket(long userId) {
 		requestPacket = new RequestPacket();
-		requestPacket.header = reqHeader;
+		requestPacket.header = new Header(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST);
 		requestPacket.body = new Request(userId);
 		short seqNo = SequenceNumberMaker.getInstance().make();
 		requestPacket.header.reserved = seqNo;
@@ -48,6 +50,7 @@ public class ShakeWindowPacket extends GoBackPacket {
 
 		public Request() {
 		}
+
 		public Request(long targetUserId) {
 			super();
 			this.targetUserId = targetUserId;
@@ -56,6 +59,10 @@ public class ShakeWindowPacket extends GoBackPacket {
 	}
 
 	public static class Response extends RespBody {
-	 
+
+	}
+
+	public static Header copyHeader() {
+		return new Header(ProtocolConstant.SID_MSG, ProtocolConstant.CID_MSG_SHAKE_WINDOW_REQUEST);
 	}
 }

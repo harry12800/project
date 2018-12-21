@@ -1,7 +1,6 @@
 package cn.harry12800.vchat.server.server;
 
-
-
+import cn.harry12800.common.core.exception.ErrorCodeException;
 import cn.harry12800.common.core.packet.base.Packet;
 import cn.harry12800.common.core.session.Session;
 import cn.harry12800.common.core.session.SessionImpl;
@@ -55,10 +54,20 @@ public class CustomProtoServerHandler extends SimpleChannelInboundHandler<Packet
 	 */
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, Packet<?> request) throws Exception {
-//		System.out.println("localAddress:" + ctx.channel().localAddress());
-//		System.out.println("remoteAddress:" + ctx.channel().remoteAddress());
-//		System.err.println(request.getClass());
-		handlerMessage(new SessionImpl(ctx.channel()), request);
+		// System.out.println("localAddress:" + ctx.channel().localAddress());
+		// System.out.println("remoteAddress:" + ctx.channel().remoteAddress());
+		// System.err.println(request.getClass());
+		try {
+			handlerMessage(new SessionImpl(ctx.channel()), request);
+		} catch (ErrorCodeException e) {
+//			e.printStackTrace();
+			Packet<?> result = new Packet<>();
+			result.header = request.header;
+			result.header.commandId++;
+			result.header.dataType = (short) e.getErrorCode();
+			ctx.channel().writeAndFlush(result);
+			
+		}
 
 	}
 
@@ -68,16 +77,16 @@ public class CustomProtoServerHandler extends SimpleChannelInboundHandler<Packet
 	 * @param channelId
 	 * @param request
 	 */
-	private void handlerMessage(Session session, Packet<?> request) {
+	private void handlerMessage(Session session, Packet<?> request) throws ErrorCodeException {
 
-//		System.err.println(request.body);
+		// System.err.println(request.body);
 		// 获取命令执行器
 		Invoker invoker = InvokerHoler.getIpInvoker(request.header);
 		if (invoker != null) {
 			System.out.println("功能请求：" + invoker.getDesc());
 			try {
-				Packet<?> result = (Packet<?>) invoker.invoke(session,request);
-//				System.out.println("返回数据："+result);
+				Packet<?> result = (Packet<?>) invoker.invoke(session, request);
+				// System.out.println("返回数据："+result);
 				if (result != null)
 					session.write(result);
 			} catch (Exception e) {

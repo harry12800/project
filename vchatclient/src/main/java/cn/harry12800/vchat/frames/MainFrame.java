@@ -29,7 +29,6 @@ import com.melloware.jintellitype.JIntellitype;
 
 import cn.harry12800.common.module.packet.LoginPacket;
 import cn.harry12800.common.module.packet.PullMsgPacket;
-import cn.harry12800.common.module.user.dto.ShowAllUserResponse;
 import cn.harry12800.j2se.component.rc.RCProgressBar;
 import cn.harry12800.j2se.component.utils.ImageUtils;
 import cn.harry12800.j2se.dialog.MessageDialog;
@@ -39,6 +38,7 @@ import cn.harry12800.j2se.popup.PopupFrame;
 import cn.harry12800.j2se.style.J2seColor;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.style.ui.GradientProgressBarUI;
+import cn.harry12800.j2se.utils.Clip;
 import cn.harry12800.j2se.utils.FontUtil;
 import cn.harry12800.j2se.utils.IconUtil;
 import cn.harry12800.j2se.utils.OSUtil;
@@ -509,5 +509,9 @@ public class MainFrame extends JFrame {
 			e1.printStackTrace();
 			new MessageDialog(MainFrame.getContext(), "提示", "无法连接服务器");
 		}
+	}
+
+	public void shake() {
+		Clip.shakeFrame(this, 8);
 	}
 }

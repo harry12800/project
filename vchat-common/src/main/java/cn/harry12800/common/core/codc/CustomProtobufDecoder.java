@@ -25,8 +25,6 @@ public class CustomProtobufDecoder extends ByteToMessageDecoder {
 		int preIndex = in.readerIndex();
 		int length = readRawVarint32(in);
 		System.out.println("总长度:" + length+"  "+preIndex);
-		int x = in.readerIndex();
-		System.out.println(x);
 		if (preIndex == in.readerIndex()) {
 			return;
 		}
@@ -37,12 +35,9 @@ public class CustomProtobufDecoder extends ByteToMessageDecoder {
         System.out.println("可以读的长度："+y);
 		if (y < length) {
 			in.resetReaderIndex();
-            System.out.println( "xxxxx:"+preIndex);
 			return;
 		}
-        System.out.println( "xxxxxt:"+preIndex);
 		preIndex = in.readerIndex();
-        System.out.println( "xxxxx:"+preIndex);
 		int headlength = readRawVarint32(in);
 		System.out.println("头长度:" + headlength);
 		// 读取body
