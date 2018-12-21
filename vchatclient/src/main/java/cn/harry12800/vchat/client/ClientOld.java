@@ -6,11 +6,11 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
-import cn.harry12800.common.core.codc.CustomProtobufDecoder;
-import cn.harry12800.common.core.codc.CustomProtobufEncoder;
-import cn.harry12800.common.core.packet.MessagePacket;
-import cn.harry12800.common.core.packet.base.Packet;
-import cn.harry12800.common.module.packet.LoginPacket;
+import org.springframework.stereotype.Component;
+
+import cn.harry12800.common.core.codc.RequestEncoder;
+import cn.harry12800.common.core.codc.ResponseDecoder;
+import cn.harry12800.common.core.model.Request;
 import cn.harry12800.j2se.utils.Config;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -21,6 +21,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 
 /**
  * netty客户端
@@ -28,9 +29,10 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @author harry12800
  * 
  */
+@Component
 public class Client {
 
- 	/**
+	/**
 	 * 服务类
 	 */
 	Bootstrap bootstrap = new Bootstrap();
@@ -55,7 +57,7 @@ public class Client {
 	 * 初始化
 	 */
 	@PostConstruct
-	public void init() {
+	public void init(OfflineListenter listener) {
 		config();
 		// 设置循环线程组事例
 		bootstrap.group(workerGroup);
@@ -65,10 +67,9 @@ public class Client {
 		bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 			@Override
 			public void initChannel(SocketChannel ch) throws Exception {
-				// ch.pipeline().addLast(new IdleStateHandler(0, 6, 0,
-				// TimeUnit.SECONDS));
-				ch.pipeline().addLast(new CustomProtobufDecoder());
-				ch.pipeline().addLast(new CustomProtobufEncoder());
+				ch.pipeline().addLast(new IdleStateHandler(0, 6, 0, TimeUnit.SECONDS));
+				ch.pipeline().addLast(new ResponseDecoder());
+				ch.pipeline().addLast(new RequestEncoder());
 				ClientHandler clientHandler = new ClientHandler(Client.this);
 				ch.pipeline().addLast(clientHandler);
 			}
@@ -79,7 +80,7 @@ public class Client {
 				// f.isSuccess() + " cause" + f.cause() + " isCancelled" +
 				// f.isCancelled());
 				if (f.isSuccess()) {
-//					listener.exe();
+					listener.exe();
 					System.out.println("重新连接服务器成功");
 				} else {
 					System.out.println("重新连接服务器失败");
@@ -162,7 +163,7 @@ public class Client {
 	 * @param request
 	 * @throws InterruptedException
 	 */
-	public void sendRequest(Packet<?> request) throws InterruptedException {
+	public void sendRequest(Request request) throws InterruptedException {
 		if (channel == null || !channel.isActive()) {
 			connect();
 		}
@@ -176,28 +177,5 @@ public class Client {
 	public void setWebHost(String webHost) {
 		this.webHost = webHost;
 	}
-	/**
-	 * 发送消息
-	 * 
-	 * @param request
-	 * @throws InterruptedException
-	 */
-	public void sendLoginRequest(Packet<LoginPacket.Request> request) throws InterruptedException {
-		if (channel == null || !channel.isActive()) {
-			connect();
-		}
-		channel.writeAndFlush(request);
-	}
-	/**
-	 * 发送消息
-	 * 
-	 * @param request
-	 * @throws InterruptedException
-	 */
-	public void sendChatRequest(Packet<MessagePacket.PacketRequest> request) throws InterruptedException {
-		if (channel == null || !channel.isActive()) {
-			connect();
-		}
-		channel.writeAndFlush(request);
-	}
+
 }
