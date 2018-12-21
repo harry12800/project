@@ -3,6 +3,7 @@ package cn.harry12800.common.core.util;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cn.harry12800.common.core.packet.base.Header;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtobufIOUtil;
 import io.protostuff.Schema;
@@ -13,6 +14,10 @@ import io.protostuff.runtime.RuntimeSchema;
  * @author ww
  */
 public class PbUtil {
+	public static void main(String[] args) {
+		byte[] encode = encode(new Header(1, 1));
+		
+	}
     public static <T> byte[] encode(T obj) {
         Class<?> cls = obj.getClass();
         Schema<?> schema = getSchema(cls);
@@ -48,9 +53,7 @@ public class PbUtil {
         if (schema == null) {
             synchronized (PbUtil.class) {
                 if (schema == null) {
-                    System.err.println(cls);
                     schema = RuntimeSchema.getSchema(cls);
-                    System.err.println(schema);
                     map.put(cls, schema);
                 }
             }

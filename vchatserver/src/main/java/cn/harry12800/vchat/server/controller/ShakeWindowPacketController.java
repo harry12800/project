@@ -13,7 +13,7 @@ import cn.harry12800.vchat.server.server.bussess.ServerIP;
 import cn.harry12800.vchat.server.server.bussess.ServerServlet;
 
 @Component
-@ServerIP(desc = "用户登录", ip = "0.0.3.11", reqType = ShakeWindowPacket.Request.class)
+@ServerIP(desc = "抖动窗口", ip = "0.0.3.11", reqType = ShakeWindowPacket.Request.class)
 public class ShakeWindowPacketController extends ServerServlet<ShakeWindowPacket.Request, ShakeWindowPacket.Response> {
 
 	@Autowired
