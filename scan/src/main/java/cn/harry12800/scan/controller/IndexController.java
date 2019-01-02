@@ -280,6 +280,62 @@ public class IndexController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		} else if (inputStream instanceof ByteArrayInputStream) {
+			try (ByteArrayInputStream fis = (ByteArrayInputStream) inputStream;
+					FileOutputStream fos = new FileOutputStream(file)) {
+				byte[] temp = new byte[9064];
+				int len = 0;
+				while ((len = fis.read(temp)) != -1) {
+					fos.write(temp, 0, len);
+				}
+				fos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			return "未知的文件流类型，file属性" + inputStream.getClass();
+		}
+		return "upload is successful！";
+	}
+
+	public static void main(String[] args) {
+		String suffix = StringUtils.getSuffix("/aa.a.a.a.a");
+		System.out.println(suffix);
+	}
+	@RequestMapping(value = "/fileServer/upload", method = RequestMethod.POST)
+	@ResponseBody
+	public Object upload(HttpServletRequest req, MultipartHttpServletRequest multiReq) {
+		// 获取上传文件的路径
+		String uploadFilePath = multiReq.getFile("file").getOriginalFilename();
+		String suffix = StringUtils.getSuffix(uploadFilePath);
+		String uuid = StringUtils.getUUID();
+		String header = req.getHeader("author");
+		if(!"harry12800".equals(header)){
+			return "不合法！";
+		}
+		File file = new File("/root/file/server/"+uuid+suffix);
+		FileUtils.createFile("/root/file/server/"+uuid+suffix);
+		// 截取上传文件的文件名
+		// 截取上传文件的后缀
+		InputStream inputStream = null;
+		try {
+			inputStream = multiReq.getFile("file").getInputStream();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return "未获取的文件流，file属性";
+		}
+		if (inputStream instanceof FileInputStream) {
+			try (FileInputStream fis = (FileInputStream) inputStream;
+					FileOutputStream fos = new FileOutputStream(file)) {
+				byte[] temp = new byte[9064];
+				int len = 0;
+				while ((len = fis.read(temp)) != -1) {
+					fos.write(temp, 0, len);
+				}
+				fos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}else if(inputStream instanceof ByteArrayInputStream) {
 			try (ByteArrayInputStream fis = (ByteArrayInputStream) inputStream;
 					FileOutputStream fos = new FileOutputStream(file)) {
