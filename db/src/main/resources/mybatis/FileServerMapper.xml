@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.harry12800.db.mapper.FileServerMapper">
 	<sql id="Base_Column_List">
-		id,file_path,length,visit_times,tag,file_type 
+		id,visit_path,file_path,length,visit_times,tag,file_type,suffix,nil_path,file_name 
 	</sql>
 	<select id='findAll' resultMap='FileServer' >
 		SELECT
@@ -49,33 +49,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id='save' parameterType='cn.harry12800.db.entity.FileServer'>
 		INSERT INTO scan.file_server(
-		id,file_path,length,visit_times,tag,file_type)
+		id,visit_path,file_path,length,visit_times,tag,file_type,suffix,nil_path,file_name)
 		VALUES(#{id},
+		#{visitPath},
 		#{filePath},
 		#{length},
 		#{visitTimes},
 		#{tag},
-		#{fileType}
+		#{fileType},
+		#{suffix},
+		#{nilPath},
+		#{fileName}
 		)
 	</insert>
 	<update id='update' parameterType='cn.harry12800.db.entity.FileServer'>
 		UPDATE scan.file_server SET
-		 file_path=#{filePath},
+		 visit_path=#{visitPath},
+		 		 file_path=#{filePath},
 		 		 length=#{length},
 		 		 visit_times=#{visitTimes},
 		 		 tag=#{tag},
+		 		 file_type=#{fileType},
+		 		 suffix=#{suffix},
+		 		 nil_path=#{nilPath},
 		 		 
-		 file_type=#{fileType}
+		 file_name=#{fileName}
 		 WHERE id= #{id}
 	</update>
 	<update id='updateNotNull' parameterType='cn.harry12800.db.entity.FileServer'>
 		UPDATE scan.file_server 
 		<trim prefix="SET" suffixOverrides=",">
+		 	<if test='null != visitPath'>visit_path=#{visitPath},</if>
 		 	<if test='null != filePath'>file_path=#{filePath},</if>
 		 	<if test='null != length'>length=#{length},</if>
 		 	<if test='null != visitTimes'>visit_times=#{visitTimes},</if>
 		 	<if test='null != tag'>tag=#{tag},</if>
 		 	<if test='null != fileType'>file_type=#{fileType},</if>
+		 	<if test='null != suffix'>suffix=#{suffix},</if>
+		 	<if test='null != nilPath'>nil_path=#{nilPath},</if>
+		 	<if test='null != fileName'>file_name=#{fileName},</if>
 		 </trim>
 		 WHERE 
 		<trim prefix="" suffixOverrides=" AND ">
@@ -105,11 +117,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type='cn.harry12800.db.entity.FileServer' id='FileServer'>
 			<result property='id' column='id'/>
+			<result property='visitPath' column='visit_path'/>
 			<result property='filePath' column='file_path'/>
 			<result property='length' column='length'/>
 			<result property='visitTimes' column='visit_times'/>
 			<result property='tag' column='tag'/>
 			<result property='fileType' column='file_type'/>
+			<result property='suffix' column='suffix'/>
+			<result property='nilPath' column='nil_path'/>
+			<result property='fileName' column='file_name'/>
 	</resultMap>
 </mapper>
 	

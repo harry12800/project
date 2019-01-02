@@ -80,6 +80,7 @@ public class MyWebConfig implements WebMvcConfigurer {
 		.addPathPatterns("/**")
 		.excludePathPatterns(
 				"/",
+				"/fileServer/*",
 				"/md5",
 				"/upload","/v1/monitor/*",
 				"/dirmd5",
