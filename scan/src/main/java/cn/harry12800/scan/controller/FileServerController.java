@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import cn.harry12800.db.entity.FileServer;
 import cn.harry12800.db.service.FileServerService;
+import cn.harry12800.scan.AppConfig;
 import cn.harry12800.tools.FileUtils;
+import cn.harry12800.tools.OSUtil;
 import cn.harry12800.tools.StringUtils;
 import io.swagger.annotations.ApiParam;
 
@@ -32,6 +34,8 @@ public class FileServerController {
 	@Autowired
 	FileServerService fileServerService;
 
+	@Autowired
+	AppConfig appConfig;
 	@RequestMapping(value = "/fileServer/upload", method = RequestMethod.POST)
 	@ResponseBody
 	public Object upload(HttpServletRequest req, MultipartHttpServletRequest multiReq) {
@@ -43,8 +47,15 @@ public class FileServerController {
 		if (!"harry12800".equals(header)) {
 			return "不合法！";
 		}
-		File file = new File("/root/file/server/" + uuid + suffix);
-		FileUtils.createFile("/root/file/server/" + uuid + suffix);
+		String basePath = "";
+		if(OSUtil.isWindows()) {
+			basePath = appConfig.windows_app_file_upload_vchat;
+		}
+		else {
+			basePath = appConfig.linux_app_file_upload_vchat;
+		}
+		File file = new File(basePath + uuid + suffix);
+		FileUtils.createFile(basePath + uuid + suffix);
 		// 截取上传文件的文件名
 		// 截取上传文件的后缀
 		InputStream inputStream = null;
@@ -83,9 +94,9 @@ public class FileServerController {
 		}
 		FileServer t = new FileServer();
 		t.setFileName(uploadFilePath);
-		t.setFilePath("/root/file/server/" + uuid + suffix);
+		t.setFilePath(basePath + uuid + suffix);
 		t.setId(uuid);
-		t.setLength(new File("/root/file/server/" + uuid + suffix).length());
+		t.setLength(new File(basePath + uuid + suffix).length());
 		t.setNilPath("/fileServer/visit/" + uuid + suffix);
 		t.setVisitPath("/fileServer/visit/" + uuid + suffix);
 		t.setVisitTimes(0L);
