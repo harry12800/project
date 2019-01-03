@@ -25,7 +25,6 @@
 			<groupId>io.protostuff</groupId>
 			<artifactId>protostuff-core</artifactId>
 			<version>1.6.0</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
@@ -47,17 +46,10 @@
 			<artifactId>protostuff-api</artifactId>
 			<version>1.6.0</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.redisson</groupId>
 			<artifactId>redisson</artifactId>
 			<version>2.12.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 </project>
