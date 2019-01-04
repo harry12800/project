@@ -15,8 +15,13 @@
 
 
     <select id="findById" resultType="Room">
-		SELECT * FROM room where roomId = #{id} limit 1
+		SELECT * FROM room where roomId = #{value} 
 	</select>
+	
+	<select id="findByRoomId" resultType="Room">
+		SELECT * FROM room where roomId = #{value} 
+	</select>
+	
 
     <select id="findRelativeRoomIdByUserId" resultType="Room" statementType="STATEMENT" parameterType="map">
         SELECT * FROM room where member = ${userId} and creatorId = ${creatorId}
