@@ -23,9 +23,7 @@ public class RoomDao extends BasicDao {
 		return (Room) session.selectOne("findRelativeRoomIdByUserId", map);
 	}
 	public Room findByRoomId(long roomId) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("value", roomId);
-		return (Room) session.selectOne("findByRoomId", map);
+		return (Room) session.selectOne(getClass().getName()+".findByRoomId", roomId);
 	}
 	
 	public List<Room> searchByName(String name) {
