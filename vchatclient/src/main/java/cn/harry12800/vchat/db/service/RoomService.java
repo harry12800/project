@@ -33,6 +33,12 @@ public class RoomService extends BasicService<RoomDao, Room> {
 	}
 
 	// 查找自己和好友的房间
+	/**
+	 * 
+	 * @param userId 好友，
+	 * @param creatorId 自己
+	 * @return
+	 */
 	public Room findRelativeRoomIdByUserId(long userId, long creatorId) {
 		return dao.findRelativeRoomIdByUserId(userId, creatorId);
 	}

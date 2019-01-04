@@ -24,6 +24,7 @@ public class FileChatPacketController extends ServerServlet<FileChatPacket.Reque
 		Packet<FileChatPacket.Response> packet = new Packet<>();
 		long targetUserId = t.body.targetUserId;
 		boolean onlineUser = SessionManager.isOnlineUser(targetUserId);
+		System.out.println(t.body);
 		if(onlineUser) {
 			SessionManager.sendMessage(t.body.targetUserId, t);
 		}

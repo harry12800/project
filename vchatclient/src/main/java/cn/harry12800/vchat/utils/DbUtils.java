@@ -7,6 +7,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.session.SqlSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +19,12 @@ public class DbUtils {
 	static {
 		try {
 			Reader reader = Resources.getResourceAsReader("mybatis.xml");
-			SqlSessionFactory sqlMapper = new SqlSessionFactoryBuilder().build(reader);
-			sqlSession = sqlMapper.openSession(true);
+			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+			SqlSessionManager newInstance = SqlSessionManager.newInstance(sqlSessionFactory);
+//			sqlSession = sqlSessionFactory.openSession(true);
+			sqlSession = newInstance;
 			reader.close();
-
 			checkTable();
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

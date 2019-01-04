@@ -1,5 +1,7 @@
 package cn.harry12800.vchat.db.model;
 
+import java.io.Serializable;
+
 /**
  * Created by harry12800 on 09/06/2017.
  */
@@ -8,7 +10,7 @@ package cn.harry12800.vchat.db.model;
  * Created by harry12800 on 10/03/2017.
  */
 
-public class Room extends BasicModel implements Comparable<Room> {
+public class Room extends BasicModel implements Comparable<Room>, Serializable {
 	private long roomId;
 	private String type;
 	private String name;

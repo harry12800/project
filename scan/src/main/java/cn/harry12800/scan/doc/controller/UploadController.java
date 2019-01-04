@@ -53,59 +53,6 @@ public class UploadController {
 	ApplicationMapper appMapper;
 	@Autowired
 	DirectoryMapper directoryMapper;
-	//	@Autowired
-	//	DiaryService diarySerivce;
-	//	@Autowired
-	//	DiaryCatalogService diaryCatalogservice;
-	//	@Autowired
-	//	AppService appService;
-
-	//	@RequestMapping(value = "/", method = {RequestMethod.GET,RequestMethod.POST})
-	//	public String index(@RequestParam(required = false) String key, @RequestParam(required = false) String diaryCatalogId, @RequestParam(required = false) String userId, Model model) {
-	//		if (StringUtils.isEmpty(userId)) {
-	//			userId = "2";
-	//		}
-	//		List<DiaryCatalog> diaryCatalogs = diaryCatalogservice.findAllByUserId(userId);
-	//		List<Diary> top10s = diarySerivce.findTop10();
-	//
-	//		String sensitivewords = "飞鸽|imsso|IMSSO|Imsso|服务|平台|网站|系统|开发|fingerchat|xdata|Xdata|公司|xdata-proxy|千君|贺翔|周亮|礼";
-	//		for (Diary diary : top10s) {
-	//			diary.setTitle(diary.getTitle().replaceAll(sensitivewords, "***"));
-	//		}
-	//		model.addAttribute("diaryCatalogs", diaryCatalogs);
-	//		model.addAttribute("top10s", top10s);
-	//		model.addAttribute("version", appService.getVersion());
-	//		if (!StringUtils.isEmpty(key)) {
-	//			List<Diary> diarys = diarySerivce.findAllByUserIdContainKey(key, userId);
-	//			for (Diary diary : diarys) {
-	//				diary.setTitle(diary.getTitle().replaceAll(sensitivewords, "***"));
-	//			}
-	//			model.addAttribute("diarys", diarys);
-	//			model.addAttribute("key", key);
-	//			return "index";
-	//		} else if (!StringUtils.isEmpty(diaryCatalogId)) {
-	//			List<Diary> diarys = diarySerivce.findAllByCatalogId(diaryCatalogId);
-	//			for (Diary diary : diarys) {
-	//				diary.setTitle(diary.getTitle().replaceAll(sensitivewords, "***"));
-	//			}
-	//			model.addAttribute("diarys", diarys);
-	//			model.addAttribute("key", "Search");
-	//			return "index";
-	//		} else {
-	//			List<Diary> diarys = diarySerivce.findAllByUserId(userId);
-	//			for (Diary diary : diarys) {
-	//				diary.setTitle(diary.getTitle().replaceAll(sensitivewords, "***"));
-	//			}
-	//			model.addAttribute("diarys", diarys);
-	//			model.addAttribute("key", "Search");
-	//			return "index";
-	//		}
-	//	}
-
-	@RequestMapping(value = "/file", method = RequestMethod.GET)
-	public String file() {
-		return "file";
-	}
 
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public void Download(HttpServletResponse res, @RequestParam String path) {
@@ -176,13 +123,12 @@ public class UploadController {
 		//try()自动释放资源
 		try (FileInputStream fis = (FileInputStream) multiReq.getFile("file").getInputStream();
 				FileOutputStream fos = new FileOutputStream(file)) {
-			byte[] temp = new byte[1024];
-			int i = fis.read(temp);
-			while (i != -1) {
-				fos.write(temp, 0, temp.length);
-				fos.flush();
-				i = fis.read(temp);
+			byte[] temp = new byte[9064];
+			int len = 0;
+			while ((len = fis.read(temp)) != -1) {
+				fos.write(temp, 0, len);
 			}
+			fos.flush();
 			//上传成功存储数据库
 			Long id = sequenceMapper.getNextSequence("fingerchat_dev_docs.resource.id");
 			ResourcesUpload upload = new ResourcesUpload();
