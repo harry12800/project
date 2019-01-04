@@ -49,7 +49,8 @@ public class MessageRightAttachmentViewHolder extends MessageAttachmentViewHolde
 		 * 
 		 * 
 		 * progressBar.setMaximum(100); progressBar.setMinimum(0);
-		 * progressBar.setValue(5); progressBar.setUI(new GradientProgressBarUI());
+		 * progressBar.setValue(5); progressBar.setUI(new
+		 * GradientProgressBarUI());
 		 */
 
 		messageBubble.setCursor(new Cursor(Cursor.HAND_CURSOR));

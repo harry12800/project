@@ -192,7 +192,8 @@ public class Diary { // extends DataEntity<Diary> {
 
 	@Override
 	public String toString() {
-		return "Diary [id=" + id + ", catalogId=" + catalogId + ", title=" + title + ", content=" + content + ", cipher=" + cipher + ", hint=" + hint + ", html=" + html + ", createTime=" + createTime
+		return "Diary [id=" + id + ", catalogId=" + catalogId + ", title=" + title + ", content=" + content
+				+ ", cipher=" + cipher + ", hint=" + hint + ", html=" + html + ", createTime=" + createTime
 				+ ", updateTime=" + updateTime + ", sort=" + sort + "]";
 	}
 

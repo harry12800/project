@@ -6,7 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.harry12800.vchat.app.App;
 
@@ -14,19 +15,20 @@ import cn.harry12800.vchat.app.App;
  * Created by harry12800 on 2017/6/11.
  */
 public class FileCache {
+	private static Logger LOG = LoggerFactory.getLogger(FileCache.class);
 
 	public String FILE_CACHE_ROOT_PATH;
-	Logger logger = Logger.getLogger(this.getClass());
 	private DecimalFormat decimalFormat = new DecimalFormat("#.0");
 
 	public FileCache() {
 		try {
-			// FILE_CACHE_ROOT_PATH = getClass().getResource("/cache").getPath() + "/file";
+			// FILE_CACHE_ROOT_PATH = getClass().getResource("/cache").getPath()
+			// + "/file";
 			FILE_CACHE_ROOT_PATH = App.basePath + "/vchat/cache/file";
 			File file = new File(FILE_CACHE_ROOT_PATH);
 			if (!file.exists()) {
 				file.mkdirs();
-				System.out.println("创建文件缓存目录：" + file.getAbsolutePath());
+				LOG.info("创建文件缓存目录：" + file.getAbsolutePath());
 			}
 		} catch (Exception e) {
 			FILE_CACHE_ROOT_PATH = "./";

@@ -15,25 +15,24 @@ import cn.harry12800.vchat.frames.MainFrame;
 
 public class FileDropTargetAdapter extends DropTargetAdapter {
 
-//	private DropTarget dt1;
+	// private DropTarget dt1;
 	private RCTextEditor editor;
 
 	public FileDropTargetAdapter(RCTextEditor editor) {
-//		this.dt1 = dt1;
+		// this.dt1 = dt1;
 		this.editor = editor;
 	}
 
 	@Override
 	public void drop(DropTargetDropEvent dtde) {
-		//		Object source = dtde.getSource();
+		// Object source = dtde.getSource();
 		try {
 			if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) // 如果拖入的文件格式受支持
 			{
 				dtde.acceptDrop(DnDConstants.ACTION_MOVE);
 				// 接收拖拽来的数据
 				@SuppressWarnings("unchecked")
-				List<File> list = (List<File>) (dtde.getTransferable()
-						.getTransferData(DataFlavor.javaFileListFlavor));
+				List<File> list = (List<File>) (dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor));
 
 				for (File file : list) {
 					if (file.isDirectory()) {

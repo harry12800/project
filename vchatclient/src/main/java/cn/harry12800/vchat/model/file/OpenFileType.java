@@ -20,7 +20,9 @@ public class OpenFileType {
 		this.path = path;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

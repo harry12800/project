@@ -42,7 +42,7 @@ public class MyHScrollBarUI extends BasicScrollBarUI {
 		trackBounds.width = 5;
 		// g.translate(trackBounds.x, trackBounds.y);
 		// super.paintTrack(g, c, trackBounds);
-		// System.out.println(trackBounds);
+		// LOG.info(trackBounds);
 	}
 
 	@Override
@@ -58,7 +58,8 @@ public class MyHScrollBarUI extends BasicScrollBarUI {
 		// 半透明
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 		// 设置填充颜色，这里设置了渐变，由下往上
-		// g2.setPaint(new GradientPaint(c.getWidth() / 2, 1, Color.GRAY, c.getWidth() /
+		// g2.setPaint(new GradientPaint(c.getWidth() / 2, 1, Color.GRAY,
+		// c.getWidth() /
 		// 2, c.getHeight(), Color.GRAY));
 		// 填充圆角矩形
 		g2.fillRoundRect(0, 0, thumbBounds.width - 1, 5, 5, 5);

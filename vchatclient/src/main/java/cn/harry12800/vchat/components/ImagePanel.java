@@ -39,7 +39,8 @@ public class ImagePanel extends JPanel {
 		// Image.SCALE_SMOOTH));
 
 		Graphics2D g2 = (Graphics2D) g;
-		// RoundRectangle2D rect = new RoundRectangle2D.Float(0, 0, width, height, 8,
+		// RoundRectangle2D rect = new RoundRectangle2D.Float(0, 0, width,
+		// height, 8,
 		// 8);
 		// path.append(rect, false);
 		// g2.setClip(path);
@@ -65,8 +66,8 @@ public class ImagePanel extends JPanel {
 	public static BufferedImage setRadius(Image srcImage, int width, int height, int radius) throws IOException {
 
 		/*
-		 * if (srcImage.getWidth(null) > width || srcImage.getHeight(null) > height) {
-		 * // 图片过大，进行缩放 ImageIcon imageIcon = new ImageIcon();
+		 * if (srcImage.getWidth(null) > width || srcImage.getHeight(null) >
+		 * height) { // 图片过大，进行缩放 ImageIcon imageIcon = new ImageIcon();
 		 * imageIcon.setImage(srcImage.getScaledInstance(width, height,
 		 * Image.SCALE_SMOOTH)); srcImage = imageIcon.getImage(); }
 		 * 
@@ -74,10 +75,10 @@ public class ImagePanel extends JPanel {
 		 * BufferedImage.TYPE_INT_ARGB); Graphics2D gs = image.createGraphics();
 		 * gs.setComposite(AlphaComposite.Src);
 		 * gs.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		 * RenderingHints.VALUE_ANTIALIAS_ON); gs.setColor(Color.WHITE); gs.fill(new
-		 * RoundRectangle2D.Float(0, 0, width, height, radius, radius));
-		 * gs.setComposite(AlphaComposite.SrcAtop); gs.drawImage(srcImage, 0, 0, null);
-		 * gs.dispose();
+		 * RenderingHints.VALUE_ANTIALIAS_ON); gs.setColor(Color.WHITE);
+		 * gs.fill(new RoundRectangle2D.Float(0, 0, width, height, radius,
+		 * radius)); gs.setComposite(AlphaComposite.SrcAtop);
+		 * gs.drawImage(srcImage, 0, 0, null); gs.dispose();
 		 * 
 		 * return image;
 		 */

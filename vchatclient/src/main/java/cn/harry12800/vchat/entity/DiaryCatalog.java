@@ -68,7 +68,8 @@ public class DiaryCatalog {
 
 	@Override
 	public String toString() {
-		return "DiaryCatalog [id=" + id + ", parentId=" + parentId + ", name=" + name + ", sort=" + sort + ", userId=" + userId + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
+		return "DiaryCatalog [id=" + id + ", parentId=" + parentId + ", name=" + name + ", sort=" + sort + ", userId="
+				+ userId + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
 	}
 
 }

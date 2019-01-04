@@ -196,7 +196,8 @@ public class AricleItemPanel extends JPanel {
 				g2d.fillRoundRect(0, 0, w - 1, h - 1, 0, 0);
 			}
 		}
-		// GradientPaint p1 = new GradientPaint(0, 1, new Color(255, 255, 255, 255), 0,
+		// GradientPaint p1 = new GradientPaint(0, 1, new Color(255, 255, 255,
+		// 255), 0,
 		// h, new Color(255, 255, 255, 255));
 		// g2d.setPaint(p1);
 		// Stroke stroke = g2d.getStroke();

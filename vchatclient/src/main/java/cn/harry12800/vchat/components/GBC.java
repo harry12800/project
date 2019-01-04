@@ -9,8 +9,8 @@ import java.awt.Insets;
 @SuppressWarnings("serial")
 public class GBC extends GridBagConstraints {
 	/*
-	 * constructs a GBC with a given gridx and gridy position and all other grid bag
-	 * constraint values set to the default
+	 * constructs a GBC with a given gridx and gridy position and all other grid
+	 * bag constraint values set to the default
 	 * 
 	 * @param gridx the gridx position
 	 * 

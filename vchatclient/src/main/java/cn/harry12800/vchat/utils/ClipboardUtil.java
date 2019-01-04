@@ -17,12 +17,16 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.harry12800.vchat.app.App;
 
 /**
  * Created by harry12800 on 20/06/2017.
  */
 public class ClipboardUtil {
+	private static Logger LOG = LoggerFactory.getLogger(ClipboardUtil.class);
 	private static Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 	public static final String CLIPBOARD_TEMP_DIR;
 
@@ -30,7 +34,7 @@ public class ClipboardUtil {
 		CLIPBOARD_TEMP_DIR = App.basePath + "/vchat/clipboard_temp";
 		File file = new File(CLIPBOARD_TEMP_DIR);
 		if (!file.exists()) {
-			System.out.println("创建剪切板临时文件缓存目录：" + file.getAbsolutePath());
+			LOG.info("创建剪切板临时文件缓存目录：" + file.getAbsolutePath());
 			file.mkdirs();
 		}
 	}
@@ -160,7 +164,7 @@ public class ClipboardUtil {
 	 * 清除剪切板缓存文件
 	 */
 	public static void clearCache() {
-		System.out.println("清除剪切板缓存文件...");
+		LOG.info("清除剪切板缓存文件...");
 		File file = new File(CLIPBOARD_TEMP_DIR);
 		File[] files = file.listFiles();
 		for (File f : files) {

@@ -4,8 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class RelativeDateFormat {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class RelativeDateFormat {
+	private static Logger LOG = LoggerFactory.getLogger(RelativeDateFormat.class);
 	private static final long ONE_MINUTE = 60000L;
 	private static final long ONE_HOUR = 3600000L;
 	private static final long ONE_DAY = 86400000L;
@@ -21,7 +24,7 @@ public class RelativeDateFormat {
 	public static void main(String[] args) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = format.parse("2016-07-30 1:35:35");
-		System.out.println(format(date));
+		LOG.info(format(date));
 	}
 
 	public static String format(Date date) {

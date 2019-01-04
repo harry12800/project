@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.markdown4j.Markdown4jProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 import chrriis.dj.nativeswing.swtimpl.components.WebBrowserCommandEvent;
@@ -36,6 +38,7 @@ import cn.harry12800.vchat.panels.DiaryCatalogPanel;
 
 @SuppressWarnings("serial")
 public class NativeDiaryScanDialog extends JDialog {
+	private static Logger LOG = LoggerFactory.getLogger(NativeDiaryScanDialog.class);
 	public static NativeDiaryScanDialog instance;
 
 	public NativeDiaryScanDialog(Diary[] aritcles) {
@@ -122,7 +125,7 @@ public class NativeDiaryScanDialog extends JDialog {
 			String html;
 			try {
 				html = new Markdown4jProcessor().process(a.getContent());
-				// System.out.println(file.getAbsolutePath());
+				// LOG.info(file.getAbsolutePath());
 				String string = "file:///" + file.getAbsolutePath() + File.separator + "image";
 				string = string.replaceAll("\\\\", "/");
 				html = html.replaceAll("diaryImage", string);
@@ -143,7 +146,7 @@ public class NativeDiaryScanDialog extends JDialog {
 		tabRootPane.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				System.out.println(e);
+				LOG.info(e + "");
 				if (e.getKeyCode() == 27) {
 					NativeDiaryScanDialog.this.dispose();
 				}

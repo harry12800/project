@@ -19,6 +19,7 @@ import cn.harry12800.j2se.utils.Clip;
 
 /**
  * 两种形态。
+ * 
  * @author Yuexin
  *
  */
@@ -52,7 +53,7 @@ public class FileRowItem extends JPanel {
 		setMaximumSize(new Dimension(w, h));
 		builder.text.setForeground(Color.WHITE);
 		builder.icon.setOpaque(false);
-		//		builder.icon.setIcon(builder.image);
+		// builder.icon.setIcon(builder.image);
 		builder.text.setOpaque(false);
 		builder.icon.setBounds(3, 3, 14, 14);
 		builder.text.setBounds(h, 0, w - 21, h);
@@ -104,7 +105,7 @@ public class FileRowItem extends JPanel {
 			else {
 				g2d.setColor(UI.voidColor);
 			}
-			//			g2d.fillRoundRect(0, 0, w , h, 0, 0);
+			// g2d.fillRoundRect(0, 0, w , h, 0, 0);
 		}
 		g2d.drawImage(builder.image, 3, 3, h - 6, h - 6, null);
 		g2d.dispose();
@@ -119,14 +120,15 @@ public class FileRowItem extends JPanel {
 		builder.file = file;
 		if (bigIcon != null) {
 			builder.image = bigIcon.getImage();
-			//			BufferedImage sBufferedImage = (BufferedImage) bigIcon.getImage();
-			//			try {
-			//				FileUtils.createDirectory("c://a");
-			//				ImageIO.write(sBufferedImage, "png",
-			//						new File("c:\\a\\" + Math.random() * 100 + ".png"));
-			//			} catch (IOException e) {
-			//				e.printStackTrace();
-			//			}
+			// BufferedImage sBufferedImage = (BufferedImage)
+			// bigIcon.getImage();
+			// try {
+			// FileUtils.createDirectory("c://a");
+			// ImageIO.write(sBufferedImage, "png",
+			// new File("c:\\a\\" + Math.random() * 100 + ".png"));
+			// } catch (IOException e) {
+			// e.printStackTrace();
+			// }
 		}
 		return builder;
 	}

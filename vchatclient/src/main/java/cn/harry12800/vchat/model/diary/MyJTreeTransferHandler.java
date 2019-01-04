@@ -71,10 +71,10 @@ public class MyJTreeTransferHandler extends TransferHandler {
 	public boolean canImport(TransferSupport support) {
 		if (support.isDataFlavorSupported(JTreeTransferable.FLAVOR)) {
 			// Component component = support.getComponent();
-			// System.out.println(component);
+			// LOG.info(component);
 			// DataFlavor[] dataFlavors = support.getDataFlavors();
 			// for (DataFlavor dataFlavor : dataFlavors) {
-			// System.out.println(dataFlavor);
+			// LOG.info(dataFlavor);
 			// }
 			JTree.DropLocation location = (JTree.DropLocation) support.getDropLocation();
 			DefaultMutableTreeNode newParent = (DefaultMutableTreeNode) location.getPath().getLastPathComponent();

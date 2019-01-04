@@ -159,6 +159,6 @@ public class SelectButtonDialog extends JDialog {
 	 * @param name
 	 */
 	public void exe(String name) {
-		// System.out.println(name);
+		// LOG.info(name);
 	};
 }

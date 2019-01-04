@@ -29,15 +29,16 @@ public class AreaTextPanel extends JPanel {
 		jViewport.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				// System.out.println(textPane.getBounds());
+				// LOG.info(textPane.getBounds());
 				int left = area.getLocation().x;
 				int top = area.getLocation().y;
-				// System.out.println( e.getWheelRotation());
-				// Rectangle aRect = new Rectangle(left, top +e.getWheelRotation(),
+				// LOG.info( e.getWheelRotation());
+				// Rectangle aRect = new Rectangle(left, top
+				// +e.getWheelRotation(),
 				// textPane.getBounds().width, textPane.getBounds().height);
 				// textPane.scrollRectToVisible(aRect );
-				// System.out.println(rootPane);
-				// System.out.println(componentCount);
+				// LOG.info(rootPane);
+				// LOG.info(componentCount);
 				// port.setViewPosition(new Point(0, 50));
 				if (e.getWheelRotation() > 0)
 					for (int i = 0; i < 8; i++) {

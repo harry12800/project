@@ -15,6 +15,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.harry12800.j2se.action.DragListener;
 import cn.harry12800.j2se.tab.Tab;
 import cn.harry12800.j2se.tab.TabRootPane;
@@ -25,6 +28,7 @@ import cn.harry12800.vchat.panels.DiaryPanel;
 
 @SuppressWarnings("serial")
 public class DiaryScanDialog extends JDialog {
+	private static Logger LOG = LoggerFactory.getLogger(DiaryScanDialog.class);
 	public static DiaryScanDialog instance;
 
 	public DiaryScanDialog(DiaryPanel diaryPanel, Diary[] aritcles, int currIndex) {
@@ -49,7 +53,7 @@ public class DiaryScanDialog extends JDialog {
 		tabRootPane.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				System.out.println(e);
+				LOG.info(e + "");
 				if (e.getKeyCode() == 27) {
 					DiaryScanDialog.this.dispose();
 				}

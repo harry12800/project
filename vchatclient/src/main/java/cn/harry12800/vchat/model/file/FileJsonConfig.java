@@ -10,7 +10,8 @@ public class FileJsonConfig {
 
 	/**
 	 * 获取list
-	 *	@return the list
+	 * 
+	 * @return the list
 	 */
 	public List<OpenFileType> getList() {
 		return list;
@@ -18,7 +19,9 @@ public class FileJsonConfig {
 
 	/**
 	 * 设置list
-	 * @param list the list to set
+	 * 
+	 * @param list
+	 *            the list to set
 	 */
 	public void setList(List<OpenFileType> list) {
 		this.list = list;

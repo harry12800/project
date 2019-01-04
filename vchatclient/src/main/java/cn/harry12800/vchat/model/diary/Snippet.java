@@ -11,11 +11,16 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.harry12800.tools.DateUtils;
 import cn.harry12800.tools.FileUtils;
 import cn.harry12800.tools.Maps;
 
 public class Snippet {
+	private static Logger LOG = LoggerFactory.getLogger(Snippet.class);
+
 	public static String getHolidayJson(String date) {
 		String httpUrl = "https://api.goseek.cn/Tools/holiday?date=" + date;
 		BufferedReader reader = null;
@@ -49,7 +54,7 @@ public class Snippet {
 		sCalendar.set(Calendar.DAY_OF_YEAR, 1);
 		Map<String, String> map = Maps.newLinkedHashMap();
 		int i = 0;
-		System.out.println(sCalendar);
+		LOG.info(sCalendar + "");
 		while (i < 400) {
 			String timeByFormat = DateUtils.getTimeByFormat(sCalendar.getTime(), "yyyyMMdd");
 			try {
@@ -69,7 +74,7 @@ public class Snippet {
 		List<String> rowByFile = FileUtils.getRowByFile(new File("D:/desktop/a.txt"), "utf-8");
 		Collections.sort(rowByFile);
 		for (String string : rowByFile) {
-			System.out.println(string);
+			LOG.info(string);
 		}
 	}
 }

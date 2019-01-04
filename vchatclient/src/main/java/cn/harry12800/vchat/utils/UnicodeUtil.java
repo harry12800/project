@@ -1,11 +1,15 @@
 package cn.harry12800.vchat.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 
  * @author Nan
  *
  */
 public class UnicodeUtil {
+	private static Logger LOG = LoggerFactory.getLogger(UnicodeUtil.class);
 
 	/**
 	 * 将utf-8的汉字转换成unicode格式汉字码
@@ -50,8 +54,8 @@ public class UnicodeUtil {
 		// "0xu4f600xu597d0xu54170xuff1f0xu200xu480xu6f0xu770xu200xu610xu720xu650xu200xu790xu6f0xu75";
 		String unicode = stringToUnicode(str);
 		String string = unicodeToString(unicode);
-		System.out.println("转换成unicode格式的:\n" + unicode);
-		System.out.println("转换成汉字UTF-8格式的:\n" + string);
+		LOG.info("转换成unicode格式的:\n" + unicode);
+		LOG.info("转换成汉字UTF-8格式的:\n" + string);
 	}
 
 }

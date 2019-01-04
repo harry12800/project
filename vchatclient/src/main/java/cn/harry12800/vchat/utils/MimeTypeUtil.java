@@ -90,7 +90,12 @@ public class MimeTypeUtil {
 		if (!suffix.startsWith(".")) {
 			suffix = "." + suffix;
 		}
-		return MimeMap.get(suffix);
+		String string = MimeMap.get(suffix);
+		if (string == null) {
+			return "*/*";
+		} else {
+			return string;
+		}
 	}
 
 }

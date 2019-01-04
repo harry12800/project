@@ -200,7 +200,7 @@ public class MessageViewHolderCacheHelper {
 			clearMouseListener(viewHolder.text);
 		}
 
-		// System.out.println("花费时间 ：" + (System.currentTimeMillis() - start));
+		// LOG.info("花费时间 ：" + (System.currentTimeMillis() - start));
 
 		// for (MessageRightImageViewHolder viewHolder : rightImageViewHolders)
 		for (int i = 0; i < rightImagePosition; i++) {
@@ -238,7 +238,8 @@ public class MessageViewHolderCacheHelper {
 			clearMouseListener(viewHolder.avatar);
 		}
 
-		// for (MessageLeftAttachmentViewHolder viewHolder : leftAttachmentViewHolders)
+		// for (MessageLeftAttachmentViewHolder viewHolder :
+		// leftAttachmentViewHolders)
 		for (int i = 0; i < leftAttachmentPosition; i++) {
 			MessageLeftAttachmentViewHolder viewHolder = leftAttachmentViewHolders.get(i);
 
