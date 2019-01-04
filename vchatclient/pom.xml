@@ -9,8 +9,8 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>cn.harry12800</groupId>
-	<artifactId>vchatclient</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>vchat-client</artifactId>
+	<version>1.0</version>
 	<name>vchatclient</name>
 	<url>http://maven.apache.org</url>
 	<properties>

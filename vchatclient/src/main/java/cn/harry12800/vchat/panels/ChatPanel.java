@@ -936,7 +936,7 @@ public class ChatPanel extends ParentAvailablePanel {
 			// TODO：向服务器上传文件
 			final short[] uploadedBlockCount = { 0 };
 			final long[] len = { 0 };
-
+			Room room = roomService.findById(roomId);
 			UploadTaskCallback callback = new UploadTaskCallback() {
 				@Override
 				public void onTaskSuccess() {
@@ -944,7 +944,7 @@ public class ChatPanel extends ParentAvailablePanel {
 					uploadedBlockCount[0]++;
 					if (uploadedBlockCount[0] < dataParts.size()) {
 						len[0] = len[0] + dataParts.get(uploadedBlockCount[0] - 1).length;
-						sendDataPart(file.getName(), len[0], messageId, uploadedBlockCount[0], dataParts, this);
+						sendDataPart(file.getName(),room.getMember(), len[0], messageId, uploadedBlockCount[0], dataParts, this);
 					}
 
 					int progress = (int) ((index[0] * 1.0f / dataParts.size()) * 100);
@@ -1005,7 +1005,7 @@ public class ChatPanel extends ParentAvailablePanel {
 				}
 			};
 
-			sendDataPart(file.getName(), len[0], messageId, (short) 0, dataParts, callback);
+			sendDataPart(file.getName(),room.getMember(), len[0], messageId, (short) 0, dataParts, callback);
 		}
 	}
 
@@ -1025,7 +1025,7 @@ public class ChatPanel extends ParentAvailablePanel {
 	 * @param callback
 	 *            回调
 	 */
-	private void sendDataPart(String name, long position, String messageId, short partIndex, List<byte[]> dataParts,
+	private void sendDataPart(String name,long targetUserId, long position, String messageId, short partIndex, List<byte[]> dataParts,
 			UploadTaskCallback callback) {
 		// TODO： 发送第 partIndex 个分块到服务器
 		new Thread(new Runnable() {
@@ -1036,10 +1036,12 @@ public class ChatPanel extends ParentAvailablePanel {
 					FileChatRequest request = new FileChatRequest();
 					request.setData(dataParts.get(partIndex));
 					request.setSenderUserId(currentUser.getId());
+					System.out.println(currentUser.getId());
+					System.out.println(roomId);
 					request.setIndex(partIndex);
 					request.setMessageId(messageId);
 					request.setPosition(position);
-					request.setTargetUserId(roomId);
+					request.setTargetUserId(targetUserId);
 					request.setTotal((short) dataParts.size());
 					request.setName(name);
 					FileChatPacket p = new FileChatPacket(request);
@@ -1346,15 +1348,10 @@ public class ChatPanel extends ParentAvailablePanel {
 	}
 
 	public void showReceiveMsg(PrivateChatPacket.Request body) {
-		LOG.info("收到消息");
+		LOG.info("收到消息："+body.content);
 		Message message = new Message();
 		message.setId(StringUtils.getUUID());
 		// string = StringEscapeUtils.unescapeJava(string);
-		LOG.info(body.content);
-		// if ("抖动".equals(string)) {
-		// Clip.shakeFrame(MainFrame.getContext(), 8);
-		//
-		// }
 		TrayInfo trayInfo = new TrayInfo();
 		trayInfo.e = new TrayListener() {
 			public void exe(TrayInfo e) {
@@ -1412,8 +1409,9 @@ public class ChatPanel extends ParentAvailablePanel {
 			new File(dirPath).mkdirs();
 		}
 		File file = new File(dirPath, body.name);
-		LOG.info(body.position + "");
 		FileUtils.writeFile(file, body.position, body.data);
+		String senderUserName = Launcher.getUserNameByUserId(body.senderUserId);
+		LOG.info(body.position + "用户：" + senderUserName);
 		/**
 		 * 判断是否是最后一条
 		 */
@@ -1430,15 +1428,13 @@ public class ChatPanel extends ParentAvailablePanel {
 		};
 		trayInfo.id = body.senderUserId + "";
 		trayInfo.type = ETrayType.CHAT;
-		String senderUserName = Launcher.getUserNameByUserId(body.senderUserId);
-		LOG.info("用户：" + senderUserName);
 		trayInfo.icon = new ImageIcon(
 				AvatarUtil.createOrLoadUserAvatar(senderUserName).getScaledInstance(16, 16, Image.SCALE_SMOOTH));
 		// AvatarUtil.createOrLoadUserAvatar(Launcher.getUserNameByUserId(msg.getFromId()));
 		TrayUtil.getTray().pushTrayInfo(trayInfo);
 		Message message = new Message();
 		message.setId(StringUtils.getUUID());
-		message.setRoomId(body.senderUserId);
+		message.setRoomId(roomId);
 		message.setSenderUsername(senderUserName);
 		message.setMessageContent(body.name);
 		// string = StringEscapeUtils.unescapeJava(string);
@@ -1446,13 +1442,23 @@ public class ChatPanel extends ParentAvailablePanel {
 		message.setTimestamp(new Date().getTime());
 		String suffix = StringUtils.getSuffix(body.name);
 		String mime = MimeTypeUtil.getMime(suffix);
+		Room friendRoom = roomService.findRelativeRoomIdByUserId(body.senderUserId, Launcher.currentUser.getId());
+		if (friendRoom == null) {
+			friendRoom = new Room();
+			friendRoom.setCreatorId(Launcher.currentUser.getId());
+			friendRoom.setName(Launcher.getUserNameByUserId(body.senderUserId));
+			friendRoom.setTopic(Launcher.getUserNameByUserId(body.senderUserId));
+			friendRoom.setType("d");
+			friendRoom.setMember(body.senderUserId);
+			friendRoom.setLastChatAt(new Date().getTime());
+		}
+		friendRoom.setLastMessage(message.getMessageContent());
+		friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
+		roomService.insertOrUpdate(friendRoom);
 		if (mime.startsWith("image")) {
 			message.setImageAttachmentId(body.messageId);
 			messageService.insertOrUpdate(message);
-			Room friendRoom = roomService.findById(body.senderUserId);
-			friendRoom.setLastMessage(message.getMessageContent());
-			friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
-			roomService.insertOrUpdate(friendRoom);
+			friendRoom = roomService.findRelativeRoomIdByUserId(body.senderUserId, Launcher.currentUser.getId());
 			ImageAttachment attachment = new ImageAttachment();
 			attachment.setId(body.messageId);
 			attachment.setTitle(body.name);
@@ -1468,9 +1474,7 @@ public class ChatPanel extends ParentAvailablePanel {
 		} else {
 			message.setFileAttachmentId(body.messageId);
 			messageService.insertOrUpdate(message);
-			Room friendRoom = roomService.findById(body.senderUserId);
 			friendRoom.setLastMessage(message.getMessageContent());
-			friendRoom.setUnreadCount(friendRoom.getUnreadCount() + 1);
 			roomService.insertOrUpdate(friendRoom);
 			FileAttachment attachment = new FileAttachment();
 			attachment.setId(body.messageId);
@@ -1485,6 +1489,6 @@ public class ChatPanel extends ParentAvailablePanel {
 			}
 			RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
 		}
-		LOG.info("加进来了2");
+		LOG.info("加进来了");
 	}
 }
