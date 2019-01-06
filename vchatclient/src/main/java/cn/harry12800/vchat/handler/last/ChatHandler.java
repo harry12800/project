@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import cn.harry12800.common.core.exception.ErrorCodeException;
 import cn.harry12800.common.core.packet.base.Packet;
 import cn.harry12800.common.module.packet.FileChatPacket;
+import cn.harry12800.common.module.packet.LogoutPacket;
 import cn.harry12800.common.module.packet.LoginPacket.Response;
 import cn.harry12800.common.module.packet.PrivateChatPacket;
 import cn.harry12800.common.module.packet.PullAllUserPacket;
@@ -42,6 +43,11 @@ public class ChatHandler {
 			LoginFrame.getContext().loginSuccess(t.body);
 		} else {
 		}
+	}
+	@IpCommand(desc = "强制下线包", ip = "0.0.1.6", bodyType = LogoutPacket.Response.class)
+	public void forceLogout(Packet<LogoutPacket.Response> t) {
+		MainFrame.getContext().alert(ErrorCodeException.getMessage(t.body.ok));
+		 MainFrame.getContext().logout();
 	}
 
 	@IpCommand(desc = "用户上下线包", ip = "0.0.1.11", bodyType = UserOnlineOROffLinePacket.OnlineOFFLineNotify.class)

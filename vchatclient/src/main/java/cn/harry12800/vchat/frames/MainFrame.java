@@ -459,8 +459,14 @@ public class MainFrame extends JFrame {
 		new MessageDialog(MainFrame.getContext(), "温馨提示", info);
 	}
 
+	
 	public void showProssbar(boolean visible) {
 		southPanel.setVisible(visible);
+	}
+	public void logout(){
+		Launcher.currentUser =null;
+		Launcher.getContext().launch();
+		
 	}
 
 	public void reLogin() {
