@@ -203,6 +203,7 @@ public class ProtocolConstant {
 	public static final int SID_FILE = 0x0006;
 	public static final int SID_OTHER = 0x0007;
 	public static final int SID_DEFAULT = 0x0007;
+	public static final int SID_USER = 0x0008;
 
 	// todo eric, make the value enum, so if adding new sid, no need to change
 	// the value for max
@@ -265,7 +266,9 @@ public class ProtocolConstant {
 	
 	public static final int CID_FILE_SEND = 1;
 
-	
+	public static final int CID_USER_RESETPASSWORD_REQ = 1;
+	public static final int CID_USER_RESETPASSWORD_RESP = 2;
+
 	public static final int RES_RESULT_SUCCESS = 0;
 
 	public static final int CLIENT_TYPE = 0x12;// 表示android，登陆消息服务器时使用

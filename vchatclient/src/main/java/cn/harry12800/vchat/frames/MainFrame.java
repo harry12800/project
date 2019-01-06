@@ -43,6 +43,7 @@ import cn.harry12800.j2se.utils.FontUtil;
 import cn.harry12800.j2se.utils.IconUtil;
 import cn.harry12800.j2se.utils.OSUtil;
 import cn.harry12800.upgrade.PlatUpdate;
+import cn.harry12800.upgrade.PlatUpdate.Processer;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.app.websocket.PullWebInfo;
 import cn.harry12800.vchat.components.GBC;
@@ -104,6 +105,12 @@ public class MainFrame extends JFrame {
 	protected void updateSystem() {
 		new Thread() {
 			public void run() {
+				PlatUpdate.processer = new Processer() {
+					public void process(String arg0, int arg1) {
+						add(southPanel, BorderLayout.SOUTH);
+						progressBar.setValue(arg1);
+					}
+				};
 				platUpdate.updateSystem();
 			};
 		}.start();
@@ -291,71 +298,6 @@ public class MainFrame extends JFrame {
 		}
 	}
 
-	public static final String updateServerPath = "http://120.78.177.24:8000/download?path=";
-
-	// public void download() {
-	// new Thread(new Runnable() {
-	// @Override
-	// public void run() {
-	// DownloadTask task = new DownloadTask(new HttpUtil.ProgressListener() {
-	// @Override
-	// public void onProgress(int progress) {
-	// progressBar.setValue(progress);
-	// }
-	// });
-	//
-	// task.setListener(new HttpResponseListener<byte[]>() {
-	// @Override
-	// public void onResult(byte[] ret) {
-	// saveFile(ret);
-	// }
-	// });
-	//
-	// task.execute(updateServerPath);
-	// }
-	// }).start();
-	// }
-
-	// private UpdateResultListener updateResultListener;
-
-	/**
-	 * 保存下载文件
-	 *
-	 * @param ret
-	 */
-	// private void saveFile(byte[] ret) {
-	// if (ret == null) {
-	// updateResultListener.onFailed();
-	// return;
-	// }
-	//
-	// File oldFile = new File("wechat.jar");
-	// if (oldFile.exists()) {
-	// oldFile.renameTo(new File("wechat_old.jar"));
-	// }
-	//
-	// File file = new File("wechat.jar");
-	// try (FileOutputStream outputStream = new FileOutputStream(file);) {
-	// outputStream.write(ret);
-	// LOG.info("文件保存在：" + file.getAbsolutePath());
-	//
-	// if (updateResultListener != null) {
-	// updateResultListener.onSuccess();
-	// }
-	// } catch (Exception e) {
-	// File oFile = new File("wechat_old.jar");
-	// oFile.renameTo(new File("wechat.jar"));
-	//
-	// JOptionPane.showMessageDialog(null, "更新失败，正在还原...", "更新失败",
-	// JOptionPane.ERROR_MESSAGE);
-	// if (updateResultListener != null) {
-	// updateResultListener.onFailed();
-	// }
-	//
-	// e.printStackTrace();
-	// }
-	// }
-
 	/**
 	 * 清除剪切板缓存文件
 	 */
@@ -444,7 +386,7 @@ public class MainFrame extends JFrame {
 		southPanel.add(progressBar, new GBC(0, 0).setFill(GBC.BOTH).setWeight(1, 1));
 		// progressBarPanel.add(panel, new GBC(0,
 		// 0).setFill(GBC.HORIZONTAL).setWeight(1, 1));
-		add(southPanel, BorderLayout.SOUTH);
+
 		centerScreen();
 		startPlatUpdate();
 		startPullMsg();
@@ -461,8 +403,25 @@ public class MainFrame extends JFrame {
 	}
 
 	PlatUpdate platUpdate = PlatUpdate.getInstance();
+	public static boolean ss = false;
 
 	public void startPlatUpdate() {
+		PlatUpdate.processer = new Processer() {
+			public void process(String arg0, int arg1) {
+				if (!ss) {
+					add(southPanel, BorderLayout.SOUTH);
+					revalidate();
+					ss =true;
+				}
+				progressBar.setBackground(Colors.DARK);
+				progressBar.setValue(arg1);
+				if(arg1 ==100){
+					remove(southPanel);
+					revalidate();
+					ss =false;
+				}
+			}
+		};
 		platUpdate.startPlatUpdate();
 	}
 

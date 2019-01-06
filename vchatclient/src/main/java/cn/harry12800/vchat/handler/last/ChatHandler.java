@@ -9,12 +9,14 @@ import cn.harry12800.common.module.packet.FileChatPacket;
 import cn.harry12800.common.module.packet.LoginPacket.Response;
 import cn.harry12800.common.module.packet.PrivateChatPacket;
 import cn.harry12800.common.module.packet.PullAllUserPacket;
+import cn.harry12800.common.module.packet.ResetPasswordPacket;
 import cn.harry12800.common.module.packet.ShakeWindowPacket;
 import cn.harry12800.vchat.app.Launcher;
 import cn.harry12800.vchat.frames.LoginFrame;
 import cn.harry12800.vchat.frames.MainFrame;
 import cn.harry12800.vchat.handler.IpCommand;
 import cn.harry12800.vchat.handler.ModuleHanlder;
+import cn.harry12800.vchat.panels.ChangePasswordPanel;
 import cn.harry12800.vchat.panels.ChatPanel;
 
 @ModuleHanlder
@@ -69,5 +71,10 @@ public class ChatHandler {
 	@IpCommand(desc = "接收文件", ip = "0.0.6.2", bodyType = FileChatPacket.Response.class)
 	public void fileChat(Packet<FileChatPacket.Response> t) {
 		
+	}
+	@IpCommand(desc = "修改密码回执", ip = "0.0.8.2", bodyType = ResetPasswordPacket.Response.class)
+	public void resetpassword(Packet<ResetPasswordPacket.Response> t) {
+		LOG.info("修改密码："+t.body.ok+"");
+		ChangePasswordPanel.getContext().result(t.body.ok);
 	}
 }

@@ -31,7 +31,7 @@ public class MainOperationPopupMenu extends JPopupMenu {
 	private void initMenuItem() {
 		JMenuItem item1 = new JMenuItem("创建群聊");
 		JMenuItem item2 = new JMenuItem("设置");
-		JMenuItem item4 = new JMenuItem("访问主页");
+		JMenuItem item4 = new JMenuItem("写记事");
 		JMenuItem item5 = new JMenuItem("重新连接");
 		JMenuItem item3 = new JMenuItem("重启");
 		JMenuItem item6 = new JMenuItem("退出");

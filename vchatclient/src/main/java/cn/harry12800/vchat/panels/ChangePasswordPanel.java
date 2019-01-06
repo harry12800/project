@@ -10,16 +10,16 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import cn.harry12800.common.module.packet.ResetPasswordPacket;
 import cn.harry12800.j2se.component.rc.RCButton;
 import cn.harry12800.j2se.component.rc.RCPasswordField;
 import cn.harry12800.j2se.style.layout.VerticalFlowLayout;
 import cn.harry12800.j2se.style.ui.Colors;
 import cn.harry12800.j2se.utils.FontUtil;
 import cn.harry12800.j2se.utils.IconUtil;
-import cn.harry12800.vchat.frames.MainFrame;
+import cn.harry12800.vchat.app.Launcher;
 
 /**
  * 修改头像面板
@@ -29,7 +29,8 @@ import cn.harry12800.vchat.frames.MainFrame;
 @SuppressWarnings("serial")
 public class ChangePasswordPanel extends JPanel {
 	private static ChangePasswordPanel context;
-	private RCPasswordField textField;
+	private RCPasswordField oldTextField;
+	private RCPasswordField newTextField;
 	private RCPasswordField textFieldConfirm;
 	private RCButton okButton;
 	private JPanel contentPanel;
@@ -41,16 +42,25 @@ public class ChangePasswordPanel extends JPanel {
 		initComponents();
 		initView();
 		setListener();
-		textField.requestFocus();
+		newTextField.requestFocus();
 	}
 
 	private void initComponents() {
-		textField = new RCPasswordField();
-		textField.setPlaceholder("新密码");
-		textField.setPreferredSize(new Dimension(200, 35));
-		textField.setFont(FontUtil.getDefaultFont(14));
-		textField.setForeground(Colors.FONT_BLACK);
-		textField.setMargin(new Insets(0, 15, 0, 0));
+		
+		
+		oldTextField = new RCPasswordField();
+		oldTextField.setPlaceholder("旧密码");
+		oldTextField.setPreferredSize(new Dimension(200, 35));
+		oldTextField.setFont(FontUtil.getDefaultFont(14));
+		oldTextField.setForeground(Colors.FONT_BLACK);
+		oldTextField.setMargin(new Insets(0, 15, 0, 0));
+
+		newTextField = new RCPasswordField();
+		newTextField.setPlaceholder("新密码");
+		newTextField.setPreferredSize(new Dimension(200, 35));
+		newTextField.setFont(FontUtil.getDefaultFont(14));
+		newTextField.setForeground(Colors.FONT_BLACK);
+		newTextField.setMargin(new Insets(0, 15, 0, 0));
 
 		textFieldConfirm = new RCPasswordField();
 		textFieldConfirm.setPlaceholder("再次输入密码");
@@ -71,7 +81,8 @@ public class ChangePasswordPanel extends JPanel {
 
 	private void initView() {
 		contentPanel.setLayout(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 10, true, false));
-		contentPanel.add(textField);
+		contentPanel.add(oldTextField);
+		contentPanel.add(newTextField);
 		contentPanel.add(textFieldConfirm);
 		contentPanel.add(okButton);
 		contentPanel.add(statusLabel);
@@ -107,18 +118,20 @@ public class ChangePasswordPanel extends JPanel {
 
 			}
 		};
-		textField.addKeyListener(keyListener);
+		newTextField.addKeyListener(keyListener);
 		textFieldConfirm.addKeyListener(keyListener);
 	}
 
 	private void doResetPassword() {
 		if (okButton.isEnabled()) {
-			String password = new String(textField.getPassword());
+
+			String password = new String(newTextField.getPassword());
+			String oldPassword = new String(oldTextField.getPassword());
 			String passwordConfirm = new String(textFieldConfirm.getPassword());
 
 			if (password.isEmpty()) {
 				showErrorMessage("请输入新密码");
-				textField.requestFocus();
+				newTextField.requestFocus();
 				return;
 			} else if (passwordConfirm.isEmpty()) {
 				showErrorMessage("请再次输入密码");
@@ -136,8 +149,12 @@ public class ChangePasswordPanel extends JPanel {
 			okButton.setEnabled(false);
 			okButton.setIcon(IconUtil.getIcon(this, "/image/sending.gif"));
 			okButton.setText("修改中...");
-			JOptionPane.showMessageDialog(MainFrame.getContext(), "修改密码", "修改密码", JOptionPane.INFORMATION_MESSAGE);
-
+			ResetPasswordPacket p = new ResetPasswordPacket(Launcher.currentUser.getId(), oldPassword, password);
+			try {
+				Launcher.client.sendRequest(p.requestPacket);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -162,5 +179,16 @@ public class ChangePasswordPanel extends JPanel {
 
 	public static ChangePasswordPanel getContext() {
 		return context;
+	}
+
+	public void result(long ok) {
+		okButton.setEnabled(true);
+		if(ok == 0L){
+			showSuccessMessage();
+		}else if(ok==1L){
+			showErrorMessage("意外信息");
+		}else if(ok==2L){
+			showErrorMessage("旧秘密验证错误！");
+		}
 	}
 }
