@@ -49,10 +49,10 @@ public class FileServerController {
 		}
 		String basePath = "";
 		if(OSUtil.isWindows()) {
-			basePath = appConfig.windows_app_file_upload_vchat;
+			basePath = AppConfig.windows_app_file_upload_vchat;
 		}
 		else {
-			basePath = appConfig.linux_app_file_upload_vchat;
+			basePath = AppConfig.linux_app_file_upload_vchat;
 		}
 		File file = new File(basePath + uuid + suffix);
 		FileUtils.createFile(basePath + uuid + suffix);

@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +34,6 @@ import cn.harry12800.api.util.PropertiesUtil;
 import cn.harry12800.api.util.SQLUtils;
 import cn.harry12800.db.entity.Diary;
 import cn.harry12800.db.entity.DiaryCatalog;
-import cn.harry12800.db.entity.FileServer;
 import cn.harry12800.db.entity.Markdown;
 import cn.harry12800.db.entity.Resource;
 import cn.harry12800.db.entity.UserInfo;
@@ -52,7 +49,6 @@ import cn.harry12800.tools.Lists;
 import cn.harry12800.tools.Maps;
 import cn.harry12800.tools.OSUtil;
 import cn.harry12800.tools.StringUtils;
-import io.swagger.annotations.ApiParam;
 
 @Controller
 public class IndexController {
