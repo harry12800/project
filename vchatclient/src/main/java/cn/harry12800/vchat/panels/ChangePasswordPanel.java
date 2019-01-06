@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cn.harry12800.common.core.exception.ErrorCodeException;
 import cn.harry12800.common.module.packet.ResetPasswordPacket;
 import cn.harry12800.j2se.component.rc.RCButton;
 import cn.harry12800.j2se.component.rc.RCPasswordField;
@@ -181,14 +182,13 @@ public class ChangePasswordPanel extends JPanel {
 		return context;
 	}
 
-	public void result(long ok) {
+	public void result(int ok) {
 		okButton.setEnabled(true);
 		if(ok == 0L){
 			showSuccessMessage();
-		}else if(ok==1L){
-			showErrorMessage("意外信息");
-		}else if(ok==2L){
-			showErrorMessage("旧秘密验证错误！");
+		}else {
+			showErrorMessage(ErrorCodeException.getMessage(ok));
 		}
+			 
 	}
 }

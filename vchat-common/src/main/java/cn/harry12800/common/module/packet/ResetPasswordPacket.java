@@ -72,7 +72,7 @@ public class ResetPasswordPacket extends GoBackPacket {
 		 * id
 		 */
 		@Tag(2)
-		public long ok;
+		public int ok;
 	}
 
 	public static Header copyHeader() {

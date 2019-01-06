@@ -1,8 +1,8 @@
 package cn.harry12800.common.core.exception;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
+
+import cn.harry12800.tools.FileUtils;
 
 /**
  * 错误码携带异常
@@ -17,15 +17,9 @@ public class ErrorCodeException extends  Exception {
 	 */
 	private static final long serialVersionUID = 4143519479094905222L;
 
-	static Properties p = new Properties();
+	static Properties p;
 	static {
-		try {
-			InputStream resourceAsStream = Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream("code.properties");
-			p.load(resourceAsStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		p  = FileUtils.loadProps("code.properties");
 	}
 	/**
 	 * 错误代码
