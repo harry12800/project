@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import cn.harry12800.common.core.config.ProtocolConstant;
 import cn.harry12800.common.core.exception.ErrorCodeException;
 import cn.harry12800.common.core.model.ResultCode;
+import cn.harry12800.common.core.packet.base.Header;
 import cn.harry12800.common.core.packet.base.Packet;
 import cn.harry12800.common.core.session.Session;
 import cn.harry12800.common.core.session.SessionManager;
@@ -57,13 +59,14 @@ public class LoginPacketController extends ServerServlet<LoginPacket.Request, Lo
 			if (onlineUser) {
 				LogoutPacket.Response res1 = new LogoutPacket.Response();
 				Packet<LogoutPacket.Response> p = new Packet<>();
+				p.header = new Header(ProtocolConstant.SID_LOGIN,ProtocolConstant.CID_LOGIN_RES_LOGINOUT);
 				p.body = res1;
 				res1.ok = 16;
 				SessionManager.sendMessage(user.getId(), p);
 				Session oldSession = SessionManager.removeSession(user.getId());
 				oldSession.removeAttachment();
 				// 踢下线
-				oldSession.close();
+//				oldSession.close();
 			}
 			notifyAllOnline(user);
 

@@ -46,6 +46,7 @@ public class ChatHandler {
 	}
 	@IpCommand(desc = "强制下线包", ip = "0.0.1.6", bodyType = LogoutPacket.Response.class)
 	public void forceLogout(Packet<LogoutPacket.Response> t) {
+		LOG.info("水电费规划局看对方过后你家门口，对方过后");
 		MainFrame.getContext().alert(ErrorCodeException.getMessage(t.body.ok));
 		 MainFrame.getContext().logout();
 	}
