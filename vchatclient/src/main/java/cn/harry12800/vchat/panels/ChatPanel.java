@@ -42,11 +42,13 @@ import javax.swing.text.StyleConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.harry12800.common.core.exception.ErrorCodeException;
 import cn.harry12800.common.module.chat.dto.FileChatRequest;
 import cn.harry12800.common.module.packet.FileChatPacket;
 import cn.harry12800.common.module.packet.PrivateChatPacket;
 import cn.harry12800.j2se.component.rc.RCBorder;
 import cn.harry12800.j2se.component.rc.RCListView;
+import cn.harry12800.j2se.dialog.MessageDialog;
 import cn.harry12800.j2se.module.tray.ETrayType;
 import cn.harry12800.j2se.module.tray.TrayInfo;
 import cn.harry12800.j2se.module.tray.TrayListener;
@@ -1490,5 +1492,13 @@ public class ChatPanel extends ParentAvailablePanel {
 			RoomsPanel.getContext().updateRoomItem(friendRoom.getRoomId());
 		}
 		LOG.info("加进来了");
+	}
+
+	public void shakeWindowAck(int ok) {
+		if(ok!=0)
+			new MessageDialog(MainFrame.getContext(), "提示", ErrorCodeException.getMessage(ok));
+		else{
+			new MessageDialog(MainFrame.getContext(), "提示","对方已收到！");
+		}
 	}
 }

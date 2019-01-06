@@ -1,5 +1,7 @@
 package cn.harry12800.vchat.server.controller;
 
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import cn.harry12800.common.core.packet.base.Packet;
 import cn.harry12800.common.core.session.Session;
 import cn.harry12800.common.core.session.SessionManager;
 import cn.harry12800.common.module.packet.LoginPacket;
+import cn.harry12800.common.module.packet.UserOnlineOROffLinePacket;
 import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.db.mapper.UserInfoMapper;
 import cn.harry12800.vchat.server.server.bussess.ServerIP;
@@ -20,12 +23,12 @@ import cn.harry12800.vchat.server.server.bussess.ServerServlet;
 @Component
 @ServerIP(desc = "用户登录", ip = "0.0.1.3", reqType = LoginPacket.Request.class)
 public class LoginPacketController extends ServerServlet<LoginPacket.Request, LoginPacket.Response> {
-	private static Logger LOG  =LoggerFactory.getLogger(LoginPacketController.class);
+	private static Logger LOG = LoggerFactory.getLogger(LoginPacketController.class);
 	@Autowired
 	UserInfoMapper userMapper;
 
 	@Override
-	public Packet<LoginPacket.Response> todo(Session session, Packet<LoginPacket.Request> t)   {
+	public Packet<LoginPacket.Response> todo(Session session, Packet<LoginPacket.Request> t) {
 		LoginPacket.Response res = new LoginPacket.Response();
 		Packet<LoginPacket.Response> packet = new Packet<>();
 		try {
@@ -56,17 +59,22 @@ public class LoginPacketController extends ServerServlet<LoginPacket.Request, Lo
 				// 踢下线
 				oldSession.close();
 			}
-
-			LOG.info("{}",onlineUser);
-			LOG.info("{}",user.getId());
-
+			// 获取所有在线用户
+			Set<Long> onlineUsers = SessionManager.getOnlineUsers();
+			// 创建消息对象
+			// 发送消息
+			UserOnlineOROffLinePacket userOnlineOROffLinePacket = new UserOnlineOROffLinePacket(user.getId(),
+					user.getNickName(), true);
+			for (long targetUserId : onlineUsers) {
+				SessionManager.sendMessage(targetUserId, userOnlineOROffLinePacket.requestPacket);
+			}
 			// 加入在线用户会话
 			if (SessionManager.putSession(user.getId(), session)) {
 				session.setAttachment(user);
 			} else {
 				throw new ErrorCodeException(ResultCode.LOGIN_FAIL);
 			}
-			LOG.info("{}",SessionManager.isOnlineUser(user.getId()));
+			LOG.info("{}", SessionManager.isOnlineUser(user.getId()));
 			// 创建Response传输对象返回
 			res.setId(user.getId());
 			res.setUserId(user.getUserId());

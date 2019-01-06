@@ -227,6 +227,7 @@ public class ProtocolConstant {
 	public static final int CID_LOGIN_RES_LOGINOUT = 6;
 	public static final int CID_LOGIN_KICK_USER = 7;
 	public static final int CID_LOGIN_MAX = 10;
+	public static final int CID_LOGIN_ONLINE_OFFLINE_NOTIFY = 11;
 
 	// CONTACT
 	public static final int CID_REQUEST_RECNET_CONTACT = 1;

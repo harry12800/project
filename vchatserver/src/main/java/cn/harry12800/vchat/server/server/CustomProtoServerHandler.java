@@ -1,5 +1,7 @@
 package cn.harry12800.vchat.server.server;
 
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +9,9 @@ import cn.harry12800.common.core.exception.ErrorCodeException;
 import cn.harry12800.common.core.packet.base.Packet;
 import cn.harry12800.common.core.session.Session;
 import cn.harry12800.common.core.session.SessionImpl;
+import cn.harry12800.common.core.session.SessionManager;
+import cn.harry12800.common.module.packet.UserOnlineOROffLinePacket;
+import cn.harry12800.db.entity.UserInfo;
 import cn.harry12800.vchat.server.server.bussess.Invoker;
 import cn.harry12800.vchat.server.server.bussess.InvokerHoler;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,8 +26,8 @@ import io.netty.handler.timeout.IdleStateEvent;
  *
  */
 public class CustomProtoServerHandler extends SimpleChannelInboundHandler<Packet<?>> {
-	private static Logger LOG  =LoggerFactory.getLogger(CustomProtoServerHandler.class);
-	
+	private static Logger LOG = LoggerFactory.getLogger(CustomProtoServerHandler.class);
+
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		System.err.println(" 连接激活");
@@ -65,13 +70,13 @@ public class CustomProtoServerHandler extends SimpleChannelInboundHandler<Packet
 		try {
 			handlerMessage(new SessionImpl(ctx.channel()), request);
 		} catch (ErrorCodeException e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 			Packet<?> result = new Packet<>();
 			result.header = request.header;
 			result.header.commandId++;
 			result.header.dataType = (short) e.getErrorCode();
 			ctx.channel().writeAndFlush(result);
-			
+
 		}
 
 	}
@@ -110,39 +115,46 @@ public class CustomProtoServerHandler extends SimpleChannelInboundHandler<Packet
 	 */
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		// Session session = new SessionImpl(ctx.channel());
-		// Object object = session.getAttachment();
-		// if (object != null) {
-		// UserInfo user = (UserInfo) object;
-		// SessionManager.removeSession(user.getId());
-		// }
+//		Session session = new SessionImpl(ctx.channel());
+//		Object object = session.getAttachment();
+//		if (object != null) {
+//			UserInfo user = (UserInfo) object;
+//			LOG.info("掉线：" + user);
+//			SessionManager.removeSession(user.getId());
+//			// 获取所有在线用户
+//			Set<Long> onlineUsers = SessionManager.getOnlineUsers();
+//			// 创建消息对象
+//			// 发送消息
+//			UserOnlineOROffLinePacket userOnlineOROffLinePacket = new UserOnlineOROffLinePacket(user.getId(),user.getNickName(),false);
+//			for (long targetUserId : onlineUsers) {
+//				LOG.info("告诉" + targetUserId + "用户" + user.getId() + "已经掉线");
+//				SessionManager.sendMessage(targetUserId,userOnlineOROffLinePacket.requestPacket);
+//			}
+//		}
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		// Session session = new SessionImpl(ctx.channel());
-		// Object object = session.getAttachment();
-		// if (object != null) {
-		// UserInfo user = (UserInfo) object;
-		// LOG.info("掉线：" + user);
-		// SessionManager.removeSession(user.getId());
-		// //获取所有在线用户
-		// Set<Long> onlineUsers = SessionManager.getOnlineUsers();
-		// //创建消息对象
-		// //发送消息
-		// for (long targetUserId : onlineUsers) {
-		// OfflineResponse response = new OfflineResponse();
-		// response.userId = user.getId();
-		// LOG.info("告诉" + targetUserId + "用户" + user.getId() +
-		// "已经掉线");
-		// SessionManager.sendMessage(targetUserId, ModuleId.SYSTEM,
-		// ChatCmd.OFFLINE, response);
-		// }
-		// }
-		// try {
-		// super.exceptionCaught(ctx, cause);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+		Session session = new SessionImpl(ctx.channel());
+		Object object = session.getAttachment();
+		if (object != null) {
+			UserInfo user = (UserInfo) object;
+			LOG.info("掉线：" + user);
+			SessionManager.removeSession(user.getId());
+			// 获取所有在线用户
+			Set<Long> onlineUsers = SessionManager.getOnlineUsers();
+			// 创建消息对象
+			// 发送消息
+			UserOnlineOROffLinePacket userOnlineOROffLinePacket = new UserOnlineOROffLinePacket(user.getId(),user.getNickName(),false);
+			for (long targetUserId : onlineUsers) {
+				LOG.info("告诉" + targetUserId + "用户" + user.getId() + "已经掉线");
+				SessionManager.sendMessage(targetUserId,userOnlineOROffLinePacket.requestPacket);
+			}
+		}
+		try {
+			super.exceptionCaught(ctx, cause);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

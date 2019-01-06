@@ -59,7 +59,8 @@ public class ShakeWindowPacket extends GoBackPacket {
 	}
 
 	public static class Response extends RespBody {
-
+		@Tag(2)
+		public int ok;
 	}
 
 	public static Header copyHeader() {

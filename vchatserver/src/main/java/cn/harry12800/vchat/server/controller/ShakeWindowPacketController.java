@@ -23,22 +23,24 @@ public class ShakeWindowPacketController extends ServerServlet<ShakeWindowPacket
 	public Packet<ShakeWindowPacket.Response> todo(Session session, Packet<ShakeWindowPacket.Request> t) {
 		ShakeWindowPacket.Response res = new ShakeWindowPacket.Response();
 		Packet<ShakeWindowPacket.Response> packet = new Packet<>();
+		packet.header = ShakeWindowPacket.copyHeader();
 		try {
 			if (SessionManager.isOnlineUser(t.body.targetUserId)) {
-				packet.header = t.header;
-				packet.body = res;
-				SessionManager.sendMessage(t.body.targetUserId, packet);
+				SessionManager.sendMessage(t.body.targetUserId, t);
+			}else{
+				res.ok = 15;
 			}
 		} catch (Exception e) {
-			packet.header = ShakeWindowPacket.copyHeader();
+			
 			if(e instanceof ErrorCodeException){
 				packet.header.dataType = (short) ((ErrorCodeException) e).getErrorCode();
 			}else{
 				packet.header.dataType = 3;
 			}
-			packet.header.commandId++;
-			packet.body = res;
+			
 		}
+		packet.header.commandId++;
+		packet.body = res;
 		return (Packet<ShakeWindowPacket.Response>) packet;
 	}
 
